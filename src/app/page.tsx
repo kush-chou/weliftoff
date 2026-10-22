@@ -15,6 +15,7 @@ import {
 /* --- Ephemeral Acoustic Feedback Synthesizer (Native AudioContext < 80ms) --- */
 class AcousticSynthesizer {
   private ctx: AudioContext | null = null;
+  private noiseBuffer: AudioBuffer | null = null;
   public enabled: boolean = true;
 
   private init() {
@@ -25,7 +26,128 @@ class AcousticSynthesizer {
           .webkitAudioContext;
       if (AudioCtx) {
         this.ctx = new AudioCtx();
+        const len = Math.ceil(this.ctx.sampleRate * 0.045);
+        this.noiseBuffer = this.ctx.createBuffer(1, len, this.ctx.sampleRate);
+        const data = this.noiseBuffer.getChannelData(0);
+        for (let i = 0; i < len; i++) {
+          data[i] = Math.random() * 2 - 1;
+        }
       }
+    }
+  }
+
+  private detuneForCode(code: string): number {
+    let h = 0;
+    for (let i = 0; i < code.length; i++) {
+      h = (h * 31 + code.charCodeAt(i)) | 0;
+    }
+    return 1 + ((Math.abs(h) % 13) - 6) * 0.01;
+  }
+
+  public keyDown(code: string = "KeyA", repeat: boolean = false) {
+    if (!this.enabled || repeat) return;
+    try {
+      this.init();
+      if (!this.ctx || !this.noiseBuffer) return;
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume();
+      }
+      const now = this.ctx.currentTime;
+      const detune = this.detuneForCode(code);
+      const isStabilized =
+        code === "Space" ||
+        code === "Enter" ||
+        code === "Backspace" ||
+        code.includes("Shift");
+
+      // 1. Tactile Leaf Transient (Filtered Noise Burst)
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = this.noiseBuffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(
+        (isStabilized ? 1800 : 2600) * detune,
+        now
+      );
+      filter.Q.setValueAtTime(3.2, now);
+      const nGain = this.ctx.createGain();
+      nGain.gain.setValueAtTime(0.055, now);
+      nGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.009);
+      noise.connect(filter);
+      filter.connect(nGain);
+      nGain.connect(this.ctx.destination);
+      noise.start(now);
+      noise.stop(now + 0.01);
+
+      // 2. Switch Housing Bottom-Out "Thock"
+      const dur = isStabilized ? 0.036 : 0.028;
+      const osc = this.ctx.createOscillator();
+      const oGain = this.ctx.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime((isStabilized ? 130 : 185) * detune, now);
+      osc.frequency.exponentialRampToValueAtTime(
+        (isStabilized ? 44 : 62) * detune,
+        now + dur
+      );
+      oGain.gain.setValueAtTime(0.065, now);
+      oGain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+      osc.connect(oGain);
+      oGain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + dur);
+    } catch {
+      // Ignore autoplay restrictions prior to gesture
+    }
+  }
+
+  public keyUp(code: string = "KeyA") {
+    if (!this.enabled) return;
+    try {
+      this.init();
+      if (!this.ctx || !this.noiseBuffer) return;
+      if (this.ctx.state === "suspended") {
+        this.ctx.resume();
+      }
+      const now = this.ctx.currentTime;
+      const detune = this.detuneForCode(code);
+      const isStabilized =
+        code === "Space" ||
+        code === "Enter" ||
+        code === "Backspace" ||
+        code.includes("Shift");
+
+      // 3. Top-Out Stem Rebound (45% of downstroke gain)
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = this.noiseBuffer;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(
+        (isStabilized ? 2300 : 3300) * detune,
+        now
+      );
+      filter.Q.setValueAtTime(4.0, now);
+      const nGain = this.ctx.createGain();
+      nGain.gain.setValueAtTime(0.024, now);
+      nGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.007);
+      noise.connect(filter);
+      filter.connect(nGain);
+      nGain.connect(this.ctx.destination);
+      noise.start(now);
+      noise.stop(now + 0.008);
+
+      const osc = this.ctx.createOscillator();
+      const oGain = this.ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(240 * detune, now);
+      osc.frequency.exponentialRampToValueAtTime(110 * detune, now + 0.016);
+      oGain.gain.setValueAtTime(0.028, now);
+      oGain.gain.exponentialRampToValueAtTime(0.0001, now + 0.016);
+      osc.connect(oGain);
+      oGain.connect(this.ctx.destination);
+      osc.start(now);
+      osc.stop(now + 0.016);
+    } catch {
+      // Ignore autoplay restrictions prior to gesture
     }
   }
 
@@ -1373,6 +1495,8 @@ export default function WeLiftoffPage() {
             </div>
           ) : (
             <form
+              onKeyDown={(e) => audio.keyDown(e.code, e.repeat)}
+              onKeyUp={(e) => audio.keyUp(e.code)}
               onSubmit={(e) => {
                 e.preventDefault();
                 audio.commit();
