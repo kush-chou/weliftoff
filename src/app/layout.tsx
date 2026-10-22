@@ -1,30 +1,17 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "WeLiftoff 🚀 | Zero to Published Android App in 14 Days",
+  metadataBase: new URL("https://weliftoff.now"),
+  title: "WeLiftoff — 14-Day Zero-to-Signed Android Engineering Residency",
   description:
-    "An intensive 14-day on-campus engineering residency for high school builders. Zero code to live on Google Play & F-Droid with git-first atomic discipline. By Substrata Labs.",
-  icons: {
-    icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>",
-  },
+    "On-campus high school software engineering residency by Substrata Labs. Students master atomic Git state machines, zero-egress SQLite/Room persistence, and reproducible Android App Bundle (AAB) + F-Droid distribution in 14 days.",
   openGraph: {
-    title: "WeLiftoff 🚀 | Zero to Play Store in 14 Days",
+    title: "WeLiftoff — Zero to Signed APK in 14 Deterministic Days",
     description:
-      "High school engineering residency: build, commit, and ship open-source Android apps. Inaugural cohort at Mayo College, Ajmer.",
+      "On-campus engineering residency: atomic Git discipline, local-first Android architecture, and dual-store FOSS publication (Google Play & F-Droid). Inaugural cohort at Mayo College, Ajmer.",
     url: "https://weliftoff.now",
-    siteName: "WeLiftoff",
+    siteName: "WeLiftoff // Substrata Labs",
     locale: "en_IN",
     type: "website",
   },
@@ -36,10 +23,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#090b10] text-[#e5e9f0] min-h-screen selection:bg-cyan-500/30 selection:text-cyan-200`}
-      >
+    <html lang="en" className="dark scroll-smooth bg-[#0B0C0E]">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link
+          rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossOrigin="anonymous"
+        />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] antialiased selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
         {children}
       </body>
     </html>
