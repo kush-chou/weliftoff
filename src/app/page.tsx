@@ -1063,8 +1063,8 @@ export default function WeLiftoffPage() {
               </h2>
               <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
                 Autonomous software construction requires strict separation of execution and auditing.
-                Each 2-student crew operates two dedicated workstations with alternating 60-minute responsibilities
-                during the scheduled 18:00–20:00 evening laboratory session.
+                Each 2-student crew operates two dedicated workstations with continuous role rotation across feature slices
+                during the daily 18:00–20:00 laboratory residency.
               </p>
             </div>
 
@@ -1074,8 +1074,8 @@ export default function WeLiftoffPage() {
                 DETERMINISTIC SEAT ROTATION (crew-swap.sh):
               </div>
               <p className="leading-relaxed">
-                Midway through each lab session, crews execute <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code> on Laptop 1.
-                Local Git configuration, author credentials, and commit templates rotate deterministically, enforcing equal contribution balance across both student handles.
+                On each rotation, crews execute <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code> on Laptop 1.
+                Local Git configuration, author credentials, and commit templates rotate in under 3 seconds, enforcing verified contribution parity across both co-founders.
               </p>
             </div>
           </div>

@@ -40,16 +40,13 @@ Each 2-student crew operates with two designated machines:
 - **Workstation (Laptop 1)**: Primary execution hub. Runs Antigravity 2.0, the Gradle daemon, and ADB. Permanently paired to the physical Android handset.
 - **Auditor Station (Laptop 2)**: Verification and review station. Responsible for authoring specs, inspecting diffs via `git-ledger`, observing live UI mirroring via `scrcpy`, and running offline test suites.
 
-### 2.2 The 60-Minute Rotation Cycle
-- **Hour 1 (18:00–19:00)**:
-  - Student A: **Lead Architect** (Workstation). Steers Antigravity 2.0, synthesizes code.
-  - Student B: **Systems Auditor** (Auditor Station). Reviews diffs, checks tests, validates UI.
-- **Seat Swap (19:00)**:
+### 2.2 Crew Rotation Cadence
+- Roles rotate dynamically across feature milestones during each 18:00–20:00 lab residency:
+  - **Lead Architect** (Workstation / Laptop 1): Steers Antigravity 2.0, synthesizes code slices, pairs to handset.
+  - **Systems Auditor** (Auditor Station / Laptop 2): Reviews diffs, executes test suites, validates UI bounds.
+- **Seat Swap**:
   - Run `bash scripts/crew-swap.sh` on Laptop 1.
-  - In under 3 seconds, local Git attribution and commit templates are switched.
-- **Hour 2 (19:00–20:00)**:
-  - Student B: **Lead Architect** (Workstation).
-  - Student A: **Systems Auditor** (Auditor Station).
+  - In under 3 seconds, local Git attribution and commit templates rotate, maintaining co-authorship parity.
 
 ### 2.3 Commit Attribution & git-ledger Invariants
 Every non-merge commit must contain standardized attribution trailers:
