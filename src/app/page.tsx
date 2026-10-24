@@ -333,7 +333,7 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       artifact: "Configured ADB + Git Hook Pipeline",
       specification:
         "Provision Antigravity 2.0, android CLI (v1.0.16625370), inst, agy-skills, git-ledger, and the Elephant-Goldfish Model (EGM) from the offline 64GB USB 3.0 drive. Master working-tree staging, atomic commit granularity, branching (`git switch -c`), and deterministic recovery via `git restore` and `git reflog` before invoking any generative model.",
-      verificationCmd: "android info && git reflog --oneline -n 5 && adb devices",
+      verificationCmd: "android --version && git reflog --oneline -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
@@ -371,24 +371,24 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       artifact: "Signed Release `.aab` & `.apk` Binaries",
       specification:
         "Verify permissive licensing across all vector icons and fonts. Configure R8/ProGuard shrinking and deterministic release signing keys to produce production Android App Bundles.",
-      verificationCmd: "./gradlew bundleRelease assembleRelease",
+      verificationCmd: "./gradlew assembleRelease && android layout",
     },
     {
       dayRange: "DAYS 10–11",
       code: "NODE.06 // PLAY STORE DEPLOY",
       title: "Google Play Console Tri-Track Deployment",
-      artifact: "Play Store Internal App Sharing + Signed APK",
+      artifact: "Track 1 Internal App Sharing + Track 3 GitHub Releases APK",
       specification:
-        "Author technical store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Deploy signed AAB to Google Play Internal App Sharing and host direct signed APK QR fallback.",
-      verificationCmd: "./gradlew bundleRelease && git status --porcelain",
+        "Author technical store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Validate the signed AAB with `bundletool`, deploy Track 1 (Google Play Internal App Sharing), and publish Track 3 (signed FOSS APK on GitHub Releases) with an installation QR code.",
+      verificationCmd: "./gradlew uploadReleasePrivateBundle",
     },
     {
       dayRange: "DAYS 12–13",
       code: "NODE.07 // TECHNICAL DOSSIER",
       title: "Clean-Slate README & Architecture Walkthrough",
-      artifact: "3-Min Technical Screencast + Spec Docs",
+      artifact: "3-Min Technical Screencast + Track 2 Closed Testing",
       specification:
-        "Produce a clean-slate architectural `README.md` with system diagrams, latency/storage bounds, and build instructions, paired with a 3-minute engineering walkthrough video for admissions portfolios.",
+        "Produce a clean-slate architectural `README.md` with system diagrams, latency/storage bounds, and build instructions, paired with a 3-minute engineering walkthrough video for admissions portfolios. Submit Track 2 (Google Play Closed Testing for pre-registered school emails).",
       verificationCmd: "gh pr status && ls -lh docs/architecture.md",
     },
     {
@@ -884,7 +884,7 @@ export default function WeLiftoffPage() {
                 High school builders master terminal execution, atomic Git commit
                 graphs, and zero-egress SQLite/Room persistence to architect,
                 open-source, and ship production Android applications to Google
-                Play (Internal App Sharing & Production Track).
+                Play (Internal App Sharing & Closed Testing) and GitHub Releases.
               </p>
             </div>
 
