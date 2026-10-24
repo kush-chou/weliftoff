@@ -265,11 +265,11 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
     summary:
       "Every student application is published with complete source history, build scripts, and deterministic commit attribution under Apache-2.0.",
     architecturalMechanism:
-      "Public GitHub repository containing 80+ sequential atomic commits, pull-request diffs, and reproducible Gradle wrapper configurations.",
+      "Public GitHub repository containing 60+ sequential atomic commits, pull-request diffs, and reproducible Gradle wrapper configurations.",
     legalBound:
       "Permissive Apache-2.0 patent and copyright grant; all graphic assets and typefaces restricted to SIL OFL and Apache-2.0 Material Symbols.",
     verificationGate:
-      "Automated SPDX license header check + F-Droid upstream inclusion lint (`fdroid scanner`) prior to Day 10 freeze.",
+      "Automated SPDX license header check and reproducible build verification prior to Day 10 freeze.",
   },
   {
     id: "dpdp",
@@ -307,7 +307,7 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
     summary:
       "Published under the verified Substrata Labs organization account during minority, with binding legal transfer to the student at age 18.",
     architecturalMechanism:
-      "Google Play App Signing keys and F-Droid metadata maintained in an escrowed organizational keyring mapped to the student crew.",
+      "Google Play App Signing keys and release artifacts maintained in an escrowed organizational keyring mapped to the student crew.",
     legalBound:
       "Co-signed Institutional & Parental Custodial Agreement under Govt. of India MSME (`UDYAM-RJ-37-0014993`) guaranteeing unencumbered IP assignment.",
     verificationGate:
@@ -332,17 +332,17 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "Terminal Discipline & Git DAG Mechanics",
       artifact: "Configured ADB + Git Hook Pipeline",
       specification:
-        "Configure Android Studio, SDK platform-tools, and Git. Master working-tree staging, atomic commit granularity, branching (`git switch -c`), and deterministic recovery from broken state via `git restore` and `git reflog` before invoking any generative model.",
-      verificationCmd: "git reflog --oneline -n 5 && adb devices",
+        "Provision Antigravity 2.0, android CLI (v1.0.16625370), inst, agy-skills, git-ledger, and the Elephant-Goldfish Model (EGM) from the offline 64GB USB 3.0 drive. Master working-tree staging, atomic commit granularity, branching (`git switch -c`), and deterministic recovery via `git restore` and `git reflog` before invoking any generative model.",
+      verificationCmd: "android info && git reflog --oneline -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
       code: "NODE.02 // DOMAIN MODELING",
-      title: "Constrained Agentic Synthesis",
-      artifact: "AGENTS.md + Kotlin Domain Skeleton",
+      title: "Constrained Agentic Synthesis (EGM)",
+      artifact: "docs/spec.md + Kotlin Domain Skeleton",
       specification:
-        "3-student build crews define bounded problem statements and author strict `AGENTS.md` architectural invariants. Direct AI coding assistants to synthesize one isolated vertical slice per commit.",
-      verificationCmd: "./gradlew compileDebugKotlin --console=plain",
+        "2-student build crews (10 crews max) draft bounded problem specs via Elephant agents (`/egm-brainstorm`, `/egm-draft`), stress-test with zero-context Goldfish auditors (`/egm-review`), and enforce a 20,000 token budget (`agy-skills status --json`) before directing Antigravity 2.0 to synthesize one vertical slice per commit.",
+      verificationCmd: "agy-skills status --json && ./gradlew compileDebugKotlin --console=plain",
     },
     {
       dayRange: "DAYS 05–06",
@@ -350,8 +350,8 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "Zero-Egress SQLite & Room Storage",
       artifact: "Local DAO + Deterministic Schema Migration",
       specification:
-        "Implement offline-first state persistence using Android Room / SQLite. Design deterministic data structures so edge cases dissolve without defensive UI flags or remote server dependencies.",
-      verificationCmd: "./gradlew testDebugUnitTest",
+        "Implement offline-first state persistence using Android Room / SQLite. Design deterministic data structures (`UiState<out T>`) so edge cases dissolve without defensive UI flags or remote server dependencies.",
+      verificationCmd: "./gradlew testDebugUnitTest verifyZeroEgress",
     },
     {
       dayRange: "DAY 07",
@@ -359,8 +359,8 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "Peer Pull-Request Audit & Scope Lock",
       artifact: "Merged Main Branch + Secret Scan Pass",
       specification:
-        "Cross-crew code review enforcing diff readability, zero hardcoded credentials, and 60fps UI responsiveness on physical Android test targets. Lock core feature scope prior to packaging.",
-      verificationCmd: "git log --graph --oneline --decorate",
+        "Cross-crew code review using `git-ledger` (`GIT_OPTIONAL_LOCKS=0`) and `/egm-drift-report` to enforce spec-to-code alignment, zero hardcoded credentials, and 60fps UI responsiveness via `android layout` and `scrcpy` on physical Android test targets.",
+      verificationCmd: "git ledger --last --agents-only",
     },
   ],
   phase2: [
@@ -375,12 +375,12 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
     },
     {
       dayRange: "DAYS 10–11",
-      code: "NODE.06 // DUAL DISTRIBUTION",
-      title: "Google Play Console & F-Droid Submission",
-      artifact: "Play Store Production Track + F-Droid MR",
+      code: "NODE.06 // PLAY STORE DEPLOY",
+      title: "Google Play Console Tri-Track Deployment",
+      artifact: "Play Store Internal App Sharing + Signed APK",
       specification:
-        "Author technical store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Submit signed AAB to Google Play and open upstream recipe merge request on F-Droid.",
-      verificationCmd: "fdroid lint org.substratalabs.cohort.app",
+        "Author technical store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Deploy signed AAB to Google Play Internal App Sharing and host direct signed APK QR fallback.",
+      verificationCmd: "./gradlew bundleRelease && git status --porcelain",
     },
     {
       dayRange: "DAYS 12–13",
@@ -465,7 +465,7 @@ export default function WeLiftoffPage() {
       "D05:room-dao",
       "D07:pr-freeze",
       "D09:aab-sign",
-      "D11:fdroid-mr",
+      "D11:play-store",
       "D14:release",
     ];
 
@@ -884,7 +884,7 @@ export default function WeLiftoffPage() {
                 High school builders master terminal execution, atomic Git commit
                 graphs, and zero-egress SQLite/Room persistence to architect,
                 open-source, and ship production Android applications to Google
-                Play and F-Droid.
+                Play (Internal App Sharing & Production Track).
               </p>
             </div>
 
@@ -899,7 +899,7 @@ export default function WeLiftoffPage() {
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">CREW TOPOLOGY</span>
                 <span className="font-semibold text-[#FF4F00]">
-                  Max 3 Builders / Repo
+                  2 Builders / Repo (10 Crews Max)
                 </span>
               </div>
               <div className="flex justify-between py-1 hairline-b">
@@ -911,7 +911,7 @@ export default function WeLiftoffPage() {
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">DISTRIBUTION</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  Google Play AAB + F-Droid
+                  Google Play AAB (Tri-Track) + APK
                 </span>
               </div>
               <div className="flex justify-between py-1">
@@ -1064,7 +1064,7 @@ export default function WeLiftoffPage() {
               <p>
                 University admissions committees discount generic completion
                 certificates. An authentic public GitHub commit graph containing
-                80+ atomic commits, pull-request reviews, and signed binary
+                60+ atomic commits, pull-request reviews, and signed binary
                 hashes provides cryptographic proof of authorship.
               </p>
             </div>
@@ -1374,8 +1374,8 @@ export default function WeLiftoffPage() {
                   [OPS.03] COMMON APP / UCAS
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Graduates cite live Google Play URLs, F-Droid packages, and
-                  verified GitHub commit graphs directly in university
+                  Graduates cite live Google Play URLs, signed GitHub release APKs, and
+                  verified 60+ atomic commit graphs directly in university
                   portfolios.
                 </p>
               </div>
@@ -1437,10 +1437,14 @@ export default function WeLiftoffPage() {
               Reserve an On-Campus Cohort Slot
             </h2>
             <p className="font-mono text-xs text-[#8E95A5]">
-              Configure target academic window (15–30 students, Grades 9–12) to
+              Configure target academic window (strictly 10 two-student crews / 20 students max, Grades 9–12, 28.0 lab hours) to
               receive the institutional prospectus, syllabus DAG, and legal
               custody templates.
             </p>
+            <div className="pt-2 flex flex-wrap gap-4 font-mono text-[10px] text-[#8E95A5]">
+              <div><span className="text-[#F4F4F0] font-bold">CATALOG TUITION:</span> ₹95,000 ($1,125 USD)</div>
+              <div><span className="text-[#FF4F00] font-bold">PILOT FOUNDING RATE:</span> ₹49,000–₹55,000 ($580–$650 USD)</div>
+            </div>
           </div>
 
           {/* Bounded Mechanical Levers: Cohort Window Selector */}
@@ -1576,7 +1580,7 @@ export default function WeLiftoffPage() {
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Target batch size (15–30 students), preferred dates, or boarding prep slot constraints..."
+                  placeholder="Target batch size (strictly 10 two-student crews / 20 seats max), preferred dates, or boarding prep slot constraints..."
                   value={formData.notes}
                   onChange={(e) =>
                     setFormData({ ...formData, notes: e.target.value })
@@ -1609,7 +1613,7 @@ export default function WeLiftoffPage() {
               0&rarr;1
             </span>
             <span className="text-[#F4F4F0] font-bold">WELIFTOFF.NOW</span>
-            <span>//</span>
+            <span>{"//"}</span>
             <span>SUBSTRATA LABS</span>
           </div>
 
