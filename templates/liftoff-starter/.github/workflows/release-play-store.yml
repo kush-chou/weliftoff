@@ -1,0 +1,86 @@
+name: Release Pipeline (Tri-Track)
+
+on:
+  push:
+    tags:
+      - "v*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: production-release
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+          cache: "gradle"
+
+      - name: Grant Execute Permissions
+        run: chmod +x gradlew
+
+      - name: Decode Upload Keystore & Service Account
+        env:
+          KEYSTORE_BASE64: ${{ secrets.TEAM_UPLOAD_KEYSTORE_BASE64 }}
+          SA_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: |
+          mkdir -p "${{ runner.temp }}/keystore"
+          if [ -n "$KEYSTORE_BASE64" ]; then
+            echo "$KEYSTORE_BASE64" | base64 -d > "${{ runner.temp }}/keystore/upload.jks"
+          fi
+          if [ -n "$SA_JSON" ]; then
+            echo "$SA_JSON" > "${{ runner.temp }}/keystore/play-service-account.json"
+          fi
+
+      - name: Build Bundles and Verify Zero-Egress
+        env:
+          RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/keystore/upload.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ runner.temp }}/keystore/play-service-account.json
+        run: |
+          ./gradlew bundleRelease assembleRelease verifyZeroEgress
+
+      - name: Deploy Track 1 (Google Play Internal App Sharing)
+        env:
+          RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/keystore/upload.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ runner.temp }}/keystore/play-service-account.json
+        run: |
+          if [ -f "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            ./gradlew uploadReleasePrivateBundle
+          else
+            echo "Skipping Track 1: Play Service Account JSON not configured."
+          fi
+
+      - name: Deploy Track 2 (Google Play Closed Testing)
+        env:
+          RELEASE_KEYSTORE_PATH: ${{ runner.temp }}/keystore/upload.jks
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ runner.temp }}/keystore/play-service-account.json
+        run: |
+          if [ -f "$PLAY_SERVICE_ACCOUNT_JSON" ]; then
+            ./gradlew publishReleaseBundle --track alpha
+          else
+            echo "Skipping Track 2: Play Service Account JSON not configured."
+          fi
+
+      - name: Publish Track 3 (GitHub Releases Signed APK)
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            app/build/outputs/apk/release/*.apk
+            app/build/outputs/bundle/release/*.aab
+          generate_release_notes: true
