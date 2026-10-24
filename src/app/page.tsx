@@ -9,7 +9,9 @@ import {
   Terminal,
   ArrowUpRight,
   CheckCircle2,
-  AlertTriangle,
+  Cpu,
+  Lock,
+  RefreshCw,
 } from "lucide-react";
 
 /* --- Ephemeral Acoustic Feedback Synthesizer (Native AudioContext < 80ms) --- */
@@ -96,7 +98,7 @@ class AcousticSynthesizer {
       osc.start(now);
       osc.stop(now + dur);
     } catch {
-      // Ignore autoplay restrictions prior to gesture
+      // Ignore autoplay restrictions prior to user gesture
     }
   }
 
@@ -147,7 +149,7 @@ class AcousticSynthesizer {
       osc.start(now);
       osc.stop(now + 0.016);
     } catch {
-      // Ignore autoplay restrictions prior to gesture
+      // Ignore autoplay restrictions prior to user gesture
     }
   }
 
@@ -259,31 +261,31 @@ interface ComplianceRecord {
 const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
   {
     id: "foss",
-    code: "[INV.01 // LICENSE]",
-    title: "Apache-2.0 Open Source",
+    code: "[INV.01 // LICENSING]",
+    title: "Apache-2.0 & Verifiable DAG",
     metric: "100% PUBLIC REPOSITORY",
     summary:
-      "Every student application is published with complete source history, build scripts, and deterministic commit attribution under Apache-2.0.",
+      "Every student application is open-sourced under Apache-2.0 with a 60+ atomic commit DAG documenting authentic student-agent co-authorship.",
     architecturalMechanism:
-      "Public GitHub repository containing 60+ sequential atomic commits, pull-request diffs, and reproducible Gradle wrapper configurations.",
+      "Public GitHub repository under github.com/substrata-labs with Confidence 1.0 git-ledger attribution trailers (Agent: antigravity, Model: gemini-2.5-pro, Prompted-by, Audited-by).",
     legalBound:
       "Permissive Apache-2.0 patent and copyright grant; all graphic assets and typefaces restricted to SIL OFL and Apache-2.0 Material Symbols.",
     verificationGate:
-      "Automated SPDX license header check and reproducible build verification prior to Day 10 freeze.",
+      "Automated git-ledger commit audit and SPDX license header check enforcing bisect-safe commit history prior to Day 7 freeze.",
   },
   {
     id: "dpdp",
-    code: "[INV.02 // PRIVACY]",
-    title: "Zero-Egress Persistence",
+    code: "[INV.02 // CHILD SAFEGUARDING]",
+    title: "Zero-Egress & DPDP §9 Compliance",
     metric: "0 BYTES NETWORK EGRESS",
     summary:
-      "Strict local-first architecture. Student applications execute entirely on-device using SQLite/Room without user accounts or cloud telemetry.",
+      "Strict local-first architecture. Applications persist state locally using SQLite/Room with zero telemetry, remote accounts, or cloud tracking.",
     architecturalMechanism:
-      "Android Manifest strips `android.permission.INTERNET` wherever domain logic permits, enforcing local SQLite/Room persistence and on-device execution.",
+      "Android Manifest actively strips android.permission.INTERNET via tools:node='remove'. Compile-time verifyZeroEgress Gradle task inspects merged manifests.",
     legalBound:
-      "Full compliance with the Indian Digital Personal Data Protection (DPDP) Act 2023 and COPPA by eliminating personal data collection at the root.",
+      "Full compliance with Section 9 of India's Digital Personal Data Protection (DPDP) Act 2023 and COPPA. Minor legal names, boarding houses, and contacts are sanitized from public Git history.",
     verificationGate:
-      "Static manifest permission audit and network packet inspection verifying zero third-party analytics SDKs.",
+      "Positive test: ./gradlew verifyZeroEgress passes on debug/release. Negative test: injected INTERNET permission halts compilation.",
   },
   {
     id: "commerce",
@@ -291,27 +293,27 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
     title: "Zero Commercial Surface",
     metric: "0 AD SDKS / 0 IAPS",
     summary:
-      "Pure utility software. No ad networks, no in-app billing SDKs, and no commercial merchant hooks required for minor builders.",
+      "Pure utility software for boarding school campus life. No ad networks, in-app billing libraries, or commercial merchant SDKs.",
     architecturalMechanism:
-      "Excludes Google Play Billing Library and proprietary ad mediation dependencies from `libs.versions.toml`.",
+      "Excludes Google Play Billing Library, ad mediation frameworks, and analytics trackers from libs.versions.toml version catalog.",
     legalBound:
-      "Insulates high school minors and host institutions from commercial tax liabilities, payment gateway KYC, and predatory retention patterns.",
+      "Insulates high school minors, parents, and host institutions from commercial tax liabilities, payment gateway KYC, and predatory user retention mechanics.",
     verificationGate:
-      "Gradle dependency tree inspection (`./gradlew app:dependencies`) confirming zero proprietary monetization binaries.",
+      "Gradle dependency tree inspection (./gradlew app:dependencies) confirming zero proprietary monetization binaries.",
   },
   {
     id: "custody",
     code: "[INV.04 // SOVEREIGNTY]",
-    title: "Custodial IP Transfer",
+    title: "Custodial IP Transfer at Age 18",
     metric: "100% STUDENT OWNERSHIP",
     summary:
-      "Published under the verified Substrata Labs organization account during minority, with binding legal transfer to the student at age 18.",
+      "Published under Substrata Labs during minority to satisfy Google Play testing requirements, with legally binding full IP transfer to the student at age 18.",
     architecturalMechanism:
-      "Google Play App Signing keys and release artifacts maintained in an escrowed organizational keyring mapped to the student crew.",
+      "Google Play signing keys stored in protected GitHub Actions Environment (production-release) using per-crew isolated upload keystores (upload-<slug>.jks).",
     legalBound:
-      "Co-signed Institutional & Parental Custodial Agreement under Govt. of India MSME (`UDYAM-RJ-37-0014993`) guaranteeing unencumbered IP assignment.",
+      "Co-signed Institutional & Parental Custodial Agreement under Govt. of India MSME (UDYAM-RJ-37-0014993) granting irrevocable Apache-2.0 fork rights to both crew members.",
     verificationGate:
-      "Cryptographic SHA-256 signing certificate fingerprint recorded in the cohort ledger and student graduation dossier.",
+      "Cryptographic SHA-256 signing fingerprint and In-App Identity Colophon Screen baked into graduation dossier.",
   },
 ];
 
@@ -329,37 +331,37 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
     {
       dayRange: "DAYS 01–02",
       code: "NODE.01 // STATE STEERING",
-      title: "Terminal Discipline & Git DAG Mechanics",
-      artifact: "Configured ADB + Git Hook Pipeline",
+      title: "Environment Zero & Terminal Discipline",
+      artifact: "Configured Toolchain + ADB Handset Pairing",
       specification:
-        "Provision Antigravity 2.0, android CLI (v1.0.16625370), inst, agy-skills, git-ledger, and the Elephant-Goldfish Model (EGM) from the offline 64GB USB 3.0 drive. Master working-tree staging, atomic commit granularity, branching (`git switch -c`), and deterministic recovery via `git restore` and `git reflog` before invoking any generative model.",
+        "Provision Antigravity 2.0, OpenJDK 17, Android CLI (v1.0.16625370), inst, agy-skills, and git-ledger from the offline 64GB USB 3.0 drive without campus Wi-Fi. Master working-tree staging, atomic commits, and deterministic recovery via git restore and git reflog before invoking any model.",
       verificationCmd: "android --version && git reflog --oneline -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
       code: "NODE.02 // DOMAIN MODELING",
       title: "Constrained Agentic Synthesis (EGM)",
-      artifact: "docs/spec.md + Kotlin Domain Skeleton",
+      artifact: "docs/spec.md + UiState<out T> Compose Container",
       specification:
-        "2-student build crews (10 crews max) draft bounded problem specs via Elephant agents (`/egm-brainstorm`, `/egm-draft`), stress-test with zero-context Goldfish auditors (`/egm-review`), and enforce a 20,000 token budget (`agy-skills status --json`) before directing Antigravity 2.0 to synthesize one vertical slice per commit.",
+        "2-student build crews (10 crews max) draft bounded problem specs via Elephant agents (/egm-brainstorm, /egm-draft), stress-test with zero-context Goldfish auditors (/egm-review), and enforce a 20,000 active token cap (agy-skills status --json) before directing Antigravity 2.0 to synthesize Compose UI.",
       verificationCmd: "agy-skills status --json && ./gradlew compileDebugKotlin --console=plain",
     },
     {
       dayRange: "DAYS 05–06",
       code: "NODE.03 // PERSISTENCE",
       title: "Zero-Egress SQLite & Room Storage",
-      artifact: "Local DAO + Deterministic Schema Migration",
+      artifact: "Local Room @Entity + KSP @Dao + Migrations",
       specification:
-        "Implement offline-first state persistence using Android Room / SQLite. Design deterministic data structures (`UiState<out T>`) so edge cases dissolve without defensive UI flags or remote server dependencies.",
+        "Implement offline-first state persistence using Android Room / SQLite with KSP compiler. Design deterministic data structures (UiState<out T>) so edge cases dissolve without defensive flags, network requests, or remote server dependencies.",
       verificationCmd: "./gradlew testDebugUnitTest verifyZeroEgress",
     },
     {
       dayRange: "DAY 07",
       code: "NODE.04 // FEATURE FREEZE",
       title: "Peer Pull-Request Audit & Scope Lock",
-      artifact: "Merged Main Branch + Secret Scan Pass",
+      artifact: "Merged Main Branch + 60fps Handset Audit",
       specification:
-        "Cross-crew code review using `git-ledger` (`GIT_OPTIONAL_LOCKS=0`) and `/egm-drift-report` to enforce spec-to-code alignment, zero hardcoded credentials, and 60fps UI responsiveness via `android layout` and `scrcpy` on physical Android test targets.",
+        "Cross-crew code review using git-ledger (GIT_OPTIONAL_LOCKS=0) and /egm-drift-report to enforce spec-to-code alignment, zero hardcoded credentials, and 60fps UI responsiveness via android layout and scrcpy over USB on physical Android test targets.",
       verificationCmd: "git ledger --last --agents-only",
     },
   ],
@@ -367,37 +369,37 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
     {
       dayRange: "DAYS 08–09",
       code: "NODE.05 // REPRODUCIBLE BUILD",
-      title: "FOSS Asset Audit & Signed AAB Packaging",
-      artifact: "Signed Release `.aab` & `.apk` Binaries",
+      title: "Production Hardening & Colophon Screen",
+      artifact: "Material 3 Theme + In-App Identity Screen",
       specification:
-        "Verify permissive licensing across all vector icons and fonts. Configure R8/ProGuard shrinking and deterministic release signing keys to produce production Android App Bundles.",
+        "Apply Material 3 tokens, edge-to-edge window insets, R8/ProGuard shrinking, and integrate the In-App Identity Colophon Screen (ColophonScreen.kt) displaying student developer handles, Git commit SHA, build timestamp, and Apache-2.0 license.",
       verificationCmd: "./gradlew assembleRelease && android layout",
     },
     {
       dayRange: "DAYS 10–11",
       code: "NODE.06 // PLAY STORE DEPLOY",
       title: "Google Play Console Tri-Track Deployment",
-      artifact: "Track 1 Internal App Sharing + Track 3 GitHub Releases APK",
+      artifact: "Track 1 Internal App Sharing + Track 3 FOSS APK",
       specification:
-        "Author technical store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Validate the signed AAB with `bundletool`, deploy Track 1 (Google Play Internal App Sharing), and publish Track 3 (signed FOSS APK on GitHub Releases) with an installation QR code.",
+        "Author store listings, DPDP/COPPA zero-data declarations, and IELTS-grade release notes. Validate signed AAB with bundletool, deploy Track 1 (Google Play Internal App Sharing via ./gradlew uploadReleasePrivateBundle), and publish Track 3 (signed FOSS APK on GitHub Releases) with installation QR codes.",
       verificationCmd: "./gradlew uploadReleasePrivateBundle",
     },
     {
       dayRange: "DAYS 12–13",
       code: "NODE.07 // TECHNICAL DOSSIER",
       title: "Clean-Slate README & Architecture Walkthrough",
-      artifact: "3-Min Technical Screencast + Track 2 Closed Testing",
+      artifact: "3-Min Technical Screencast + Track 2 Alpha",
       specification:
-        "Produce a clean-slate architectural `README.md` with system diagrams, latency/storage bounds, and build instructions, paired with a 3-minute engineering walkthrough video for admissions portfolios. Submit Track 2 (Google Play Closed Testing for pre-registered school emails).",
+        "Produce a clean-slate architectural README.md with system diagrams, latency/storage bounds, and build instructions, paired with a 3-minute engineering walkthrough video for admissions portfolios. Submit Track 2 (Google Play Closed Testing for pre-registered school domain emails).",
       verificationCmd: "gh pr status && ls -lh docs/architecture.md",
     },
     {
       dayRange: "DAY 14",
       code: "NODE.08 // EXHIBITION",
-      title: "On-Campus Demo Day & APK Verification",
-      artifact: "Live QR Installation + Commit Ledger",
+      title: "On-Campus Demo Day & Live QR Defense",
+      artifact: "Auditorium Defense + Direct QR Installation",
       specification:
-        "Live technical defense before the Principal, Housemasters, CS Faculty, and student body. Attendees install the signed APK directly onto physical devices and inspect the crew's 14-day Git commit graph.",
+        "Live 90-minute technical defense before the Principal, Housemasters, CS Faculty, and student body in the Mayo College auditorium. Attendees install the signed APK directly onto physical devices via Demo Day QR codes and inspect the crew's 60+ atomic commit Git DAG.",
       verificationCmd: "sha256sum app-release-signed.apk",
     },
   ],
@@ -409,7 +411,7 @@ export default function WeLiftoffPage() {
   const [activeInvariantId, setActiveInvariantId] =
     useState<InvariantKey>("foss");
   const [activePhase, setActivePhase] = useState<PhaseKey>("phase1");
-  const [cohortWindow, setCohortWindow] = useState("Winter 2026 Cohort");
+  const [cohortWindow, setCohortWindow] = useState("Winter 2026 Cohort (Mayo College)");
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -460,13 +462,13 @@ export default function WeLiftoffPage() {
       "f71a9e4",
     ];
     const dagLabels = [
-      "D01:git-init",
+      "D01:usb-boot",
       "D03:spec-lock",
       "D05:room-dao",
-      "D07:pr-freeze",
-      "D09:aab-sign",
-      "D11:play-store",
-      "D14:release",
+      "D07:freeze",
+      "D09:m3-colophon",
+      "D11:tri-track",
+      "D14:demo-day",
     ];
 
     interface DeltaParticle {
@@ -630,11 +632,9 @@ export default function WeLiftoffPage() {
           anchor.y +
           Math.sin(p.orbitOffsetAngle) * p.orbitRadius * radiusMultiplier;
 
-        // Spring-damper attraction to parent commit node
         p.vx += (targetX - p.x) * modeParams.springStiffness;
         p.vy += (targetY - p.y) * modeParams.springStiffness;
 
-        // Unbounded prompt turbulence when in drift mode
         if (modeParams.turbulence > 0) {
           p.vx +=
             Math.sin(tick * 0.09 + idx * 1.7) * modeParams.turbulence * 0.35;
@@ -642,7 +642,6 @@ export default function WeLiftoffPage() {
             Math.cos(tick * 0.08 + idx * 2.3) * modeParams.turbulence * 0.35;
         }
 
-        // Pointer kinetic repulsion
         if (pointer.active) {
           const dx = p.x - pointer.x;
           const dy = p.y - pointer.y;
@@ -659,7 +658,6 @@ export default function WeLiftoffPage() {
         p.x += p.vx;
         p.y += p.vy;
 
-        // Draw tether line from particle to its commit node
         const distToAnchor = Math.hypot(p.x - anchor.x, p.y - anchor.y);
         if (distToAnchor < 64) {
           ctx.strokeStyle =
@@ -692,7 +690,6 @@ export default function WeLiftoffPage() {
         ? '9px "JetBrains Mono", monospace'
         : '10px "JetBrains Mono", monospace';
       anchors.forEach((a, idx) => {
-        // Outer mechanical square frame
         ctx.fillStyle = "#0B0C0E";
         ctx.strokeStyle =
           dagMode === "drift"
@@ -704,7 +701,6 @@ export default function WeLiftoffPage() {
         ctx.fillRect(a.x - 6, a.y - 6, 12, 12);
         ctx.strokeRect(a.x - 6, a.y - 6, 12, 12);
 
-        // Inner core dot
         ctx.fillStyle =
           dagMode === "drift"
             ? "#EF4444"
@@ -713,7 +709,6 @@ export default function WeLiftoffPage() {
               : "#FF4F00";
         ctx.fillRect(a.x - 2, a.y - 2, 4, 4);
 
-        // SHA & Stage Label (alternating 3-tier vertical stagger on mobile for zero collision)
         const tierOffset = isCompact
           ? idx % 2 === 0
             ? -24 - (idx % 4 === 0 ? 14 : 0)
@@ -766,7 +761,7 @@ export default function WeLiftoffPage() {
   }, [dagMode]);
 
   return (
-    <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col">
+    <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
       {/* Top Tabular Invariant Bar */}
       <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center gap-3 sm:gap-4">
@@ -774,26 +769,30 @@ export default function WeLiftoffPage() {
             WELIFTOFF // 0&rarr;1
           </span>
           <span className="hidden sm:inline text-[#3A3F4B]">|</span>
-          <span className="hidden sm:inline">
+          <span className="hidden sm:inline text-[#F4F4F0]">
             INAUGURAL COHORT: MAYO COLLEGE, AJMER
           </span>
           <span className="hidden lg:inline text-[#3A3F4B]">|</span>
           <span className="hidden lg:inline">
+            RESIDENCY: 14 DAYS (28.0 LAB HOURS // 18:00–20:00)
+          </span>
+          <span className="hidden xl:inline text-[#3A3F4B]">|</span>
+          <span className="hidden xl:inline">
             MSME REG: UDYAM-RJ-37-0014993
           </span>
         </div>
 
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5 text-[#10B981]">
-            <span className="w-1.5 h-1.5 bg-[#10B981] inline-block" />
-            2026/27 INSTITUTIONAL SLOTS OPEN
+            <span className="w-1.5 h-1.5 bg-[#10B981] inline-block animate-pulse" />
+            10 CREW SEATS OPEN (20 BUILDERS MAX)
           </span>
           <button
             onClick={toggleAudio}
             title={
               audioEnabled
-                ? "Mute Acoustic Feedback"
-                : "Enable Acoustic Feedback"
+                ? "Mute Mechanical Keyswitch Audio"
+                : "Enable Mechanical Keyswitch Audio"
             }
             aria-label="Toggle acoustic feedback"
             className="p-1 text-[#8E95A5] hover:text-[#F4F4F0] transition-colors cursor-pointer"
@@ -808,7 +807,7 @@ export default function WeLiftoffPage() {
       </div>
 
       {/* Main Architectural Navigation */}
-      <header className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-4 flex items-center justify-between">
+      <header className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-4 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md bg-[#0B0C0E]/90">
         <div className="flex items-center gap-3">
           <div className="w-8 h-8 bg-[#FF4F00] text-[#0B0C0E] flex items-center justify-center font-mono font-bold text-xs tracking-tighter">
             0&rarr;1
@@ -829,28 +828,35 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors"
           >
-            [01] State Thesis
+            [01] Thesis
+          </a>
+          <a
+            href="#pairing"
+            onClick={() => audio.click()}
+            className="hover:text-[#FF4F00] transition-colors"
+          >
+            [02] Pairing Protocol
           </a>
           <a
             href="#invariants"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors"
           >
-            [02] Invariants
+            [03] Sovereign Invariants
           </a>
           <a
             href="#syllabus"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors"
           >
-            [03] 14-Day DAG
+            [04] 14-Day DAG
           </a>
           <a
             href="#institutional"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors"
           >
-            [04] Institutional
+            [05] Institutional
           </a>
         </nav>
 
@@ -881,9 +887,9 @@ export default function WeLiftoffPage() {
               </h1>
 
               <p className="text-sm text-[#8E95A5] leading-relaxed">
-                High school builders master terminal execution, atomic Git commit
+                High school builders (Grades 9–12) master terminal execution, atomic Git commit
                 graphs, and zero-egress SQLite/Room persistence to architect,
-                open-source, and ship production Android applications to Google
+                open-source, and ship production Android utilities to Google
                 Play (Internal App Sharing & Closed Testing) and GitHub Releases.
               </p>
             </div>
@@ -893,31 +899,37 @@ export default function WeLiftoffPage() {
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">EXECUTION WINDOW</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  14 Days (28.0 Lab Hours)
+                  14 Days (28.0 Lab Hours // 18:00–20:00)
                 </span>
               </div>
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">CREW TOPOLOGY</span>
                 <span className="font-semibold text-[#FF4F00]">
-                  2 Builders / Repo (10 Crews Max)
+                  2 Builders / Workstation (10 Crews Max)
+                </span>
+              </div>
+              <div className="flex justify-between py-1 hairline-b">
+                <span className="text-[#8E95A5]">AGENTIC ENGINE</span>
+                <span className="font-semibold text-[#F4F4F0]">
+                  Antigravity 2.0 + EGM (20k Token Cap)
                 </span>
               </div>
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">PERSISTENCE BOUND</span>
                 <span className="font-semibold text-[#10B981]">
-                  SQLite / Room (0 B Egress)
+                  SQLite / Room (0 B Egress // DPDP §9)
                 </span>
               </div>
               <div className="flex justify-between py-1 hairline-b">
                 <span className="text-[#8E95A5]">DISTRIBUTION</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  Google Play AAB (Tri-Track) + APK
+                  Tri-Track: Play IAS + Closed + FOSS APK
                 </span>
               </div>
               <div className="flex justify-between py-1">
-                <span className="text-[#8E95A5]">SOURCE LICENSE</span>
+                <span className="text-[#8E95A5]">PROVENANCE</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  Apache-2.0 Permissive FOSS
+                  In-App Colophon + 60+ Commit DAG
                 </span>
               </div>
             </div>
@@ -1035,103 +1047,91 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
-      {/* SEC.02: Pedagogical State Governance (Steering Before Synthesis) */}
-      <section className="hairline-b bg-[#111317]">
+      {/* SEC.02: Ping-Pong Pairing Protocol & Pedagogical Governance */}
+      <section id="pairing" className="hairline-b bg-[#111317]">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between">
             <div className="space-y-3">
               <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-                SEC.02 // DETERMINISTIC VERSION CONTROL
+                SEC.02 // PAIRING PROTOCOL &amp; GOVERNANCE
               </span>
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                State Control{" "}
+                Ping-Pong Cadence{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block">
-                  Before Code Synthesis.
+                  Between Co-Founders.
                 </span>
               </h2>
               <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                Unconstrained generative models mutate dozens of files
-                simultaneously until compilation fails and novices cannot
-                recover. We enforce deterministic Git state invariants on Day 1
-                before any AI assistant is invoked.
+                Software is not built by unstructured prompt dumping. Each 2-student crew operates
+                two dedicated machines with alternating 60-minute roles during the daily 18:00–20:00 prep slot.
               </p>
             </div>
 
-            <div className="pt-6 font-mono text-[11px] text-[#8E95A5] space-y-1.5">
-              <div className="text-[#F4F4F0] font-bold">
-                ADMISSIONS VERIFICATION LEDGER:
+            <div className="pt-6 font-mono text-[11px] text-[#8E95A5] space-y-2">
+              <div className="text-[#F4F4F0] font-bold flex items-center gap-1.5">
+                <RefreshCw className="w-3.5 h-3.5 text-[#FF4F00]" />
+                1-COMMAND SEAT SWAP IN &lt; 3 SECONDS:
               </div>
-              <p>
-                University admissions committees discount generic completion
-                certificates. An authentic public GitHub commit graph containing
-                60+ atomic commits, pull-request reviews, and signed binary
-                hashes provides cryptographic proof of authorship.
+              <p className="leading-relaxed">
+                At 19:00, crews execute <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code> on Laptop 1.
+                Git user identity, email, and commit templates rotate instantly, enforcing equal contribution balance across both crew members.
               </p>
             </div>
           </div>
 
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2">
-            {/* Failure Mode */}
+            {/* Workstation Specification */}
             <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E] flex flex-col justify-between space-y-6">
               <div className="space-y-3">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#EF4444] font-bold flex items-center gap-1.5">
-                  <AlertTriangle className="w-3.5 h-3.5" />
-                  FAILURE MODE // UNBOUNDED GENERATION
+                <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF4F00] font-bold flex items-center gap-1.5">
+                  <Cpu className="w-3.5 h-3.5" />
+                  LAPTOP 1 // WORKSTATION (LEAD ARCHITECT)
                 </span>
                 <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
-                  Monolithic Prompt Drift
+                  Execution Hub &amp; Hardware Tether
                 </h3>
                 <p className="text-xs text-[#8E95A5] leading-relaxed">
-                  Issuing underspecified prompts across an entire repository
-                  accumulates silent schema collisions, broken Gradle imports,
-                  and non-bisectable regressions across unstaged files.
+                  Permanently tethered to the physical Android handset over USB/Wireless ADB. Runs Antigravity 2.0 Desktop, Gradle Daemon, and the 20,000 token budget guardian.
                 </p>
               </div>
 
               <div className="p-4 bg-[#111317] hairline-all font-mono text-[11px] space-y-1.5 text-[#8E95A5]">
-                <div className="text-[#EF4444] font-bold">
-                  $ git status --short
+                <div className="text-[#FF4F00] font-bold">
+                  $ agy-skills status --json
                 </div>
-                <div> M app/src/main/AndroidManifest.xml</div>
-                <div> M app/src/main/java/ui/MainActivity.kt</div>
-                <div>?? app/src/main/java/net/CloudSyncTemp.kt</div>
-                <div className="text-[#EF4444] pt-1">
-                  ERROR: 14 unresolved references. Zero restore checkpoints.
+                <div>{'{ "active_tokens": 6474, "budget_cap": 20000 }'}</div>
+                <div className="text-[#10B981] pt-1">
+                  ✓ Token consumption within sovereign 20k cap
+                </div>
+                <div className="text-[#F4F4F0]">
+                  $ android run &rarr; deploy to physical target
                 </div>
               </div>
             </div>
 
-            {/* WeLiftoff Invariant */}
+            {/* Auditor Station Specification */}
             <div className="p-6 sm:p-8 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
               <div className="space-y-3">
                 <span className="font-mono text-[10px] uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
                   <GitBranch className="w-3.5 h-3.5" />
-                  WELIFTOFF INVARIANT // ATOMIC DAG CADENCE
+                  LAPTOP 2 // AUDITOR STATION (SYSTEMS AUDITOR)
                 </span>
                 <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
-                  Single-Slice Mutation &amp; Bisect Gate
+                  Read-Only Diff &amp; Spec Gatekeeper
                 </h3>
                 <p className="text-xs text-[#8E95A5] leading-relaxed">
-                  One domain specification, one verified compilation, one atomic
-                  commit. Every experiment is isolated on a feature branch with
-                  instantaneous rollback via{" "}
-                  <code className="text-[#10B981] font-mono">git restore</code>{" "}
-                  and{" "}
-                  <code className="text-[#10B981] font-mono">git reflog</code>.
+                  Drafts and refines docs/spec.md, inspects read-only AST diffs with git-ledger, mirrors handset screen via scrcpy, and validates zero-egress before pull requests merge.
                 </p>
               </div>
 
               <div className="p-4 bg-[#111317] hairline-all font-mono text-[11px] space-y-1.5 text-[#8E95A5]">
                 <div className="text-[#10B981] font-bold">
-                  $ git commit -m &quot;feat(dao): bind Room SQLite journal
-                  schema&quot;
+                  $ git ledger --diff --md
                 </div>
-                <div>[feat/local-dao 8e4f1a2] 2 files changed, 48 insertions(+)</div>
-                <div className="text-[#F4F4F0]">
-                  $ ./gradlew testDebugUnitTest &rarr; PASS (1.4s)
-                </div>
-                <div className="text-[#FF4F00] pt-1">
-                  ✓ Verified PR #4 merged to main [SHA: f71a9e4]
+                <div>Agent: antigravity | Model: gemini-2.5-pro</div>
+                <div>Prompted-by: dev-handle-a | Audited-by: dev-handle-b</div>
+                <div className="text-[#10B981] pt-1">
+                  ✓ Confidence 1.0 commit attribution verified
                 </div>
               </div>
             </div>
@@ -1152,7 +1152,7 @@ export default function WeLiftoffPage() {
           </div>
           <p className="font-mono text-xs text-[#8E95A5] max-w-md">
             Select any invariant below to inspect its architectural enforcement
-            mechanism and verification gate.
+            mechanism, statutory DPDP boundary, and deterministic verification gate.
           </p>
         </div>
 
@@ -1248,7 +1248,7 @@ export default function WeLiftoffPage() {
               SEC.04 // 14-DAY EXECUTION DAG
             </span>
             <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight mt-1">
-              Curriculum State Transitions (28.0 Lab Hours)
+              Curriculum State Transitions (28.0 Lab Hours // 18:00–20:00 Daily)
             </h2>
           </div>
 
@@ -1266,7 +1266,7 @@ export default function WeLiftoffPage() {
                   : "border border-[#3A3F4B] bg-[#111317] text-[#F4F4F0] hover:border-[#F4F4F0]"
               }`}
             >
-              [PHASE 01] Days 01–07: Core &amp; Git Steering
+              [PHASE 01] Days 01–07: Core &amp; Spec Steering
             </button>
             <button
               type="button"
@@ -1313,7 +1313,7 @@ export default function WeLiftoffPage() {
                   DELIVERABLE:{" "}
                   <strong className="text-[#F4F4F0]">{node.artifact}</strong>
                 </div>
-                <div className="p-2 bg-[#111317] hairline-all text-[#10B981] truncate">
+                <div className="p-2 bg-[#111317] hairline-all text-[#10B981] truncate" title={node.verificationCmd}>
                   $ {node.verificationCmd}
                 </div>
               </div>
@@ -1332,51 +1332,51 @@ export default function WeLiftoffPage() {
                 SEC.05 // INSTITUTIONAL TURNKEY DEPLOYMENT
               </span>
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                Engineered for Boarding &amp; IB Schedules.
+                Engineered for Residential School Routines.
               </h2>
               <p className="text-sm text-[#8E95A5] leading-relaxed max-w-2xl">
-                Designed around boarding school evening prep slots and afternoon
-                activity blocks. Substrata Labs absorbs 100% of the developer
-                account provisioning, compliance auditing, and release signing
-                overhead.
+                Integrated with Mayo College&apos;s daily evening prep schedule (18:00–20:00). Substrata Labs provides complete hardware buffers, zero-bandwidth offline bootstrap drives, and organization release signing.
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
               <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
                 <div className="text-[#FF4F00] font-bold flex items-center gap-1.5">
                   <Terminal className="w-3.5 h-3.5" />
-                  [OPS.01] ZERO IT BURDEN
+                  [OPS.01] ZERO CAMPUS IT BURDEN
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Executes on student laptops or standard computer lab stations.
-                  Zero cloud server bills or campus firewall reconfigurations.
+                  Toolchain provisions offline in under 5 minutes from 64GB USB 3.0 flash drives. API calls route over Substrata&apos;s autonomous cellular 5G router. Zero school Wi-Fi or firewall changes needed.
                 </p>
               </div>
 
               <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
                 <div className="text-[#10B981] font-bold flex items-center gap-1.5">
                   <ShieldCheck className="w-3.5 h-3.5" />
-                  [OPS.02] MSME GOVERNANCE
+                  [OPS.02] HARDWARE PAIRING POLICY
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Registered Govt. of India Micro-Enterprise (
-                  <code className="text-[#F4F4F0] font-mono">
-                    UDYAM-RJ-37-0014993
-                  </code>
-                  ). Co-signed parental IP custody contracts.
+                  iOS builders are matched with Android-owning co-founders across the 10 crews, backed by an on-site contingency buffer of 3 reference test handsets and 15 certified USB cables.
+                </p>
+              </div>
+
+              <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
+                <div className="text-[#10B981] font-bold flex items-center gap-1.5">
+                  <Lock className="w-3.5 h-3.5" />
+                  [OPS.03] DPDP §9 CHILD SAFEGUARDING
+                </div>
+                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
+                  Full compliance with Section 9 of the DPDP Act 2023. Real student names and houses remain private; students use pseudonymous developer handles. Parental co-signing is gathered on Day 1.
                 </p>
               </div>
 
               <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
                 <div className="text-[#F4F4F0] font-bold flex items-center gap-1.5">
                   <CheckCircle2 className="w-3.5 h-3.5 text-[#FF4F00]" />
-                  [OPS.03] COMMON APP / UCAS
+                  [OPS.04] COMMON APP &amp; UCAS VALUE
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Graduates cite live Google Play URLs, signed GitHub release APKs, and
-                  verified 60+ atomic commit graphs directly in university
-                  portfolios.
+                  Students cite live Google Play URLs, signed GitHub release APKs, In-App Identity Colophon screens, and verified 60+ atomic commit DAGs directly in admissions supplements.
                 </p>
               </div>
             </div>
@@ -1397,8 +1397,7 @@ export default function WeLiftoffPage() {
                   Kushagra Choudhary
                 </h3>
                 <p className="font-mono text-xs text-[#10B981] mt-0.5">
-                  Founder, Substrata Labs · Architect of Sol (On-Device LLM on
-                  Google Play)
+                  Founder, Substrata Labs · Architect of Sol (On-Device LLM on Google Play)
                 </p>
               </div>
 
@@ -1437,23 +1436,28 @@ export default function WeLiftoffPage() {
               Reserve an On-Campus Cohort Slot
             </h2>
             <p className="font-mono text-xs text-[#8E95A5]">
-              Configure target academic window (strictly 10 two-student crews / 20 students max, Grades 9–12, 28.0 lab hours) to
-              receive the institutional prospectus, syllabus DAG, and legal
-              custody templates.
+              Configure target academic window (strictly 10 two-student crews / 20 students max, Grades 9–12, 28.0 lab hours, 18:00–20:00 daily) to
+              receive the institutional prospectus, curriculum field manual, and legal custody templates.
             </p>
-            <div className="pt-2 flex flex-wrap gap-4 font-mono text-[10px] text-[#8E95A5]">
-              <div><span className="text-[#F4F4F0] font-bold">CATALOG TUITION:</span> ₹95,000 ($1,125 USD)</div>
-              <div><span className="text-[#FF4F00] font-bold">PILOT FOUNDING RATE:</span> ₹49,000–₹55,000 ($580–$650 USD)</div>
+            <div className="pt-2 flex flex-wrap gap-4 font-mono text-[11px] text-[#8E95A5]">
+              <div>
+                <span className="text-[#F4F4F0] font-bold">CATALOG TUITION:</span>{" "}
+                ₹95,000 ($1,125 USD)
+              </div>
+              <div>
+                <span className="text-[#FF4F00] font-bold">PILOT FOUNDING RATE:</span>{" "}
+                ₹49,000–₹55,000 ($580–$650 USD)
+              </div>
             </div>
           </div>
 
           {/* Bounded Mechanical Levers: Cohort Window Selector */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-1.5 mb-6 font-mono text-[11px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6 font-mono text-[11px]">
             {[
-              "Winter 2026 Cohort",
+              "Winter 2026 Cohort (Mayo College)",
               "Spring 2027 Cohort",
-              "Summer Intensive",
-              "Faculty Briefing",
+              "Summer 2027 Intensive",
+              "Administrative Briefing",
             ].map((slot) => (
               <button
                 key={slot}
@@ -1462,7 +1466,7 @@ export default function WeLiftoffPage() {
                   audio.click();
                   setCohortWindow(slot);
                 }}
-                className={`py-2 px-2 text-center cursor-pointer transition-colors ${
+                className={`py-2 px-3 text-left cursor-pointer transition-colors ${
                   cohortWindow === slot
                     ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
                     : "border border-[#3A3F4B] bg-[#0B0C0E] text-[#F4F4F0] hover:border-[#F4F4F0]"
@@ -1475,8 +1479,9 @@ export default function WeLiftoffPage() {
 
           {inquirySubmitted ? (
             <div className="p-6 bg-[#0B0C0E] hairline-all font-mono text-xs space-y-3">
-              <div className="text-[#10B981] font-bold text-sm">
-                ✓ PROSPECTUS TRANSMISSION QUEUED [{cohortWindow.toUpperCase()}]
+              <div className="text-[#10B981] font-bold text-sm flex items-center gap-2">
+                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
+                PROSPECTUS TRANSMISSION QUEUED [{cohortWindow.toUpperCase()}]
               </div>
               <p className="text-[#8E95A5] leading-relaxed">
                 Institutional dossier request logged for{" "}
@@ -1484,7 +1489,7 @@ export default function WeLiftoffPage() {
                   {formData.institution || "your institution"}
                 </strong>
                 . Substrata Labs will respond within 24 hours with scheduling
-                blocks and parent-student IP governance documentation.
+                blocks, physical hardware pairing manifests, and DPDP Act 2023 parent-student IP governance documentation.
               </p>
               <button
                 type="button"
@@ -1492,7 +1497,7 @@ export default function WeLiftoffPage() {
                   audio.click();
                   setInquirySubmitted(false);
                 }}
-                className="btn-tactile px-4 py-2 text-[11px] uppercase"
+                className="btn-tactile px-4 py-2 text-[11px] uppercase cursor-pointer"
               >
                 Reset Intake Terminal
               </button>
@@ -1531,7 +1536,7 @@ export default function WeLiftoffPage() {
                   <input
                     required
                     type="text"
-                    placeholder="Principal / HOD Computer Science"
+                    placeholder="Principal / HOD Computer Science / Housemaster"
                     value={formData.role}
                     onChange={(e) =>
                       setFormData({ ...formData, role: e.target.value })
@@ -1549,7 +1554,7 @@ export default function WeLiftoffPage() {
                   <input
                     required
                     type="text"
-                    placeholder="e.g. Mayo College / The Doon School"
+                    placeholder="e.g. Mayo College / The Doon School / Welham"
                     value={formData.institution}
                     onChange={(e) =>
                       setFormData({ ...formData, institution: e.target.value })
@@ -1580,7 +1585,7 @@ export default function WeLiftoffPage() {
                 </label>
                 <textarea
                   rows={3}
-                  placeholder="Target batch size (strictly 10 two-student crews / 20 seats max), preferred dates, or boarding prep slot constraints..."
+                  placeholder="Target cohort size (strictly 10 two-student crews / 20 seats max), preferred dates, or boarding evening prep constraints..."
                   value={formData.notes}
                   onChange={(e) =>
                     setFormData({ ...formData, notes: e.target.value })
@@ -1598,7 +1603,7 @@ export default function WeLiftoffPage() {
 
               <div className="pt-3 hairline-t flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#8E95A5]">
                 <span>DIRECT DISPATCH: FOUNDERS@SUBSTRATALABS.IN</span>
-                <span>ZERO MARKETING TELEMETRY</span>
+                <span>ZERO MARKETING TRACKING // PURE MSME GOVERNANCE</span>
               </div>
             </form>
           )}
