@@ -1,0 +1,8 @@
+# Liftoff Architecture Locks - Do Not Synthesize or Alter Without Instructor Override
+gradle/
+build.gradle.kts
+settings.gradle.kts
+gradle.properties
+app/src/main/AndroidManifest.xml
+app/build.gradle.kts
+crew.properties
