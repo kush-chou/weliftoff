@@ -228,9 +228,9 @@ const DAG_TELEMETRY: Record<DagMode, DagTelemetry> = {
     accentColor: "#10B981",
   },
   drift: {
-    headRef: "DETACHED [142 UNSTAGED DELTAS]",
+    headRef: "DETACHED [UNTRACKED AST MUTATIONS]",
     entropyBits: "8.94 bits [UNBOUNDED DRIFT]",
-    rollbackBound: "UNRECOVERABLE WITHOUT GIT",
+    rollbackBound: "NON-DETERMINISTIC // UNBOUNDED",
     workingTreeStatus: "AST FRACTURE // SCHEMA COLLISION",
     springStiffness: 0.006,
     turbulence: 3.4,
@@ -784,7 +784,7 @@ export default function WeLiftoffPage() {
 
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5 text-[#10B981]">
-            <span className="w-1.5 h-1.5 bg-[#10B981] inline-block animate-pulse" />
+            <span className="w-1.5 h-1.5 bg-[#10B981] inline-block" />
             10 CREW SEATS OPEN (20 BUILDERS MAX)
           </span>
           <button
@@ -1012,10 +1012,10 @@ export default function WeLiftoffPage() {
                 className="absolute inset-0 w-full h-full"
               />
               <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/90 px-2 py-1 hairline-all">
-                DAG SPINE: 7 DETERMINISTIC RELEASE CHECKPOINTS (D01 &rarr; D14)
+                STATE TOPOLOGY: 7 CANONICAL RELEASE CHECKPOINTS (D01 &rarr; D14)
               </div>
               <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5]">
-                KINETIC INPUT: CLICK OR HOVER TO PERTURB WORKING-TREE AST NODES
+                PHYSICS AUDIT: PERTURB WORKING-TREE PARTICLES TO OBSERVE CONVERGENCE DYNAMICS
               </div>
             </div>
 
@@ -1062,19 +1062,20 @@ export default function WeLiftoffPage() {
                 </span>
               </h2>
               <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                Software is not built by unstructured prompt dumping. Each 2-student crew operates
-                two dedicated machines with alternating 60-minute roles during the daily 18:00–20:00 prep slot.
+                Autonomous software construction requires strict separation of execution and auditing.
+                Each 2-student crew operates two dedicated workstations with alternating 60-minute responsibilities
+                during the scheduled 18:00–20:00 evening laboratory session.
               </p>
             </div>
 
             <div className="pt-6 font-mono text-[11px] text-[#8E95A5] space-y-2">
               <div className="text-[#F4F4F0] font-bold flex items-center gap-1.5">
                 <RefreshCw className="w-3.5 h-3.5 text-[#FF4F00]" />
-                1-COMMAND SEAT SWAP IN &lt; 3 SECONDS:
+                DETERMINISTIC SEAT ROTATION (crew-swap.sh):
               </div>
               <p className="leading-relaxed">
-                At 19:00, crews execute <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code> on Laptop 1.
-                Git user identity, email, and commit templates rotate instantly, enforcing equal contribution balance across both crew members.
+                Midway through each lab session, crews execute <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code> on Laptop 1.
+                Local Git configuration, author credentials, and commit templates rotate deterministically, enforcing equal contribution balance across both student handles.
               </p>
             </div>
           </div>
@@ -1099,12 +1100,12 @@ export default function WeLiftoffPage() {
                 <div className="text-[#FF4F00] font-bold">
                   $ agy-skills status --json
                 </div>
-                <div>{'{ "active_tokens": 6474, "budget_cap": 20000 }'}</div>
+                <div>{'{ "status": "nominal", "active_tokens": 4820, "budget_cap": 20000 }'}</div>
                 <div className="text-[#10B981] pt-1">
                   ✓ Token consumption within sovereign 20k cap
                 </div>
                 <div className="text-[#F4F4F0]">
-                  $ android run &rarr; deploy to physical target
+                  $ android run &rarr; deploy native APK to connected hardware
                 </div>
               </div>
             </div>
@@ -1346,7 +1347,7 @@ export default function WeLiftoffPage() {
                   [OPS.01] ZERO CAMPUS IT BURDEN
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Toolchain provisions offline in under 5 minutes from 64GB USB 3.0 flash drives. API calls route over Substrata&apos;s autonomous cellular 5G router. Zero school Wi-Fi or firewall changes needed.
+                  Provisioned deterministically from 64GB USB 3.0 media containing pre-seeded Gradle caches and local Android SDK binaries. Outbound API requests route via autonomous cellular 5G uplink, requiring zero institutional network configuration or campus firewall exceptions.
                 </p>
               </div>
 
@@ -1356,7 +1357,7 @@ export default function WeLiftoffPage() {
                   [OPS.02] HARDWARE PAIRING POLICY
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  iOS builders are matched with Android-owning co-founders across the 10 crews, backed by an on-site contingency buffer of 3 reference test handsets and 15 certified USB cables.
+                  Workstations pair iOS students with Android-owning co-founders across the 10 crews. Substrata Labs maintains an on-site hardware reserve buffer: 3 reference Android test targets and 15 certified high-speed USB cables.
                 </p>
               </div>
 
@@ -1366,7 +1367,7 @@ export default function WeLiftoffPage() {
                   [OPS.03] DPDP §9 CHILD SAFEGUARDING
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Full compliance with Section 9 of the DPDP Act 2023. Real student names and houses remain private; students use pseudonymous developer handles. Parental co-signing is gathered on Day 1.
+                  Full statutory alignment with Section 9 of the DPDP Act 2023. Student legal identities and residential boarding houses remain private institutional records; public version control utilizes sanitized developer handles with co-signed parental assent.
                 </p>
               </div>
 
@@ -1376,7 +1377,7 @@ export default function WeLiftoffPage() {
                   [OPS.04] COMMON APP &amp; UCAS VALUE
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Students cite live Google Play URLs, signed GitHub release APKs, In-App Identity Colophon screens, and verified 60+ atomic commit DAGs directly in admissions supplements.
+                  Graduates cite verifiable engineering artifacts—live Google Play listings, signed GitHub release APKs, In-App Identity Colophons, and 60+ atomic commit DAGs—directly in Common App and UCAS technical supplements.
                 </p>
               </div>
             </div>
@@ -1603,7 +1604,7 @@ export default function WeLiftoffPage() {
 
               <div className="pt-3 hairline-t flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#8E95A5]">
                 <span>DIRECT DISPATCH: FOUNDERS@SUBSTRATALABS.IN</span>
-                <span>ZERO MARKETING TRACKING // PURE MSME GOVERNANCE</span>
+                <span>ZERO MARKETING TELEMETRY // STATUTORY MSME GOVERNANCE (UDYAM-RJ-37-0014993)</span>
               </div>
             </form>
           )}
