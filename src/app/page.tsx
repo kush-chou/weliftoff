@@ -12,6 +12,12 @@ import {
   Cpu,
   Lock,
   RefreshCw,
+  Layers,
+  Sparkles,
+  Radio,
+  FileCode2,
+  ShieldAlert,
+  ArrowRight,
 } from "lucide-react";
 
 /* --- Ephemeral Acoustic Feedback Synthesizer (Native AudioContext < 80ms) --- */
@@ -330,76 +336,76 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
   phase1: [
     {
       dayRange: "DAYS 01–02",
-      code: "NODE.01 // STATE STEERING",
-      title: "Toolchain Provisioning & Terminal Mechanics",
-      artifact: "Configured Toolchain + ADB Handset Pairing",
+      code: "NODE.01 // TOOLCHAIN",
+      title: "Offline Toolchain & Terminal Mechanics",
+      artifact: "Configured Workstation + ADB Handset Pairing",
       specification:
-        "Provision OpenJDK 17, Android CLI, Gradle wrapper, and local cache offline from USB. Establish working-tree hygiene, atomic commit discipline, and deterministic recovery via git restore and git reflog.",
+        "Boot an offline development environment directly from a pre-seeded 64GB USB drive. Students master terminal recovery, atomic Git commits, and pair physical Android handsets over ADB.",
       verificationCmd: "android --version && git reflog --oneline -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
-      code: "NODE.02 // DOMAIN MODELING",
-      title: "Architectural Specification (EGM)",
-      artifact: "docs/spec.md + UiState<out T> Container",
+      code: "NODE.02 // ARCHITECTURE",
+      title: "System Architecture & State Modeling",
+      artifact: "docs/spec.md + Deterministic UiState Container",
       specification:
-        "Author declarative requirements with full-context Elephant agents (/egm-draft), audit with stateless Goldfish reviewers (/egm-review), maintain 20,000 token budget, and model screen state using UiState<out T>.",
+        "Draft precise system specifications using AI agent workflows under a strict 20,000 token budget ceiling. Model screen states deterministically to prevent state corruption.",
       verificationCmd: "agy-skills status --json && ./gradlew compileDebugKotlin --console=plain",
     },
     {
       dayRange: "DAYS 05–06",
       code: "NODE.03 // PERSISTENCE",
-      title: "Local SQLite & Room Architecture",
-      artifact: "Room @Entity + KSP @Dao + Schema Migrations",
+      title: "Offline-First Database Engine (Room SQLite)",
+      artifact: "Room @Entity + KSP @Dao + Offline Migrations",
       specification:
-        "Implement offline-first data persistence using Room SQLite with KSP codegen. Enforce deterministic state transitions and verify zero network egress.",
+        "Architect local SQLite storage that runs completely offline with zero network connectivity. Ensure student data never leaves the physical handset.",
       verificationCmd: "./gradlew testDebugUnitTest verifyZeroEgress",
     },
     {
       dayRange: "DAY 07",
       code: "NODE.04 // FEATURE FREEZE",
-      title: "Pull Request Audit & Scope Lock",
+      title: "Feature Freeze & Cross-Crew Code Audit",
       artifact: "Merged Main Branch + Physical Handset Audit",
       specification:
-        "Conduct cross-crew pull request reviews using git-ledger. Audit 60fps UI performance and view hierarchies via android layout and scrcpy over USB.",
+        "Conduct peer code audits across student crews. Inspect UI rendering at 60 FPS on physical glass using scrcpy and lock release scope.",
       verificationCmd: "git ledger --last --agents-only",
     },
   ],
   phase2: [
     {
       dayRange: "DAYS 08–09",
-      code: "NODE.05 // REPRODUCIBLE BUILD",
-      title: "Material 3 UI & In-App Colophon",
-      artifact: "Signed Production APK + Identity Screen",
+      code: "NODE.05 // PACKAGING",
+      title: "Production Packaging & In-App Colophon",
+      artifact: "Signed Production APK + In-App Identity Screen",
       specification:
-        "Implement Material 3 tokens, edge-to-edge window insets, R8/ProGuard shrinking, and integrate the in-app Colophon Screen displaying student handles, commit SHA, and license.",
+        "Implement native Material 3 design tokens and edge-to-edge layout. Embed a tamper-proof in-app Colophon Screen displaying student names, commit SHA, and open-source license.",
       verificationCmd: "./gradlew assembleRelease && android layout",
     },
     {
       dayRange: "DAYS 10–11",
-      code: "NODE.06 // PLAY STORE DEPLOY",
+      code: "NODE.06 // PLAY STORE",
       title: "Google Play Store Publishing",
-      artifact: "Track 1 Internal Sharing + Track 3 FOSS APK",
+      artifact: "Track 1 Internal Sharing + Signed GitHub APK",
       specification:
-        "Author Store listings and zero-data safety declarations. Validate release bundles with bundletool, deploy Track 1 (Google Play Internal App Sharing), and publish Track 3 (GitHub Releases signed APK).",
+        "Author compliant Store listings with zero-data-collection disclosures. Build signed Android App Bundles and deploy to Google Play Store internal testing tracks.",
       verificationCmd: "./gradlew uploadReleasePrivateBundle",
     },
     {
       dayRange: "DAYS 12–13",
       code: "NODE.07 // TECHNICAL DOSSIER",
-      title: "System Documentation & Closed Testing",
-      artifact: "Architecture README + Track 2 Closed Testing",
+      title: "Architecture Dossier & Closed Testing",
+      artifact: "Architecture README + Closed Testing Deployment",
       specification:
-        "Author clean-slate architectural documentation with system diagrams and build instructions. Submit Track 2 (Google Play Closed Testing) for pre-registered school domain accounts.",
+        "Author complete architectural documentation and run closed testing with Mayo College campus peers to gather verifiable user feedback.",
       verificationCmd: "gh pr status && ls -lh docs/architecture.md",
     },
     {
       dayRange: "DAY 14",
       code: "NODE.08 // EXHIBITION",
-      title: "On-Campus Demo Day & Defense",
+      title: "Campus Demo Day & Technical Defense",
       artifact: "Auditorium Presentation + Direct QR Installation",
       specification:
-        "Technical defense before faculty, housemasters, and peers. Attendees install production binaries directly via Demo Day QR codes and inspect the crew's 60+ atomic commit DAG.",
+        "Live presentation before school faculty, parents, and peers. Attendees install the finished app directly via QR codes and inspect the crew's 60+ atomic commit history.",
       verificationCmd: "sha256sum app-release-signed.apk",
     },
   ],
@@ -413,6 +419,8 @@ export default function WeLiftoffPage() {
   const [activePhase, setActivePhase] = useState<PhaseKey>("phase1");
   const [cohortWindow, setCohortWindow] = useState("Winter 2026 Residency (Mayo College Pilot)");
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [formErrors, setFormErrors] = useState<Record<string, string | undefined>>({});
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -434,6 +442,53 @@ export default function WeLiftoffPage() {
     if (next) audio.commit();
   };
 
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (isSubmitting) return;
+
+    const errors: Record<string, string> = {};
+    const trimmedName = formData.name.trim();
+    const trimmedRole = formData.role.trim();
+    const trimmedInst = formData.institution.trim();
+    const trimmedEmail = formData.email.trim();
+
+    if (!trimmedName) {
+      errors.name = "Full name is required for institutional verification.";
+    } else if (trimmedName.length < 2) {
+      errors.name = "Name must be at least 2 characters.";
+    }
+
+    if (!trimmedRole) {
+      errors.role = "Official academic designation is required.";
+    }
+
+    if (!trimmedInst) {
+      errors.institution = "Institution name is required.";
+    }
+
+    if (!trimmedEmail) {
+      errors.email = "Institutional email address is required.";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+      errors.email = "Enter a valid academic email address (e.g. office@school.edu.in).";
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setFormErrors(errors);
+      audio.drift();
+      return;
+    }
+
+    setFormErrors({});
+    setIsSubmitting(true);
+    audio.commit();
+
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setInquirySubmitted(true);
+      audio.restore();
+    }, 550);
+  };
+
   /* --- Mechanical Physics Engine: Git DAG & Working-Tree State Simulator --- */
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -442,13 +497,13 @@ export default function WeLiftoffPage() {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 860);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 460);
+    let width = (canvas.width = Math.max(320, canvas.parentElement?.clientWidth || 860));
+    let height = (canvas.height = Math.max(260, canvas.parentElement?.clientHeight || 460));
 
     const handleResize = () => {
       if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
+      width = canvas.width = Math.max(320, canvas.parentElement.clientWidth);
+      height = canvas.height = Math.max(260, canvas.parentElement.clientHeight);
     };
     window.addEventListener("resize", handleResize);
 
@@ -493,7 +548,7 @@ export default function WeLiftoffPage() {
 
     const particles: DeltaParticle[] = [];
     const shockwaves: Shockwave[] = [];
-    const totalParticles = 98;
+    const totalParticles = 110;
 
     for (let i = 0; i < totalParticles; i++) {
       const anchorIdx = i % dagShas.length;
@@ -531,6 +586,31 @@ export default function WeLiftoffPage() {
     }
 
     const pointer = { x: -1000, y: -1000, active: false };
+
+    const handlePointerAction = (clientX: number, clientY: number) => {
+      const rect = canvas.getBoundingClientRect();
+      const clickX = clientX - rect.left;
+      const clickY = clientY - rect.top;
+      shockwaves.push({
+        x: clickX,
+        y: clickY,
+        radius: 6,
+        alpha: 0.85,
+        color: dagMode === "drift" ? "#EF4444" : "#FF4F00",
+      });
+      audio.click();
+      particles.forEach((p) => {
+        const dx = p.x - clickX;
+        const dy = p.y - clickY;
+        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+        if (dist < 160) {
+          const force = ((160 - dist) / 160) * 14;
+          p.vx += (dx / dist) * force;
+          p.vy += (dy / dist) * force;
+        }
+      });
+    };
+
     const onMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
       pointer.x = e.clientX - rect.left;
@@ -541,32 +621,34 @@ export default function WeLiftoffPage() {
       pointer.active = false;
     };
     const onMouseDown = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
-      shockwaves.push({
-        x: clickX,
-        y: clickY,
-        radius: 6,
-        alpha: 0.85,
-        color: "#FF4F00",
-      });
-      audio.click();
-      particles.forEach((p) => {
-        const dx = p.x - clickX;
-        const dy = p.y - clickY;
-        const dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        if (dist < 160) {
-          const force = ((160 - dist) / 160) * 13;
-          p.vx += (dx / dist) * force;
-          p.vy += (dy / dist) * force;
-        }
-      });
+      handlePointerAction(e.clientX, e.clientY);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0]!;
+        handlePointerAction(t.clientX, t.clientY);
+      }
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        const t = e.touches[0]!;
+        const rect = canvas.getBoundingClientRect();
+        pointer.x = t.clientX - rect.left;
+        pointer.y = t.clientY - rect.top;
+        pointer.active = true;
+      }
+    };
+    const onTouchEnd = () => {
+      pointer.active = false;
     };
 
     canvas.addEventListener("mousemove", onMouseMove);
     canvas.addEventListener("mouseleave", onMouseLeave);
     canvas.addEventListener("mousedown", onMouseDown);
+    canvas.addEventListener("touchstart", onTouchStart, { passive: true });
+    canvas.addEventListener("touchmove", onTouchMove, { passive: true });
+    canvas.addEventListener("touchend", onTouchEnd, { passive: true });
 
     let tick = 0;
     const modeParams = DAG_TELEMETRY[dagMode];
@@ -576,10 +658,10 @@ export default function WeLiftoffPage() {
       ctx.fillStyle = "#0B0C0E";
       ctx.fillRect(0, 0, width, height);
 
-      // Architectural Blueprint Grid
-      ctx.strokeStyle = "#161920";
+      // Architectural Blueprint Subtle Grid Lines
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.04)";
       ctx.lineWidth = 1;
-      const gridStep = 48;
+      const gridStep = 44;
       ctx.beginPath();
       for (let gx = 0; gx < width; gx += gridStep) {
         ctx.moveTo(gx, 0);
@@ -590,6 +672,20 @@ export default function WeLiftoffPage() {
         ctx.lineTo(width, gy);
       }
       ctx.stroke();
+
+      // Vignette glow in center
+      const radGrad = ctx.createRadialGradient(
+        width * 0.5,
+        height * 0.5,
+        10,
+        width * 0.5,
+        height * 0.5,
+        width * 0.6
+      );
+      radGrad.addColorStop(0, dagMode === "drift" ? "rgba(239, 68, 68, 0.05)" : "rgba(255, 79, 0, 0.04)");
+      radGrad.addColorStop(1, "rgba(11, 12, 14, 0)");
+      ctx.fillStyle = radGrad;
+      ctx.fillRect(0, 0, width, height);
 
       // Canonical 7-Node Git Commit DAG Spine Coordinates
       const padX = Math.max(54, width * 0.09);
@@ -605,12 +701,12 @@ export default function WeLiftoffPage() {
         return { x: ax, y: ay, sha, label: dagLabels[idx]! };
       });
 
-      // Directed Graph Edges
-      ctx.lineWidth = 1.5;
+      // Directed Graph Edges with Glow
+      ctx.lineWidth = 1.8;
       ctx.strokeStyle =
         dagMode === "drift"
-          ? "rgba(239, 68, 68, 0.35)"
-          : "rgba(255, 79, 0, 0.55)";
+          ? "rgba(239, 68, 68, 0.45)"
+          : "rgba(255, 79, 0, 0.65)";
       ctx.beginPath();
       for (let i = 0; i < anchors.length - 1; i++) {
         const curr = anchors[i]!;
@@ -646,11 +742,17 @@ export default function WeLiftoffPage() {
           const dx = p.x - pointer.x;
           const dy = p.y - pointer.y;
           const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < 105 && dist > 0) {
-            const push = ((105 - dist) / 105) * 3.8;
+          if (dist < 110 && dist > 0) {
+            const push = ((110 - dist) / 110) * 4.2;
             p.vx += (dx / dist) * push;
             p.vy += (dy / dist) * push;
           }
+        }
+
+        const speed = Math.hypot(p.vx, p.vy);
+        if (speed > 25) {
+          p.vx = (p.vx / speed) * 25;
+          p.vy = (p.vy / speed) * 25;
         }
 
         p.vx *= 0.84;
@@ -662,8 +764,8 @@ export default function WeLiftoffPage() {
         if (distToAnchor < 64) {
           ctx.strokeStyle =
             dagMode === "drift"
-              ? "rgba(239, 68, 68, 0.18)"
-              : "rgba(16, 185, 129, 0.22)";
+              ? "rgba(239, 68, 68, 0.22)"
+              : "rgba(16, 185, 129, 0.28)";
           ctx.lineWidth = 0.8;
           ctx.beginPath();
           ctx.moveTo(anchor.x, anchor.y);
@@ -697,9 +799,9 @@ export default function WeLiftoffPage() {
             : idx === anchors.length - 1
               ? "#10B981"
               : "#FF4F00";
-        ctx.lineWidth = 1.5;
-        ctx.fillRect(a.x - 6, a.y - 6, 12, 12);
-        ctx.strokeRect(a.x - 6, a.y - 6, 12, 12);
+        ctx.lineWidth = 1.8;
+        ctx.fillRect(a.x - 7, a.y - 7, 14, 14);
+        ctx.strokeRect(a.x - 7, a.y - 7, 14, 14);
 
         ctx.fillStyle =
           dagMode === "drift"
@@ -707,15 +809,15 @@ export default function WeLiftoffPage() {
             : idx === anchors.length - 1
               ? "#10B981"
               : "#FF4F00";
-        ctx.fillRect(a.x - 2, a.y - 2, 4, 4);
+        ctx.fillRect(a.x - 2.5, a.y - 2.5, 5, 5);
 
         const tierOffset = isCompact
           ? idx % 2 === 0
             ? -24 - (idx % 4 === 0 ? 14 : 0)
             : 28 + (idx % 4 === 1 ? 14 : 0)
           : idx % 2 === 0
-            ? -22
-            : 28;
+            ? -24
+            : 30;
         const labelY = a.y + tierOffset;
         ctx.fillStyle = "#8E95A5";
         ctx.textAlign = "center";
@@ -725,7 +827,7 @@ export default function WeLiftoffPage() {
         ctx.fillText(
           isCompact ? compactLabel : a.label,
           a.x,
-          labelY + (idx % 2 === 0 ? -11 : 11)
+          labelY + (idx % 2 === 0 ? -12 : 12)
         );
       });
 
@@ -736,7 +838,7 @@ export default function WeLiftoffPage() {
         sw.alpha *= 0.93;
         ctx.strokeStyle = sw.color;
         ctx.globalAlpha = sw.alpha;
-        ctx.lineWidth = 1.2;
+        ctx.lineWidth = 1.4;
         ctx.beginPath();
         ctx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
         ctx.stroke();
@@ -757,34 +859,34 @@ export default function WeLiftoffPage() {
       canvas.removeEventListener("mousemove", onMouseMove);
       canvas.removeEventListener("mouseleave", onMouseLeave);
       canvas.removeEventListener("mousedown", onMouseDown);
+      canvas.removeEventListener("touchstart", onTouchStart);
+      canvas.removeEventListener("touchmove", onTouchMove);
+      canvas.removeEventListener("touchend", onTouchEnd);
     };
   }, [dagMode]);
 
   return (
     <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
-      {/* Top Metadata Bar */}
-      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3">
-        <div className="flex items-center gap-3 sm:gap-4">
-          <span className="text-[#FF4F00] font-bold tracking-wider">
+      {/* Top Metadata & Operations Status Bar */}
+      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2.5 font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
+        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+          <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
             WELIFTOFF // 0&rarr;1
           </span>
-          <span className="hidden sm:inline text-[#3A3F4B]">|</span>
-          <span className="hidden sm:inline text-[#F4F4F0]">
+          <span className="hidden sm:inline text-white/10">|</span>
+          <span className="hidden sm:inline text-[#F4F4F0] font-medium">
             INAUGURAL RESIDENCY: MAYO COLLEGE, AJMER
           </span>
-          <span className="hidden lg:inline text-[#3A3F4B]">|</span>
-          <span className="hidden lg:inline">
-            14 DAYS // 28.0 LAB HOURS
-          </span>
-          <span className="hidden xl:inline text-[#3A3F4B]">|</span>
-          <span className="hidden xl:inline">
-            MSME: UDYAM-RJ-37-0014993
+          <span className="hidden lg:inline text-white/10">|</span>
+          <span className="hidden lg:inline text-[#8E95A5]">
+            14 DAYS // 28.0 DEDICATED LAB HOURS
           </span>
         </div>
 
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5 text-[#10B981]">
-            <span className="w-1.5 h-1.5 bg-[#10B981] inline-block" />
+          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-[11px]">
+            <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
             ADMISSIONS OPEN // 10 CREWS (20 SEATS)
           </span>
           <button
@@ -795,28 +897,34 @@ export default function WeLiftoffPage() {
                 : "Enable Mechanical Keyswitch Audio"
             }
             aria-label="Toggle acoustic feedback"
-            className="p-1 text-[#8E95A5] hover:text-[#F4F4F0] transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 px-2 py-0.5 rounded-sm border border-white/10 bg-[#14171E] hover:border-white/30 text-[#8E95A5] hover:text-[#F4F4F0] transition-all cursor-pointer text-[10px]"
           >
             {audioEnabled ? (
-              <Volume2 className="w-3.5 h-3.5" />
+              <>
+                <Volume2 className="w-3.5 h-3.5 text-[#10B981]" />
+                <span className="text-[#10B981] font-mono">SFX: ON</span>
+              </>
             ) : (
-              <VolumeX className="w-3.5 h-3.5" />
+              <>
+                <VolumeX className="w-3.5 h-3.5 text-[#8E95A5]" />
+                <span className="text-[#8E95A5] font-mono">SFX: OFF</span>
+              </>
             )}
           </button>
         </div>
       </div>
 
-      {/* Main Architectural Navigation */}
-      <header className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-4 flex items-center justify-between sticky top-0 z-40 backdrop-blur-md bg-[#0B0C0E]/90">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-[#FF4F00] text-[#0B0C0E] flex items-center justify-center font-mono font-bold text-xs tracking-tighter">
+      {/* Main Architectural Navigation Header */}
+      <header className="hairline-b bg-[#0B0C0E]/85 backdrop-blur-xl px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40">
+        <div className="flex items-center gap-3.5">
+          <div className="w-9 h-9 rounded-sm bg-gradient-to-br from-[#FF5E14] to-[#E64200] text-[#0B0C0E] flex items-center justify-center font-mono font-bold text-xs tracking-tighter shadow-sm shadow-[#FF4F00]/20 border border-[#FFA066]/30">
             0&rarr;1
           </div>
           <div>
             <span className="font-display text-xl font-extrabold tracking-tight text-[#F4F4F0] block leading-none">
               WELIFTOFF
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#8E95A5]">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
               Substrata Labs Engineering Residency
             </span>
           </div>
@@ -826,59 +934,55 @@ export default function WeLiftoffPage() {
           <a
             href="#thesis"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors"
+            className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            [01] Thesis
+            Thesis
           </a>
           <a
             href="#pairing"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors"
+            className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            [02] Pairing Topology
+            Pairing
           </a>
           <a
             href="#invariants"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors"
+            className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            [03] System Invariants
+            Invariants
           </a>
           <a
             href="#syllabus"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors"
+            className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            [04] 14-Day DAG
+            Curriculum
           </a>
           <a
             href="#institutional"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors"
+            className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            [05] Operations
+            Integration
           </a>
         </nav>
 
         <a
           href="#contract"
           onClick={() => audio.click()}
-          className="btn-primary-tactile px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider"
+          className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
         >
-          Reserve Cohort &rarr;
+          Reserve Cohort <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </header>
 
       {/* Hero Viewport: Asymmetric 12-Column Split */}
-      <section id="thesis" className="hairline-b">
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[600px]">
+      <section id="thesis" className="hairline-b bg-gradient-to-b from-[#0E1015] to-[#0B0C0E] relative">
+        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[620px]">
           {/* Left 4 Columns: Architectural Thesis Pane */}
-          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E] space-y-6">
+          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-6">
             <div className="space-y-4">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-                SEC.01 // ON-CAMPUS ENGINEERING RESIDENCY
-              </span>
-
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
                 Zero to Signed APK.{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
@@ -887,49 +991,53 @@ export default function WeLiftoffPage() {
               </h1>
 
               <p className="text-sm text-[#8E95A5] leading-relaxed">
-                High school engineers architect, verify, and ship production Android software
-                using Antigravity 2.0 and the Elephant-Goldfish Model. Every cohort delivers
-                verifiable open-source repositories, in-app cryptographic build colophons,
-                and signed binaries published to Google Play and GitHub Releases.
+                An intensive on-campus engineering residency where high school builders master
+                terminal mechanics, local-first Android architecture, and AI agent steering.
+                Every crew delivers a verified open-source repository, in-app cryptographic build
+                fingerprint, and production software published directly to Google Play.
               </p>
             </div>
 
-            {/* Tabular Domain Bounds */}
-            <div className="space-y-2.5 pt-4 hairline-t font-mono text-xs">
-              <div className="flex justify-between py-1 hairline-b">
-                <span className="text-[#8E95A5]">EXECUTION BOUND</span>
+            {/* Tabular Domain Bounds: Machined Specimen Plaque */}
+            <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2.5">
+              <div className="flex items-center justify-between pb-2 hairline-b text-[10px] text-[#8E95A5] font-bold uppercase tracking-wider">
+                <span>INSTITUTIONAL SPECIFICATION</span>
+                <span className="text-[#10B981]">STATUTORY GUARANTEES</span>
+              </div>
+              <div className="flex justify-between items-center py-1 hairline-b">
+                <span className="text-[#8E95A5]">PROGRAM DURATION</span>
                 <span className="font-semibold text-[#F4F4F0]">
                   14 Days · 28.0 Dedicated Lab Hours
                 </span>
               </div>
-              <div className="flex justify-between py-1 hairline-b">
+              <div className="flex justify-between items-center py-1 hairline-b">
                 <span className="text-[#8E95A5]">COHORT TOPOLOGY</span>
-                <span className="font-semibold text-[#FF4F00]">
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30">
                   10 Two-Student Crews (20 Seats)
                 </span>
               </div>
-              <div className="flex justify-between py-1 hairline-b">
-                <span className="text-[#8E95A5]">AGENTIC RUNTIME</span>
+              <div className="flex justify-between items-center py-1 hairline-b">
+                <span className="text-[#8E95A5]">AI AGENT RUNTIME</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  Antigravity 2.0 · Elephant-Goldfish Model
+                  Antigravity 2.0 (20k Token Budget)
                 </span>
               </div>
-              <div className="flex justify-between py-1 hairline-b">
-                <span className="text-[#8E95A5]">PERSISTENCE BOUND</span>
-                <span className="font-semibold text-[#10B981]">
-                  SQLite / Room · Zero Network Egress
+              <div className="flex justify-between items-center py-1 hairline-b">
+                <span className="text-[#8E95A5]">CHILD SAFEGUARDING</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">
+                  DPDP Act §9 · Zero Network Egress
                 </span>
               </div>
-              <div className="flex justify-between py-1 hairline-b">
-                <span className="text-[#8E95A5]">DISTRIBUTION</span>
+              <div className="flex justify-between items-center py-1 hairline-b">
+                <span className="text-[#8E95A5]">APP DISTRIBUTION</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  Google Play (Internal &amp; Closed) · GitHub
+                  Google Play Store &amp; Signed GitHub Releases
                 </span>
               </div>
-              <div className="flex justify-between py-1">
+              <div className="flex justify-between items-center py-1">
                 <span className="text-[#8E95A5]">PROVENANCE</span>
                 <span className="font-semibold text-[#F4F4F0]">
-                  In-App Colophon · 60+ Commit DAG (Apache-2.0)
+                  In-App Colophon · 60+ Commit History
                 </span>
               </div>
             </div>
@@ -939,40 +1047,50 @@ export default function WeLiftoffPage() {
               <a
                 href="#contract"
                 onClick={() => audio.commit()}
-                className="btn-primary-tactile block w-full py-3.5 text-center font-mono text-xs font-bold uppercase tracking-wider"
+                className="btn-primary-tactile rounded-sm block w-full py-4 text-center font-mono text-xs font-bold uppercase tracking-wider"
               >
                 Request Institutional Prospectus &rarr;
               </a>
+              <span className="block text-center font-mono text-[10px] text-[#8E95A5] mt-2">
+                Inaugural Cohort · Mayo College, Ajmer (Pilot Rates Apply)
+              </span>
             </div>
           </div>
 
           {/* Right 8 Columns: Git DAG State Convergence Engine */}
-          <div className="lg:col-span-8 flex flex-col justify-between bg-[#0B0C0E] relative">
-            {/* Control Header */}
-            <div className="hairline-b px-4 sm:px-6 py-3 bg-[#111317] flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+          <div className="lg:col-span-8 flex flex-col justify-between bg-[#0B0C0E] relative overflow-hidden">
+            {/* Control Header & Mechanical State Switchers */}
+            <div className="hairline-b px-4 sm:px-6 py-3 bg-[#111317]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 font-mono text-xs relative z-10">
               <span className="text-[10px] text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
                 <span
-                  className="w-2 h-2 inline-block"
-                  style={{ backgroundColor: telemetry.accentColor }}
+                  className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
+                  style={{
+                    backgroundColor: telemetry.accentColor,
+                  }}
                 />
-                CANVAS TELEMETRY // GIT DAG STATE CONVERGENCE ENGINE
+                CANVAS TELEMETRY // GIT DAG STATE CONVERGENCE SIMULATOR
               </span>
 
               {/* Bounded Mechanical States */}
-              <div className="grid grid-cols-3 sm:flex sm:items-center gap-1.5 w-full sm:w-auto">
+              <div className="grid grid-cols-3 sm:flex sm:items-center gap-2 w-full sm:w-auto">
                 <button
                   type="button"
                   onClick={() => {
                     audio.commit();
                     setDagMode("atomic");
                   }}
-                  className={`px-2.5 py-1 text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-colors ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "atomic"
-                      ? "bg-[#10B981] text-[#0B0C0E] font-bold"
-                      : "border border-[#3A3F4B] bg-[#0B0C0E] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                      ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-md shadow-[#10B981]/30 border border-[#10B981]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
                   }`}
                 >
-                  [01] Atomic Commit
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "atomic" ? "bg-[#0B0C0E]" : "bg-[#10B981]"
+                    }`}
+                  />
+                  Atomic Commit
                 </button>
                 <button
                   type="button"
@@ -980,13 +1098,18 @@ export default function WeLiftoffPage() {
                     audio.drift();
                     setDagMode("drift");
                   }}
-                  className={`px-2.5 py-1 text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-colors ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "drift"
-                      ? "bg-[#EF4444] text-[#0B0C0E] font-bold"
-                      : "border border-[#3A3F4B] bg-[#0B0C0E] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                      ? "bg-[#EF4444] text-[#0B0C0E] font-bold shadow-md shadow-[#EF4444]/30 border border-[#EF4444]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
                   }`}
                 >
-                  [02] Unbounded Drift
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "drift" ? "bg-[#0B0C0E]" : "bg-[#EF4444]"
+                    }`}
+                  />
+                  Unbounded Drift
                 </button>
                 <button
                   type="button"
@@ -994,51 +1117,62 @@ export default function WeLiftoffPage() {
                     audio.restore();
                     setDagMode("reflog");
                   }}
-                  className={`px-2.5 py-1 text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-colors ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "reflog"
-                      ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
-                      : "border border-[#3A3F4B] bg-[#0B0C0E] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                      ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30 border border-[#FF4F00]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
                   }`}
                 >
-                  [03] Reflog Restore
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "reflog" ? "bg-[#0B0C0E]" : "bg-[#FF4F00]"
+                    }`}
+                  />
+                  Reflog Restore
                 </button>
               </div>
             </div>
 
-            {/* Interactive Physics Canvas */}
-            <div className="relative flex-1 min-h-[390px] sm:min-h-[460px] w-full overflow-hidden cursor-crosshair">
+            {/* Interactive Physics Canvas with Oscilloscope Reticles */}
+            <div className="relative flex-1 min-h-[420px] sm:min-h-[480px] w-full overflow-hidden cursor-crosshair">
+              {/* Corner crosshairs */}
+              <div className="absolute top-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute top-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute bottom-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute bottom-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+
               <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full"
               />
-              <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/90 px-2 py-1 hairline-all">
-                STATE TOPOLOGY: 7 CANONICAL RELEASE CHECKPOINTS (D01 &rarr; D14)
+              <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+                7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
               </div>
-              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5]">
-                PHYSICS AUDIT: PERTURB WORKING-TREE PARTICLES TO OBSERVE CONVERGENCE DYNAMICS
+              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+                INTERACTIVE CONVERGENCE: CLICK OR DRAG PARTICLES TO AUDIT RECOVERY
               </div>
             </div>
 
-            {/* Telemetry Readout */}
-            <div className="hairline-t px-4 sm:px-6 py-2.5 bg-[#111317] font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
-              <span>
-                REF:{" "}
+            {/* Telemetry Readout Console */}
+            <div className="hairline-t px-4 sm:px-6 py-3 bg-[#111317]/95 backdrop-blur-sm font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
+              <span className="flex items-center gap-1.5">
+                <span className="text-[#8E95A5]">REF:</span>
                 <strong
                   style={{ color: telemetry.accentColor }}
-                  className="font-bold"
+                  className="font-bold bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10"
                 >
                   {telemetry.headRef}
                 </strong>
               </span>
               <span>
                 STATE ENTROPY:{" "}
-                <strong className="text-[#F4F4F0]">
+                <strong className="text-[#F4F4F0] bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10">
                   {telemetry.entropyBits}
                 </strong>
               </span>
               <span>
                 RECOVERY BOUND:{" "}
-                <strong className="text-[#10B981]">
+                <strong className="text-[#10B981] bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10">
                   {telemetry.rollbackBound}
                 </strong>
               </span>
@@ -1047,14 +1181,11 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
-      {/* SEC.02: Pairing Topology & Verification Cadence */}
-      <section id="pairing" className="hairline-b bg-[#111317]">
+      {/* Pairing Topology & Verification Cadence */}
+      <section id="pairing" className="hairline-b bg-gradient-to-b from-[#111317] to-[#0D0F13]">
         <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between">
-            <div className="space-y-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-                SEC.02 // DUAL-WORKSTATION PAIRING TOPOLOGY
-              </span>
+          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-6">
+            <div className="space-y-4">
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
                 Separation of Steering{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block">
@@ -1062,33 +1193,31 @@ export default function WeLiftoffPage() {
                 </span>
               </h2>
               <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                Autonomous software construction requires strict separation of execution and auditing.
-                Each crew operates a paired workstation topology with continuous role rotation across
-                feature slices during the scheduled 18:00–20:00 laboratory session.
+                Autonomous software synthesis requires strict separation between the implementer and the auditor.
+                Students operate in two-person crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F]">crew-swap.sh</code>,
+                rotating author credentials and commit templates to enforce 50/50 contribution parity across both student handles.
               </p>
             </div>
 
-            <div className="pt-6 font-mono text-[11px] text-[#8E95A5] space-y-2">
-              <div className="text-[#F4F4F0] font-bold flex items-center gap-1.5">
-                <RefreshCw className="w-3.5 h-3.5 text-[#FF4F00]" />
-                DETERMINISTIC SEAT ROTATION (crew-swap.sh):
-              </div>
-              <p className="leading-relaxed">
-                Roles rotate across feature slices via <code className="text-[#FF4F00]">bash scripts/crew-swap.sh</code>.
-                Local Git configuration, author credentials, and commit templates rotate deterministically,
-                guaranteeing balanced contribution parity across both student handles.
-              </p>
+            <div className="pt-6 hairline-t font-mono text-[11px] text-[#8E95A5] flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
+              <span>CONFIDENCE 1.0 DUAL-AUTHOR GIT TRAILERS ENFORCED</span>
             </div>
           </div>
 
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2">
-            {/* Primary Terminal */}
+            {/* Primary Terminal 1 */}
             <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E] flex flex-col justify-between space-y-6">
               <div className="space-y-3">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF4F00] font-bold flex items-center gap-1.5">
-                  <Cpu className="w-3.5 h-3.5" />
-                  TERMINAL 1 // PRIMARY WORKSTATION
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF6A1F] font-bold flex items-center gap-1.5">
+                    <Cpu className="w-3.5 h-3.5" />
+                    TERMINAL 1 // BUILDER WORKSTATION
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] font-mono text-[9px] font-bold border border-[#FF4F00]/30">
+                    HARDWARE TETHER
+                  </span>
+                </div>
                 <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
                   Synthesis &amp; Hardware Tether
                 </h3>
@@ -1098,27 +1227,47 @@ export default function WeLiftoffPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-[#111317] hairline-all font-mono text-[11px] space-y-1.5 text-[#8E95A5]">
-                <div className="text-[#FF4F00] font-bold">
-                  $ agy-skills status --json
+              {/* Machined Terminal Window */}
+              <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-[11px]">
+                <div className="bg-[#151820] px-3 py-2 border-b border-white/10 flex items-center justify-between text-[10px] text-[#8E95A5]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
+                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-1: pixel-8a (adb)</span>
+                  </div>
+                  <span className="text-[#10B981]">ONLINE</span>
                 </div>
-                <div>{'{ "budget_ceiling": 20000, "active_tokens": 4820, "status": "nominal" }'}</div>
-                <div className="text-[#10B981] pt-1">
-                  ✓ Token consumption within sovereign 20k cap
-                </div>
-                <div className="text-[#F4F4F0]">
-                  $ android run &rarr; deploy native APK to connected hardware
+                <div className="p-4 space-y-2 text-[#8E95A5]">
+                  <div className="text-[#FF6A1F] font-bold">
+                    $ agy-skills status --json
+                  </div>
+                  <div className="text-[#F4F4F0] bg-[#07080A] p-2 rounded-sm border border-white/5 font-mono text-[10px]">
+                    {'{ "budget_ceiling": 20000, "active_tokens": 4820, "status": "nominal" }'}
+                  </div>
+                  <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Token consumption within sovereign 20k cap
+                  </div>
+                  <div className="text-[#8E95A5] pt-1">
+                    $ <span className="text-[#F4F4F0]">android run</span> &rarr; deploy native APK to connected hardware
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Auditor Station */}
+            {/* Auditor Station 2 */}
             <div className="p-6 sm:p-8 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
               <div className="space-y-3">
-                <span className="font-mono text-[10px] uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
-                  <GitBranch className="w-3.5 h-3.5" />
-                  TERMINAL 2 // AUDITOR STATION
-                </span>
+                <div className="flex items-center justify-between">
+                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
+                    <GitBranch className="w-3.5 h-3.5" />
+                    TERMINAL 2 // AUDITOR STATION
+                  </span>
+                  <span className="px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] font-mono text-[9px] font-bold border border-[#10B981]/30">
+                    VERIFICATION GATE
+                  </span>
+                </div>
                 <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
                   Verification &amp; Specification Gate
                 </h3>
@@ -1128,14 +1277,32 @@ export default function WeLiftoffPage() {
                 </p>
               </div>
 
-              <div className="p-4 bg-[#111317] hairline-all font-mono text-[11px] space-y-1.5 text-[#8E95A5]">
-                <div className="text-[#10B981] font-bold">
-                  $ git ledger --diff --md
+              {/* Machined Terminal Window */}
+              <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-[11px]">
+                <div className="bg-[#151820] px-3 py-2 border-b border-white/10 flex items-center justify-between text-[10px] text-[#8E95A5]">
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
+                    <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
+                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-2: git-ledger audit</span>
+                  </div>
+                  <span className="text-[#10B981]">SYNCED</span>
                 </div>
-                <div>Agent: antigravity | Model: gemini-2.5-pro</div>
-                <div>Prompted-by: dev-handle-a | Audited-by: dev-handle-b</div>
-                <div className="text-[#10B981] pt-1">
-                  ✓ Confidence 1.0 commit attribution verified
+                <div className="p-4 space-y-2 text-[#8E95A5]">
+                  <div className="text-[#10B981] font-bold">
+                    $ git ledger --diff --md
+                  </div>
+                  <div className="text-[#F4F4F0] bg-[#07080A] p-2 rounded-sm border border-white/5 font-mono text-[10px] space-y-0.5">
+                    <div>Agent: antigravity | Model: gemini-2.5-pro</div>
+                    <div>Prompted-by: dev-handle-a | Audited-by: dev-handle-b</div>
+                  </div>
+                  <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    Confidence 1.0 commit attribution verified
+                  </div>
+                  <div className="text-[#8E95A5] pt-1">
+                    $ <span className="text-[#F4F4F0]">./gradlew verifyZeroEgress</span> &rarr; network check PASS
+                  </div>
                 </div>
               </div>
             </div>
@@ -1143,24 +1310,21 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
-      {/* SEC.03: Sovereign Legal & Architectural Invariants */}
-      <section id="invariants" className="hairline-b">
-        <div className="p-6 sm:p-8 hairline-b flex flex-wrap items-end justify-between gap-4 bg-[#0B0C0E]">
-          <div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-              SEC.03 // COMPLIANCE &amp; SOVEREIGNTY MATRIX
-            </span>
-            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight mt-1">
-              Four Non-Negotiable Production Invariants
+      {/* Sovereign Legal & Architectural Invariants */}
+      <section id="invariants" className="hairline-b bg-[#0B0C0E]">
+        <div className="p-6 sm:p-10 hairline-b flex flex-wrap items-end justify-between gap-4 bg-gradient-to-r from-[#12151B] to-[#0B0C0E]">
+          <div className="space-y-2">
+            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight">
+              Four Non-Negotiable Institutional Invariants
             </h2>
           </div>
-          <p className="font-mono text-xs text-[#8E95A5] max-w-md">
-            Select any invariant below to inspect its architectural enforcement
-            mechanism, statutory DPDP boundary, and deterministic verification gate.
+          <p className="font-mono text-xs text-[#8E95A5] max-w-md leading-relaxed">
+            Select an invariant below to inspect its architectural enforcement
+            mechanism, statutory DPDP Act compliance, and automated test gate.
           </p>
         </div>
 
-        {/* 4-Column Grid */}
+        {/* 4-Column Invariant Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hairline-b">
           {COMPLIANCE_REGISTRY.map((item, idx) => {
             const isSelected = item.id === activeInvariantId;
@@ -1172,25 +1336,29 @@ export default function WeLiftoffPage() {
                   audio.click();
                   setActiveInvariantId(item.id);
                 }}
-                className={`p-6 text-left ${
+                className={`p-6 sm:p-7 text-left ${
                   idx < 3 ? "lg:hairline-r" : ""
-                } ${idx % 2 === 0 ? "md:hairline-r lg:border-r-[#262930]" : ""} hairline-b lg:hairline-b-0 cursor-pointer transition-colors flex flex-col justify-between ${
+                } ${idx % 2 === 0 ? "md:hairline-r" : ""} hairline-b lg:hairline-b-0 cursor-pointer transition-all flex flex-col justify-between relative ${
                   isSelected
-                    ? "bg-[#15181E]"
-                    : "bg-[#0B0C0E] hover:bg-[#111317]"
+                    ? "bg-gradient-to-b from-[#181C24] to-[#12151C] shadow-inner shadow-white/5"
+                    : "bg-[#0B0C0E] hover:bg-[#111318]"
                 }`}
               >
+                {isSelected && (
+                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF5E14] to-[#FF9248] shadow-sm shadow-[#FF4F00]" />
+                )}
+
                 <div className="space-y-3">
                   <div className="flex items-center justify-between font-mono text-[10px]">
                     <span
                       className={`font-bold uppercase tracking-wider ${
-                        isSelected ? "text-[#FF4F00]" : "text-[#8E95A5]"
+                        isSelected ? "text-[#FF6A1F]" : "text-[#8E95A5]"
                       }`}
                     >
                       {item.code}
                     </span>
                     {isSelected && (
-                      <span className="px-1.5 py-0.5 bg-[#FF4F00] text-[#0B0C0E] font-bold">
+                      <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00] text-[#0B0C0E] font-bold text-[9px] shadow-sm">
                         ACTIVE
                       </span>
                     )}
@@ -1203,7 +1371,8 @@ export default function WeLiftoffPage() {
                   </p>
                 </div>
 
-                <div className="pt-4 mt-4 hairline-t font-mono text-[11px] text-[#10B981] font-semibold">
+                <div className="pt-5 mt-5 hairline-t font-mono text-[11px] text-[#10B981] font-semibold flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5" />
                   BOUND: {item.metric}
                 </div>
               </button>
@@ -1211,66 +1380,65 @@ export default function WeLiftoffPage() {
           })}
         </div>
 
-        {/* Invariant Detail Dossier */}
-        <div className="p-6 sm:p-8 bg-[#111317] grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <div className="lg:col-span-4 space-y-1 hairline-b lg:hairline-b-0 lg:hairline-r pb-4 lg:pb-0 lg:pr-6">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
+        {/* Invariant Detail Dossier Panel */}
+        <div className="p-6 sm:p-10 bg-[#111317] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-t border-white/5">
+          <div className="lg:col-span-4 space-y-2 hairline-b lg:hairline-b-0 lg:hairline-r pb-6 lg:pb-0 lg:pr-8">
+            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF6A1F] font-bold block">
               ACTIVE SPECIFICATION // {activeInvariant.code}
             </span>
             <h4 className="font-display text-2xl font-bold text-[#F4F4F0]">
               {activeInvariant.title}
             </h4>
-            <p className="font-mono text-xs text-[#10B981] pt-1">
+            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-mono text-xs font-semibold">
+              <CheckCircle2 className="w-3.5 h-3.5" />
               {activeInvariant.metric}
-            </p>
+            </div>
           </div>
 
-          <div className="lg:col-span-4 space-y-1 text-xs text-[#8E95A5] leading-relaxed">
-            <span className="font-mono text-[10px] uppercase text-[#F4F4F0] font-bold block">
-              ARCHITECTURAL ENFORCEMENT
+          <div className="lg:col-span-4 space-y-2 text-xs text-[#8E95A5] leading-relaxed">
+            <span className="font-mono text-[10px] uppercase text-[#F4F4F0] font-bold block tracking-wider">
+              ARCHITECTURAL ENFORCEMENT &amp; STATUTORY DPDP BOUNDARY
             </span>
-            <p>{activeInvariant.architecturalMechanism}</p>
+            <p className="text-[#C4C8D4]">{activeInvariant.architecturalMechanism}</p>
             <p className="pt-1 text-[#8E95A5]">{activeInvariant.legalBound}</p>
           </div>
 
-          <div className="lg:col-span-4 p-4 bg-[#0B0C0E] hairline-all space-y-1.5 font-mono text-xs">
-            <span className="text-[10px] uppercase text-[#FF4F00] font-bold block">
+          <div className="lg:col-span-4 p-5 bg-[#0B0C0E] rounded-sm border border-white/10 space-y-2 font-mono text-xs shadow-md shadow-black/40">
+            <span className="text-[10px] uppercase text-[#FF6A1F] font-bold block tracking-wider flex items-center gap-1.5">
+              <Terminal className="w-3 h-3" />
               DETERMINISTIC VERIFICATION GATE
             </span>
-            <p className="text-[#F4F4F0] leading-relaxed">
+            <div className="bg-[#14171E] p-3 rounded-sm border border-white/5 text-[#F4F4F0] leading-relaxed">
               {activeInvariant.verificationGate}
-            </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* SEC.04: 14-Day Execution DAG Syllabus */}
-      <section id="syllabus" className="hairline-b bg-[#0B0C0E]">
-        <div className="p-6 sm:p-8 hairline-b flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-              SEC.04 // 14-DAY EXECUTION DAG
-            </span>
-            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight mt-1">
-              Curriculum State Transitions (28.0 Lab Hours)
+      {/* 14-Day Execution DAG Syllabus */}
+      <section id="syllabus" className="hairline-b bg-gradient-to-b from-[#0B0C0E] to-[#0E1015]">
+        <div className="p-6 sm:p-10 hairline-b flex flex-wrap items-center justify-between gap-4">
+          <div className="space-y-1">
+            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight">
+              14-Day Curriculum State Transitions (28.0 Lab Hours)
             </h2>
           </div>
 
           {/* 2 Bounded Phase Levers */}
-          <div className="flex items-center gap-2 font-mono text-xs">
+          <div className="flex items-center gap-2 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
             <button
               type="button"
               onClick={() => {
                 audio.click();
                 setActivePhase("phase1");
               }}
-              className={`px-4 py-2 uppercase cursor-pointer transition-colors ${
+              className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
                 activePhase === "phase1"
-                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
-                  : "border border-[#3A3F4B] bg-[#111317] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
               }`}
             >
-              [PHASE 01] Days 01–07: Core &amp; Spec Steering
+              Phase 1: Days 01–07 (Core Architecture)
             </button>
             <button
               type="button"
@@ -1278,13 +1446,13 @@ export default function WeLiftoffPage() {
                 audio.click();
                 setActivePhase("phase2");
               }}
-              className={`px-4 py-2 uppercase cursor-pointer transition-colors ${
+              className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
                 activePhase === "phase2"
-                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
-                  : "border border-[#3A3F4B] bg-[#111317] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
               }`}
             >
-              [PHASE 02] Days 08–14: Hardening &amp; Demo Day
+              Phase 2: Days 08–14 (Hardening &amp; Release)
             </button>
           </div>
         </div>
@@ -1293,18 +1461,18 @@ export default function WeLiftoffPage() {
           {SYLLABUS_DAG[activePhase].map((node, idx) => (
             <div
               key={node.code}
-              className={`p-6 ${
+              className={`p-6 sm:p-7 ${
                 idx < 3 ? "lg:hairline-r" : ""
-              } hairline-b lg:hairline-b-0 flex flex-col justify-between space-y-6 bg-[#0B0C0E]`}
+              } hairline-b lg:hairline-b-0 flex flex-col justify-between space-y-6 bg-[#0B0C0E] hover:bg-[#111319] transition-colors relative group`}
             >
               <div className="space-y-3">
                 <div className="flex items-center justify-between font-mono text-[10px]">
-                  <span className="text-[#FF4F00] font-bold">
+                  <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 font-bold">
                     {node.dayRange}
                   </span>
                   <span className="text-[#8E95A5]">{node.code}</span>
                 </div>
-                <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+                <h3 className="font-display text-lg font-bold text-[#F4F4F0] group-hover:text-[#FF6A1F] transition-colors">
                   {node.title}
                 </h3>
                 <p className="text-xs text-[#8E95A5] leading-relaxed">
@@ -1312,12 +1480,12 @@ export default function WeLiftoffPage() {
                 </p>
               </div>
 
-              <div className="space-y-2 pt-4 hairline-t font-mono text-[11px]">
+              <div className="space-y-2.5 pt-4 hairline-t font-mono text-[11px]">
                 <div className="text-[#8E95A5]">
-                  DELIVERABLE:{" "}
-                  <strong className="text-[#F4F4F0]">{node.artifact}</strong>
+                  Deliverable:{" "}
+                  <strong className="text-[#F4F4F0] block font-semibold mt-0.5">{node.artifact}</strong>
                 </div>
-                <div className="p-2 bg-[#111317] hairline-all text-[#10B981] truncate" title={node.verificationCmd}>
+                <div className="p-2.5 bg-[#12151C] rounded-sm border border-white/10 text-[#10B981] overflow-x-auto text-[10px] whitespace-nowrap" title={node.verificationCmd}>
                   $ {node.verificationCmd}
                 </div>
               </div>
@@ -1326,63 +1494,60 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
-      {/* SEC.05: Institutional Operations & Founder Dossier */}
+      {/* Institutional Operations & Founder Dossier */}
       <section id="institutional" className="hairline-b bg-[#111317]">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Left 7 Columns: Operations Architecture */}
           <div className="lg:col-span-7 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-8">
             <div className="space-y-3">
-              <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-                SEC.05 // INSTITUTIONAL DEPLOYMENT MODEL
-              </span>
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
                 Zero-Impact Campus Integration.
               </h2>
               <p className="text-sm text-[#8E95A5] leading-relaxed max-w-2xl">
-                Engineered for residential boarding schools and rigorous academic schedules.
-                Substrata Labs manages developer credentials, hardware contingency buffers,
-                and compliance auditing with zero campus IT overhead.
+                Engineered specifically for residential boarding schools and rigorous academic schedules.
+                Substrata Labs operates directly within the 18:00–20:00 evening prep window,
+                managing hardware reserves and statutory child safeguarding with zero campus IT burden.
               </p>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-              <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
-                <div className="text-[#FF4F00] font-bold flex items-center gap-1.5">
-                  <Terminal className="w-3.5 h-3.5" />
-                  [OPS.01] ZERO CAMPUS NETWORK OVERHEAD
+              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
+                <div className="text-[#FF6A1F] font-bold flex items-center gap-2">
+                  <Terminal className="w-4 h-4 text-[#FF4F00]" />
+                  ZERO CAMPUS WI-FI BURDEN
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Toolchains install offline from pre-seeded 64GB USB media. Model steering traffic routes via Substrata&apos;s autonomous cellular 5G uplink, requiring zero campus Wi-Fi access or firewall reconfiguration.
+                  Toolchains install offline from pre-seeded 64GB USB media. Agent queries route via Substrata&apos;s autonomous cellular 5G uplink—zero campus Wi-Fi access or firewall reconfiguration required.
                 </p>
               </div>
 
-              <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
-                <div className="text-[#10B981] font-bold flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  [OPS.02] HARDWARE PAIRING CONTINGENCY
+              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
+                <div className="text-[#10B981] font-bold flex items-center gap-2">
+                  <Layers className="w-4 h-4 text-[#10B981]" />
+                  EVENING PREP INTEGRATION
+                </div>
+                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
+                  Operates strictly within the 18:00–20:00 evening prep window, ensuring zero disruption to morning academic classes, sports fixtures, or mandatory dorm call timings.
+                </p>
+              </div>
+
+              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
+                <div className="text-[#10B981] font-bold flex items-center gap-2">
+                  <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                  HARDWARE CONTINGENCY RESERVE
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
                   Workstations pair iOS students with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
                 </p>
               </div>
 
-              <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
-                <div className="text-[#10B981] font-bold flex items-center gap-1.5">
-                  <Lock className="w-3.5 h-3.5" />
-                  [OPS.03] DPDP §9 CHILD SAFEGUARDING
+              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
+                <div className="text-[#F4F4F0] font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4 text-[#FF4F00]" />
+                  ADMISSIONS CREDENTIAL PORTFOLIO
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Compliant with Section 9 of the DPDP Act 2023. Student legal identities and boarding houses remain private institutional records; public version control utilizes sanitized developer handles with co-signed parental assent.
-                </p>
-              </div>
-
-              <div className="p-4 bg-[#0B0C0E] hairline-all space-y-2">
-                <div className="text-[#F4F4F0] font-bold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#FF4F00]" />
-                  [OPS.04] ADMISSIONS CREDENTIAL VALUE
-                </div>
-                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Graduates cite verifiable engineering deliverables—live Google Play listings, signed GitHub release APKs, in-app build fingerprints, and 60+ commit DAGs—directly in Common App and UCAS supplements.
+                  Graduates cite verifiable engineering deliverables—live Google Play listings, signed GitHub release APKs, in-app build fingerprints, and 60+ commit histories—directly in Common App and UCAS supplements.
                 </p>
               </div>
             </div>
@@ -1390,24 +1555,27 @@ export default function WeLiftoffPage() {
 
           {/* Right 5 Columns: Principal Instructor & Founder Dossier */}
           <div className="lg:col-span-5 p-6 sm:p-10 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
+            <div className="space-y-5">
               <div className="flex items-center justify-between font-mono text-[10px] text-[#8E95A5] hairline-b pb-3">
-                <span className="text-[#FF4F00] font-bold">
+                <span className="text-[#FF6A1F] font-bold tracking-wider">
                   DIRECTOR DOSSIER // SUBSTRATA LABS
                 </span>
-                <span>ALUMNUS: MAYO COLLEGE (&apos;22–&apos;23)</span>
+                <span className="px-2 py-0.5 rounded-sm bg-white/5 border border-white/10 text-[#F4F4F0]">
+                  ALUMNUS: MAYO COLLEGE (&apos;22–&apos;23)
+                </span>
               </div>
 
               <div>
                 <h3 className="font-display text-2xl font-extrabold text-[#F4F4F0]">
                   Kushagra Choudhary
                 </h3>
-                <p className="font-mono text-xs text-[#10B981] mt-0.5">
+                <p className="font-mono text-xs text-[#10B981] mt-1 font-semibold flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5" />
                   Founder, Substrata Labs · Architect of Sol (On-Device LLM on Google Play)
                 </p>
               </div>
 
-              <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug hairline-l pl-4 border-l-[#FF4F00]">
+              <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug pl-4 border-l-2 border-[#FF4F00] bg-gradient-to-r from-[#FF4F00]/5 to-transparent py-2">
                 &ldquo;When I was at Mayo College, the bottleneck was never raw
                 curiosity—it was access to production engineering toolchains.
                 WeLiftoff trains young builders to command version control,
@@ -1417,42 +1585,46 @@ export default function WeLiftoffPage() {
             </div>
 
             <div className="pt-4 hairline-t font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-2">
-              <span>INAUGURAL PARTNER: MAYO COLLEGE, AJMER</span>
+              <span className="text-[#F4F4F0]">INAUGURAL PARTNER: MAYO COLLEGE, AJMER</span>
               <a
                 href="https://substratalabs.org"
                 target="_blank"
                 rel="noreferrer"
-                className="text-[#FF4F00] hover:underline inline-flex items-center gap-1"
+                className="text-[#FF6A1F] hover:text-[#FFA066] transition-colors inline-flex items-center gap-1 font-semibold"
               >
-                substratalabs.org <ArrowUpRight className="w-3 h-3" />
+                substratalabs.org <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* SEC.06: Institutional Reservation Terminal */}
-      <section id="contract" className="py-16 sm:py-24 px-4 sm:px-8 bg-[#0B0C0E]">
-        <div className="max-w-2xl mx-auto hairline-all bg-[#111317] p-6 sm:p-10">
-          <div className="space-y-2 mb-6">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF4F00] font-bold block">
-              SEC.06 // INSTITUTIONAL RESERVATION TERMINAL
-            </span>
+      {/* Institutional Reservation Terminal */}
+      <section id="contract" className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E] relative">
+        <div className="max-w-2xl mx-auto panel-machined rounded-sm p-6 sm:p-10 shadow-2xl shadow-black/80">
+          <div className="space-y-2.5 mb-6">
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#F4F4F0] tracking-tight">
               Reserve an On-Campus Cohort Window
             </h2>
-            <p className="font-mono text-xs text-[#8E95A5]">
+            <p className="font-mono text-xs text-[#8E95A5] leading-relaxed">
               Select an academic residency window (10 two-student crews / 20 builders) to receive
-              the institutional proposal, curriculum field manual, and parental assent documentation.
+              the executive prospectus, hardware pairing checklist, and parental assent documentation.
             </p>
-            <div className="pt-2 flex flex-wrap gap-4 font-mono text-[11px] text-[#8E95A5]">
+
+            {/* Tuition Breakdown Card */}
+            <div className="mt-4 p-3.5 rounded-sm bg-[#0A0C0E] border border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
               <div>
-                <span className="text-[#F4F4F0] font-bold">CATALOG TUITION:</span>{" "}
-                ₹95,000 ($1,125 USD)
+                <span className="text-[#8E95A5] block text-[10px] uppercase">CATALOG TUITION</span>
+                <span className="text-[#F4F4F0] font-bold text-sm">₹95,000</span>{" "}
+                <span className="text-[#8E95A5]">($1,125 USD)</span>
               </div>
-              <div>
-                <span className="text-[#FF4F00] font-bold">PILOT RESIDENCY RATE:</span>{" "}
-                ₹49,000–₹55,000 ($580–$650 USD)
+              <div className="text-right">
+                <span className="text-[#FF6A1F] block text-[10px] uppercase font-bold flex items-center gap-1 justify-end">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
+                  PILOT RESIDENCY RATE (MAYO COLLEGE)
+                </span>
+                <span className="text-[#10B981] font-bold text-sm">₹49,000–₹55,000</span>{" "}
+                <span className="text-[#8E95A5]">($580–$650 USD)</span>
               </div>
             </div>
           </div>
@@ -1472,19 +1644,22 @@ export default function WeLiftoffPage() {
                   audio.click();
                   setCohortWindow(slot);
                 }}
-                className={`py-2 px-3 text-left cursor-pointer transition-colors ${
+                className={`py-2.5 px-3 rounded-sm text-left cursor-pointer transition-all flex items-center justify-between ${
                   cohortWindow === slot
-                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
-                    : "border border-[#3A3F4B] bg-[#0B0C0E] text-[#F4F4F0] hover:border-[#F4F4F0]"
+                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30 border border-[#FFA066]/40"
+                    : "border border-white/10 bg-[#0E1015] text-[#F4F4F0] hover:border-white/30"
                 }`}
               >
-                {slot}
+                <span>{slot}</span>
+                {cohortWindow === slot && (
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0B0C0E]" />
+                )}
               </button>
             ))}
           </div>
 
           {inquirySubmitted ? (
-            <div className="p-6 bg-[#0B0C0E] hairline-all font-mono text-xs space-y-3">
+            <div className="p-6 bg-[#0B0C0E] rounded-sm border border-[#10B981]/40 font-mono text-xs space-y-3">
               <div className="text-[#10B981] font-bold text-sm flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
                 RESERVATION TRANSMISSION LOGGED [{cohortWindow.toUpperCase()}]
@@ -1503,114 +1678,165 @@ export default function WeLiftoffPage() {
                   audio.click();
                   setInquirySubmitted(false);
                 }}
-                className="btn-tactile px-4 py-2 text-[11px] uppercase cursor-pointer"
+                className="btn-tactile rounded-sm px-4 py-2 text-[11px] uppercase cursor-pointer"
               >
                 Reset Intake Terminal
               </button>
             </div>
           ) : (
             <form
+              noValidate
               onKeyDown={(e) => audio.keyDown(e.code, e.repeat)}
               onKeyUp={(e) => audio.keyUp(e.code)}
-              onSubmit={(e) => {
-                e.preventDefault();
-                audio.commit();
-                setInquirySubmitted(true);
-              }}
+              onSubmit={handleFormSubmit}
               className="space-y-4 font-mono text-xs"
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
+                  <label htmlFor="intake-name" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
                     FULL NAME *
                   </label>
                   <input
-                    required
+                    id="intake-name"
                     type="text"
+                    maxLength={100}
+                    aria-invalid={!!formErrors.name}
+                    aria-describedby={formErrors.name ? "name-error" : undefined}
                     placeholder="Dr. / Principal / Head of Department"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 bg-[#0B0C0E] border border-[#3A3F4B] text-[#F4F4F0] text-xs focus:outline-none focus:border-[#FF4F00] font-sans"
+                    onChange={(e) => {
+                      setFormData({ ...formData, name: e.target.value });
+                      if (formErrors.name) setFormErrors({ ...formErrors, name: undefined });
+                    }}
+                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
+                      formErrors.name ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                    }`}
                   />
+                  {formErrors.name && (
+                    <span id="name-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
+                      ! {formErrors.name}
+                    </span>
+                  )}
                 </div>
                 <div>
-                  <label className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
+                  <label htmlFor="intake-role" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
                     OFFICIAL DESIGNATION *
                   </label>
                   <input
-                    required
+                    id="intake-role"
                     type="text"
-                    placeholder="Principal / HOD Computer Science / Housemaster"
+                    maxLength={100}
+                    aria-invalid={!!formErrors.role}
+                    aria-describedby={formErrors.role ? "role-error" : undefined}
+                    placeholder="Principal / HOD CS / Housemaster"
                     value={formData.role}
-                    onChange={(e) =>
-                      setFormData({ ...formData, role: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 bg-[#0B0C0E] border border-[#3A3F4B] text-[#F4F4F0] text-xs focus:outline-none focus:border-[#FF4F00] font-sans"
+                    onChange={(e) => {
+                      setFormData({ ...formData, role: e.target.value });
+                      if (formErrors.role) setFormErrors({ ...formErrors, role: undefined });
+                    }}
+                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
+                      formErrors.role ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                    }`}
                   />
+                  {formErrors.role && (
+                    <span id="role-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
+                      ! {formErrors.role}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
+                  <label htmlFor="intake-institution" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
                     INSTITUTION NAME *
                   </label>
                   <input
-                    required
+                    id="intake-institution"
                     type="text"
-                    placeholder="Institution Name (e.g. Mayo College, Ajmer)"
+                    maxLength={120}
+                    aria-invalid={!!formErrors.institution}
+                    aria-describedby={formErrors.institution ? "institution-error" : undefined}
+                    placeholder="e.g. Mayo College, Ajmer"
                     value={formData.institution}
-                    onChange={(e) =>
-                      setFormData({ ...formData, institution: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 bg-[#0B0C0E] border border-[#3A3F4B] text-[#F4F4F0] text-xs focus:outline-none focus:border-[#FF4F00] font-sans"
+                    onChange={(e) => {
+                      setFormData({ ...formData, institution: e.target.value });
+                      if (formErrors.institution) setFormErrors({ ...formErrors, institution: undefined });
+                    }}
+                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
+                      formErrors.institution ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                    }`}
                   />
+                  {formErrors.institution && (
+                    <span id="institution-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
+                      ! {formErrors.institution}
+                    </span>
+                  )}
                 </div>
                 <div>
-                  <label className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
+                  <label htmlFor="intake-email" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
                     INSTITUTIONAL EMAIL *
                   </label>
                   <input
-                    required
+                    id="intake-email"
                     type="email"
+                    maxLength={120}
+                    aria-invalid={!!formErrors.email}
+                    aria-describedby={formErrors.email ? "email-error" : undefined}
                     placeholder="office@institution.edu.in"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-3.5 py-2.5 bg-[#0B0C0E] border border-[#3A3F4B] text-[#F4F4F0] text-xs focus:outline-none focus:border-[#FF4F00] font-sans"
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value });
+                      if (formErrors.email) setFormErrors({ ...formErrors, email: undefined });
+                    }}
+                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
+                      formErrors.email ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                    }`}
                   />
+                  {formErrors.email && (
+                    <span id="email-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
+                      ! {formErrors.email}
+                    </span>
+                  )}
                 </div>
               </div>
 
               <div>
-                <label className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
-                  LAB CONSTRAINTS &amp; PARAMETERS
-                </label>
+                <div className="flex items-center justify-between mb-1.5">
+                  <label htmlFor="intake-notes" className="block uppercase text-[10px] text-[#8E95A5] font-bold">
+                    LAB CONSTRAINTS &amp; SCHEDULING PARAMETERS
+                  </label>
+                  <span className="text-[10px] text-[#555A68] font-mono">
+                    {formData.notes.length}/1000
+                  </span>
+                </div>
                 <textarea
+                  id="intake-notes"
                   rows={3}
-                  placeholder="Target cohort window, laboratory constraints, or scheduling requirements..."
+                  maxLength={1000}
+                  placeholder="Target cohort window, laboratory constraints, or evening prep timing (18:00–20:00)..."
                   value={formData.notes}
                   onChange={(e) =>
                     setFormData({ ...formData, notes: e.target.value })
                   }
-                  className="w-full px-3.5 py-2.5 bg-[#0B0C0E] border border-[#3A3F4B] text-[#F4F4F0] text-xs focus:outline-none focus:border-[#FF4F00] font-sans"
+                  className="input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68]"
                 />
               </div>
 
               <button
                 type="submit"
-                className="btn-primary-tactile w-full py-3.5 font-mono text-xs font-bold uppercase tracking-wider cursor-pointer"
+                disabled={isSubmitting}
+                className="btn-primary-tactile rounded-sm w-full py-4 font-mono text-xs font-bold uppercase tracking-wider cursor-pointer shadow-lg shadow-[#FF4F00]/25 disabled:opacity-75 disabled:cursor-wait flex items-center justify-center gap-2"
               >
-                Transmit Dossier Request [{cohortWindow.toUpperCase()}] &rarr;
+                {isSubmitting ? (
+                  <>
+                    <span className="w-3.5 h-3.5 border-2 border-[#0B0C0E] border-t-transparent rounded-full animate-spin" />
+                    <span>TRANSMITTING ENCRYPTED DOSSIER REQUEST...</span>
+                  </>
+                ) : (
+                  <span>Transmit Dossier Request [{cohortWindow.toUpperCase()}] &rarr;</span>
+                )}
               </button>
-
-              <div className="pt-3 hairline-t flex flex-wrap items-center justify-between gap-2 text-[10px] text-[#8E95A5]">
-                <span>DISPATCH: FOUNDERS@SUBSTRATALABS.IN</span>
-                <span>STATUTORY MSME GOVERNANCE (UDYAM-RJ-37-0014993)</span>
-              </div>
             </form>
           )}
         </div>
@@ -1620,23 +1846,25 @@ export default function WeLiftoffPage() {
       <footer className="hairline-t bg-[#0B0C0E] py-10 px-4 sm:px-8 font-mono text-xs text-[#8E95A5]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="px-2 py-0.5 bg-[#FF4F00] text-[#0B0C0E] font-bold">
+            <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00] text-[#0B0C0E] font-bold">
               0&rarr;1
             </span>
             <span className="text-[#F4F4F0] font-bold">WELIFTOFF.NOW</span>
-            <span>{"//"}</span>
+            <span className="text-white/20">{"//"}</span>
             <span>SUBSTRATA LABS</span>
           </div>
 
           <div className="text-[11px]">
             GOVT. OF INDIA MSME:{" "}
-            <code className="text-[#F4F4F0]">UDYAM-RJ-37-0014993</code>
+            <code className="text-[#F4F4F0] bg-white/5 px-2 py-0.5 rounded-sm border border-white/10">
+              UDYAM-RJ-37-0014993
+            </code>
           </div>
 
           <div className="flex items-center gap-5 text-[11px]">
             <a
               href="mailto:founders@substratalabs.in"
-              className="hover:text-[#FF4F00] transition-colors"
+              className="hover:text-[#FF6A1F] transition-colors"
             >
               founders@substratalabs.in
             </a>
@@ -1644,9 +1872,9 @@ export default function WeLiftoffPage() {
               href="https://substratalabs.org"
               target="_blank"
               rel="noreferrer"
-              className="hover:text-[#FF4F00] transition-colors"
+              className="hover:text-[#FF6A1F] transition-colors inline-flex items-center gap-1"
             >
-              substratalabs.org
+              substratalabs.org <ArrowUpRight className="w-3 h-3" />
             </a>
           </div>
         </div>
