@@ -31,13 +31,13 @@ body {
 
 /* Fluid Typography & Optical Tracking Curves */
 .text-fluid-hero {
-  font-size: clamp(2.35rem, 3.8vw + 0.8rem, 3.85rem);
-  line-height: 1.03;
-  letter-spacing: -0.035em;
+  font-size: clamp(2rem, 2.5vw + 0.6rem, 3.25rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
 }
 
 .text-fluid-h2 {
-  font-size: clamp(1.75rem, 2.5vw + 0.5rem, 2.85rem);
+  font-size: clamp(1.65rem, 2.2vw + 0.4rem, 2.6rem);
   line-height: 1.08;
   letter-spacing: -0.025em;
 }

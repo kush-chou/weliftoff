@@ -871,11 +871,11 @@ export default function WeLiftoffPage() {
   return (
     <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
       {/* Top Metadata & Operations Status Bar */}
-      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2.5 font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
+      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-1.5 font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
         <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
             <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
-            WELIFTOFF // 0&rarr;1
+            WELIFTOFF // RESIDENCY
           </span>
           <span className="hidden sm:inline text-white/10">|</span>
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
@@ -888,7 +888,7 @@ export default function WeLiftoffPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-[11px]">
+          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-[10px] sm:text-[11px]">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
             ADMISSIONS OPEN // 10 CREWS (20 SEATS)
           </span>
@@ -918,16 +918,16 @@ export default function WeLiftoffPage() {
       </div>
 
       {/* Main Architectural Navigation Header */}
-      <header className="hairline-b bg-[#0B0C0E]/85 backdrop-blur-xl px-4 sm:px-8 py-3.5 flex items-center justify-between sticky top-0 z-40">
-        <div className="flex items-center gap-3.5">
-          <div className="w-9 h-9 rounded-sm bg-gradient-to-br from-[#FF5E14] to-[#E64200] text-[#0B0C0E] flex items-center justify-center font-mono font-bold text-xs tracking-tighter shadow-sm shadow-[#FF4F00]/20 border border-[#FFA066]/30">
-            0&rarr;1
+      <header className="hairline-b bg-[#0B0C0E]/85 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3 flex items-center justify-between sticky top-0 z-40">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#161922] border border-white/10 flex items-center justify-center text-lg select-none shadow-sm shadow-black/40">
+            🚀
           </div>
           <div>
-            <span className="font-display text-xl font-extrabold tracking-tight text-[#F4F4F0] block leading-none">
+            <span className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#F4F4F0] block leading-none">
               WELIFTOFF
             </span>
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
               Substrata Labs Engineering Residency
             </span>
           </div>
@@ -982,68 +982,68 @@ export default function WeLiftoffPage() {
 
       {/* Hero Viewport: Asymmetric 12-Column Split */}
       <section id="thesis" className="hairline-b bg-gradient-to-b from-[#0E1015] to-[#0B0C0E] relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[620px]">
+        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[520px] lg:min-h-[calc(100vh-85px)] lg:max-h-[740px]">
           {/* Left 4 Columns: Architectural Thesis Pane */}
-          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-6">
-            <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
+          <div className="lg:col-span-4 p-5 sm:p-6 lg:py-5 lg:px-7 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-3.5">
+            <div className="space-y-3">
+              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[9px] font-bold uppercase tracking-wider">
                 <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] led-indicator-amber" />
                 FOR BUILDERS GOING FROM 0 TO 1
               </div>
 
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
                 Don&apos;t just learn to code.{" "}
-                <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
+                <span className="font-serif italic font-normal text-[#FF4F00] block mt-0.5">
                   Ship like a technical founder.
                 </span>
               </h1>
 
-              <p className="text-sm text-[#8E95A5] leading-relaxed">
-                Anyone can generate code today. The difference between a forgotten weekend script and a real product is how you version, structure, and ship it. Master the exact engineering operating system used by fast-moving technical founders—going from an empty repo to live Google Play software in 14 deterministic days.
+              <p className="text-xs sm:text-[13px] text-[#8E95A5] leading-relaxed">
+                Anyone can generate code today. The difference between a forgotten script and a real product is how you version, structure, and ship it. Master the engineering operating system used by fast-moving technical founders—from day-one repo to live Google Play software in 14 days.
               </p>
             </div>
 
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
-            <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2.5">
-              <div className="flex items-center justify-between pb-2 hairline-b text-[10px] text-[#8E95A5] font-bold uppercase tracking-wider">
+            <div className="panel-machined rounded-sm p-3 font-mono text-[11px] space-y-1.5">
+              <div className="flex items-center justify-between pb-1 hairline-b text-[9px] text-[#8E95A5] font-bold uppercase tracking-wider">
                 <span>FOUNDER SPECIFICATION</span>
                 <span className="text-[#10B981] flex items-center gap-1.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] led-indicator-emerald" />
                   PRODUCTION INVARIANTS
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0">RUNTIME TARGET</span>
+              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">RUNTIME</span>
                 <span className="font-semibold text-[#F4F4F0] text-right">
-                  Native Android · Jetpack Compose (Physical Glass)
+                  Native Android · Compose (Physical Glass)
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0">DATA ENGINE</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right">
-                  Encrypted Local Room SQLite · Zero Egress
+              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">DATA ENGINE</span>
+                <span className="font-semibold px-1 py-0.2 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right">
+                  Encrypted Room SQLite · Zero Egress
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0">INCIDENT SLA</span>
+              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">INCIDENT SLA</span>
                 <span className="font-semibold text-[#FF6A1F] text-right">
-                  &lt; 12ms Deterministic Rollback [git reflog]
+                  &lt; 12ms Deterministic Rollback [reflog]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0">CO-FOUNDER PARITY</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right">
-                  50/50 Dual-Author Attribution [crew-swap.sh]
+              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">PAIRING</span>
+                <span className="font-semibold px-1 py-0.2 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right">
+                  50/50 Dual-Author [crew-swap.sh]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0">RELEASE PIPELINE</span>
+              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">RELEASE</span>
                 <span className="font-semibold text-[#F4F4F0] text-right">
-                  Signed Android App Bundle (AAB) &amp; Google Play
+                  Signed App Bundle (AAB) &amp; Google Play Store
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 gap-2">
-                <span className="text-[#8E95A5] shrink-0">INTELLECTUAL PROPERTY</span>
+              <div className="flex justify-between items-center py-0.5 gap-2">
+                <span className="text-[#8E95A5] shrink-0 text-[10px]">IP OWNERSHIP</span>
                 <span className="font-semibold text-[#10B981] text-right">
                   100% Founder-Owned Repo &amp; Release Keys
                 </span>
@@ -1051,15 +1051,15 @@ export default function WeLiftoffPage() {
             </div>
 
             {/* Single Primary Interaction Contract */}
-            <div className="pt-2">
+            <div className="pt-1">
               <a
                 href="#contract"
                 onClick={() => audio.commit()}
-                className="btn-primary-tactile rounded-sm block w-full py-4 text-center font-mono text-xs font-bold uppercase tracking-wider"
+                className="btn-primary-tactile rounded-sm block w-full py-2.5 sm:py-3 text-center font-mono text-xs font-bold uppercase tracking-wider"
               >
                 Claim Founder Seat [10 Crews] &rarr;
               </a>
-              <span className="block text-center font-mono text-[10px] text-[#8E95A5] mt-2">
+              <span className="block text-center font-mono text-[9px] text-[#8E95A5] mt-1">
                 Inaugural Residency · Mayo College, Ajmer · Ship Real Software
               </span>
             </div>
@@ -1068,7 +1068,101 @@ export default function WeLiftoffPage() {
           {/* Right 8 Columns: Git DAG State Convergence Engine */}
           <div className="lg:col-span-8 flex flex-col justify-between bg-[#0B0C0E] relative overflow-hidden">
             {/* Control Header & Mechanical State Switchers */}
-            <div className="hairline-b px-4 sm:px-6 py-3 bg-[#111317]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 font-mono text-xs relative z-10">
+            <div className="hairline-b px-4 sm:px-6 py-2 bg-[#111317]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 font-mono text-xs relative z-10">
+              <span className="text-[10px] text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
+                <span
+                  className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
+                  style={{
+                    backgroundColor: telemetry.accentColor,
+                  }}
+                />
+                CANVAS TELEMETRY // GIT DAG STATE CONVERGENCE SIMULATOR
+              </span>
+
+              {/* Bounded Mechanical States */}
+              <div className="grid grid-cols-3 sm:flex sm:items-center gap-2 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.commit();
+                    setDagMode("atomic");
+                  }}
+                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                    dagMode === "atomic"
+                      ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-md shadow-[#10B981]/30 border border-[#10B981]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "atomic" ? "bg-[#0B0C0E]" : "bg-[#10B981]"
+                    }`}
+                  />
+                  Atomic Commit
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.drift();
+                    setDagMode("drift");
+                  }}
+                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                    dagMode === "drift"
+                      ? "bg-[#EF4444] text-[#0B0C0E] font-bold shadow-md shadow-[#EF4444]/30 border border-[#EF4444]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "drift" ? "bg-[#0B0C0E]" : "bg-[#EF4444]"
+                    }`}
+                  />
+                  Unbounded Drift
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.restore();
+                    setDagMode("reflog");
+                  }}
+                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                    dagMode === "reflog"
+                      ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30 border border-[#FF4F00]"
+                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
+                  }`}
+                >
+                  <span
+                    className={`w-1.5 h-1.5 rounded-full ${
+                      dagMode === "reflog" ? "bg-[#0B0C0E]" : "bg-[#FF4F00]"
+                    }`}
+                  />
+                  Reflog Restore
+                </button>
+              </div>
+            </div>
+
+            {/* Interactive Physics Canvas with Oscilloscope Reticles */}
+            <div className="relative flex-1 min-h-[300px] lg:min-h-0 w-full overflow-hidden cursor-crosshair">
+              {/* Corner crosshairs */}
+              <div className="absolute top-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute top-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute bottom-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute bottom-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+
+              <canvas
+                ref={canvasRef}
+                className="absolute inset-0 w-full h-full"
+              />
+              <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+                7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
+              </div>
+              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+                INTERACTIVE CONVERGENCE: CLICK OR DRAG PARTICLES TO AUDIT RECOVERY
+              </div>
+            </div>
+
+            {/* Telemetry Readout Console */}
+            <div className="hairline-t px-4 sm:px-6 py-2 bg-[#111317]/95 backdrop-blur-sm font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
               <span className="text-[10px] text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
                 <span
                   className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
@@ -2003,8 +2097,8 @@ export default function WeLiftoffPage() {
       <footer className="hairline-t bg-[#0B0C0E] py-10 px-4 sm:px-8 font-mono text-xs text-[#8E95A5]">
         <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00] text-[#0B0C0E] font-bold">
-              0&rarr;1
+            <span className="text-base select-none">
+              🚀
             </span>
             <span className="text-[#F4F4F0] font-bold">WELIFTOFF.NOW</span>
             <span className="text-white/20">{"//"}</span>
