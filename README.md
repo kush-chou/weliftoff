@@ -1,10 +1,16 @@
-# WeLiftoff (`weliftoff.now`) — 14-Day Zero-to-Signed Android Engineering Residency
+# WeLiftoff (`weliftoff.now`) — Blueprint
 
 **WeLiftoff** is an on-campus software engineering residency program operated by **Substrata Labs** (`UDYAM-RJ-37-0014993`). The curriculum transitions high school builders from zero prior codebase experience to shipping cryptographically signed, open-source Android applications on **Google Play** and **F-Droid** within a deterministic 14-day (28.0-hour) execution window.
 
 ---
 
-## 1. Architectural & Pedagogical Bounds
+## System Overview
+
+The repository unifies two core systems:
+1. **The Web Interface (`src/app`)**: The high-contrast tactile landing page at `weliftoff.now` featuring an interactive 2D Canvas Git DAG simulator, browser-synthesized audio feedback, institutional compliance registry, and residency reservation flow.
+2. **The Builder Toolchain & Scaffold (`scripts/`, `templates/`)**: Zero-egress offline bootstrapping scripts and the reference Android template (`liftoff-starter`) built on Kotlin, Jetpack Compose, and Room.
+
+### 1. Architectural & Pedagogical Bounds
 
 | Parameter | System Bound / Invariant | Verification Mechanism |
 | :--- | :--- | :--- |
@@ -18,7 +24,7 @@
 
 ---
 
-## 2. Core Pedagogical State Machine
+### 2. Core Pedagogical State Machine
 
 The residency replaces unconstrained prompt-to-code generation with a two-phase directed acyclic graph (DAG):
 
@@ -35,7 +41,7 @@ The residency replaces unconstrained prompt-to-code generation with a two-phase 
 
 ---
 
-## 3. Web Interface Architecture (`liftoff-zero-to-one`)
+### 3. Web Interface Architecture (`liftoff-zero-to-one`)
 
 The web surface at `weliftoff.now` enforces the **Tactile Interface** specification:
 
@@ -46,24 +52,59 @@ The web surface at `weliftoff.now` enforces the **Tactile Interface** specificat
 
 ---
 
-## 4. Development & Verification
+## Local Configuration & Invariants
+
+Root-level files govern project-wide module resolution, toolchain execution, and type definitions:
+
+- **`next.config.ts`**: Configures Next.js 16 compiler features (`cacheComponents: true`, `partialPrefetching: true`) and Turbopack CSS loaders (`@tailwindcss/turbopack`).
+- **`package.json`**: Declares package manager (`pnpm@10.33.0`), core dependencies (`next 16.4.2`, `react 19.3.0`, `lucide-react`, `tailwindcss 4`), and build scripts.
+- **`eslint.config.mjs`**: Next.js flat ESLint ruleset.
+- **`tsconfig.json`**: Strict TypeScript 5 configuration with `@/*` path mapping to `./src/*`.
+
+---
+
+## Subdirectories & System Boundaries
+
+- **[`src/`](./src/README.md)**: Application source root. Contains [`src/app/`](./src/app/README.md) hosting the Next.js App Router entry point (`page.tsx`), root layout (`layout.tsx`), and global tokens (`globals.css`).
+- **[`scripts/`](./scripts/README.md)**: Host provisioning and pair-programming workflows (`setup.sh`, `setup.bat`, `setup.ps1`, `verify-env.sh`, `crew-swap.sh`).
+- **[`templates/`](./templates/README.md)**: Scaffold project index containing the [`liftoff-starter/`](./templates/liftoff-starter/README.md) offline-first Android template with Room database persistence and verification tasks.
+
+---
+
+## Global Invariants
+
+1. **Zero Runtime Data Egress**: The template application strips `android.permission.INTERNET` at compile time and verifies it during Gradle `check`. The web landing page submits reservations via simulated local state without remote endpoints.
+2. **Context Budget Enforcement**: Development environments are validated to maintain active prompt/skill context within the 20,000 token limit (`verify-env.sh` checking `agy-skills status`).
+3. **Dual Author Attribution**: Pair-programming rotations generate standard Git trailers (`Agent: antigravity`, `Co-authored-by: ...`) ensuring transparent attribution on every commit.
+
+---
+
+## Global Side Effects
+
+- **Environment & Shell Mutation**: `./scripts/setup.sh` writes toolchain binaries to `~/.liftoff/toolchain/` and modifies shell startup scripts (`~/.zshrc`).
+- **AudioContext Lifecycle**: Landing page lazily constructs a Web Audio context on the first user interaction for acoustic UI feedback.
+
+---
+
+## System Verification
 
 ```bash
-# Install dependencies
-pnpm install
+# Verify web interface linting and static correctness
+pnpm lint
 
-# Run local development server
-pnpm dev
-
-# Verify production build and static type safety
+# Verify web interface production build
 pnpm build
 
-# Capture 1440px desktop & 375px mobile verification viewports
-capture-view http://localhost:3000
+# Verify local toolchain and offline environment readiness
+./scripts/verify-env.sh
+
+# Verify Android template unit test suite (from templates directory)
+(cd templates/liftoff-starter && ./gradlew testDebugUnitTest)
 ```
 
 ---
 
-## 5. Decision Log (Project Ontogeny)
+## Decision Log (Project Ontogeny)
 
 - **`[Superseded]` Initial Symmetrical Pitch Layout**: Replaced the initial centered hero, gradient blur backdrops (`backdrop-blur-xl`), static bash mockup, and default `create-next-app` README with an asymmetric 4/8 tactile blueprint, interactive Git DAG physics engine, synthesized `AudioContext` feedback, and durable engineering terminology.
+- **`[Added]` EGM Blueprint & Contract Hierarchy**: Bootstrapped Elephant-and-Goldfish Model (EGM) contracts across `src/`, `scripts/`, and `templates/` with explicit public interface boundaries, structural invariants, and verification targets.

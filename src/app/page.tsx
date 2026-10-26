@@ -421,9 +421,18 @@ export default function WeLiftoffPage() {
     useState<InvariantKey>("foss");
   const [activePhase, setActivePhase] = useState<PhaseKey>("phase1");
   const [cohortWindow, setCohortWindow] = useState("Winter 2026 Residency (Mayo College Pilot)");
+  const [intakeMode, setIntakeMode] = useState<"crew" | "institutional">("crew");
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string | undefined>>({});
+  const [crewData, setCrewData] = useState({
+    studentName: "",
+    house: "",
+    grade: "",
+    coFounder: "",
+    parentWhatsApp: "",
+    notes: "",
+  });
   const [formData, setFormData] = useState({
     name: "",
     role: "",
@@ -450,29 +459,57 @@ export default function WeLiftoffPage() {
     if (isSubmitting) return;
 
     const errors: Record<string, string> = {};
-    const trimmedName = formData.name.trim();
-    const trimmedRole = formData.role.trim();
-    const trimmedInst = formData.institution.trim();
-    const trimmedEmail = formData.email.trim();
 
-    if (!trimmedName) {
-      errors.name = "Full name is required for institutional verification.";
-    } else if (trimmedName.length < 2) {
-      errors.name = "Name must be at least 2 characters.";
-    }
+    if (intakeMode === "crew") {
+      const trimmedName = crewData.studentName.trim();
+      const trimmedHouse = crewData.house.trim();
+      const trimmedGrade = crewData.grade.trim();
+      const trimmedPhone = crewData.parentWhatsApp.trim();
 
-    if (!trimmedRole) {
-      errors.role = "Official academic designation is required.";
-    }
+      if (!trimmedName) {
+        errors.studentName = "Founder student name is required.";
+      } else if (trimmedName.length < 2) {
+        errors.studentName = "Name must be at least 2 characters.";
+      }
 
-    if (!trimmedInst) {
-      errors.institution = "Institution name is required.";
-    }
+      if (!trimmedHouse) {
+        errors.house = "House / Campus Dormitory is required.";
+      }
 
-    if (!trimmedEmail) {
-      errors.email = "Institutional email address is required.";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
-      errors.email = "Enter a valid academic email address (e.g. office@school.edu.in).";
+      if (!trimmedGrade) {
+        errors.grade = "Grade & academic stream is required.";
+      }
+
+      if (!trimmedPhone) {
+        errors.parentWhatsApp = "Parent WhatsApp contact is required for DPDP custodial assent.";
+      } else if (!/^[0-9+\s\-()]{10,18}$/.test(trimmedPhone)) {
+        errors.parentWhatsApp = "Enter a valid phone number (at least 10 digits).";
+      }
+    } else {
+      const trimmedName = formData.name.trim();
+      const trimmedRole = formData.role.trim();
+      const trimmedInst = formData.institution.trim();
+      const trimmedEmail = formData.email.trim();
+
+      if (!trimmedName) {
+        errors.name = "Full name is required for institutional verification.";
+      } else if (trimmedName.length < 2) {
+        errors.name = "Name must be at least 2 characters.";
+      }
+
+      if (!trimmedRole) {
+        errors.role = "Official academic designation is required.";
+      }
+
+      if (!trimmedInst) {
+        errors.institution = "Institution name is required.";
+      }
+
+      if (!trimmedEmail) {
+        errors.email = "Institutional email address is required.";
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmedEmail)) {
+        errors.email = "Enter a valid academic email address (e.g. office@school.edu.in).";
+      }
     }
 
     if (Object.keys(errors).length > 0) {
@@ -871,15 +908,15 @@ export default function WeLiftoffPage() {
   return (
     <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
       {/* Top Metadata & Operations Status Bar */}
-      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-1.5 font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
+      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
         <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
-            <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
             WELIFTOFF // RESIDENCY
           </span>
           <span className="hidden sm:inline text-white/10">|</span>
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
-            INAUGURAL RESIDENCY: MAYO COLLEGE, AJMER
+            CAMPUS PILOT TRACK // MAYO COLLEGE, AJMER
           </span>
           <span className="hidden lg:inline text-white/10">|</span>
           <span className="hidden lg:inline text-[#8E95A5]">
@@ -888,7 +925,7 @@ export default function WeLiftoffPage() {
         </div>
 
         <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-[10px] sm:text-[11px]">
+          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
             ADMISSIONS OPEN // 10 CREWS (20 SEATS)
           </span>
@@ -900,7 +937,7 @@ export default function WeLiftoffPage() {
                 : "Enable Mechanical Keyswitch Audio"
             }
             aria-label="Toggle acoustic feedback"
-            className="flex items-center gap-1.5 px-2 py-0.5 rounded-sm border border-white/10 bg-[#14171E] hover:border-white/30 text-[#8E95A5] hover:text-[#F4F4F0] transition-all cursor-pointer text-[10px]"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-white/10 bg-[#14171E] hover:border-white/30 text-[#8E95A5] hover:text-[#F4F4F0] transition-all cursor-pointer text-xs"
           >
             {audioEnabled ? (
               <>
@@ -918,16 +955,16 @@ export default function WeLiftoffPage() {
       </div>
 
       {/* Main Architectural Navigation Header */}
-      <header className="hairline-b bg-[#0B0C0E]/85 backdrop-blur-xl px-4 sm:px-8 py-2.5 sm:py-3 flex items-center justify-between sticky top-0 z-40">
+      <header className="hairline-b bg-[#0B0C0E]/90 backdrop-blur-xl px-4 sm:px-8 py-3 flex items-center justify-between sticky top-0 z-40">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-sm bg-[#161922] border border-white/10 flex items-center justify-center text-lg select-none shadow-sm shadow-black/40">
+          <div className="w-9 h-9 rounded-sm bg-[#161922] border border-white/10 flex items-center justify-center text-lg select-none shadow-sm shadow-black/40">
             🚀
           </div>
           <div>
             <span className="font-display text-lg sm:text-xl font-extrabold tracking-tight text-[#F4F4F0] block leading-none">
               WELIFTOFF
             </span>
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
+            <span className="font-mono text-xs uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
               Substrata Labs Engineering Residency
             </span>
           </div>
@@ -946,7 +983,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Founder Operating System
+            Founder OS
           </a>
           <a
             href="#invariants"
@@ -960,7 +997,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Founder Milestones
+            Milestones
           </a>
           <a
             href="#institutional"
@@ -976,100 +1013,100 @@ export default function WeLiftoffPage() {
           onClick={() => audio.click()}
           className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
         >
-          Start Shipping <ArrowRight className="w-3.5 h-3.5" />
+          Apply for Crew Seat <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </header>
 
       {/* Hero Viewport: Asymmetric 12-Column Split */}
-      <section id="thesis" className="hairline-b bg-gradient-to-b from-[#0E1015] to-[#0B0C0E] relative">
-        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[520px] lg:min-h-[calc(100vh-85px)] lg:max-h-[740px]">
-          {/* Left 4 Columns: Architectural Thesis Pane */}
-          <div className="lg:col-span-4 p-5 sm:p-6 lg:py-5 lg:px-7 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-3.5">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[9px] font-bold uppercase tracking-wider">
-                <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] led-indicator-amber" />
+      <section id="thesis" className="hairline-b bg-gradient-to-b from-[#0E1015] to-[#0B0C0E] relative lg:min-h-[calc(100vh-85px)] flex flex-col justify-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 min-h-[560px] lg:min-h-[calc(100vh-85px)] w-full">
+          {/* Left 5 Columns: Architectural Thesis Pane */}
+          <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-6">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
                 FOR BUILDERS GOING FROM 0 TO 1
               </div>
 
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
                 Don&apos;t just learn to code.{" "}
-                <span className="font-serif italic font-normal text-[#FF4F00] block mt-0.5">
+                <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
                   Ship like a technical founder.
                 </span>
               </h1>
 
-              <p className="text-xs sm:text-[13px] text-[#8E95A5] leading-relaxed">
+              <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
                 Anyone can generate code today. The difference between a forgotten script and a real product is how you version, structure, and ship it. Master the engineering operating system used by fast-moving technical founders—from day-one repo to live Google Play software in 14 days.
               </p>
             </div>
 
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
-            <div className="panel-machined rounded-sm p-3 font-mono text-[11px] space-y-1.5">
-              <div className="flex items-center justify-between pb-1 hairline-b text-[9px] text-[#8E95A5] font-bold uppercase tracking-wider">
+            <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2">
+              <div className="flex items-center justify-between pb-1.5 hairline-b text-xs text-[#8E95A5] font-bold uppercase tracking-wider">
                 <span>FOUNDER SPECIFICATION</span>
                 <span className="text-[#10B981] flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] led-indicator-emerald" />
+                  <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
                   PRODUCTION INVARIANTS
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">RUNTIME</span>
-                <span className="font-semibold text-[#F4F4F0] text-right">
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">RUNTIME</span>
+                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
                   Native Android · Compose (Physical Glass)
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">DATA ENGINE</span>
-                <span className="font-semibold px-1 py-0.2 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right">
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">DATA ENGINE</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
                   Encrypted Room SQLite · Zero Egress
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">INCIDENT SLA</span>
-                <span className="font-semibold text-[#FF6A1F] text-right">
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">INCIDENT SLA</span>
+                <span className="font-semibold text-[#FF6A1F] text-right text-xs">
                   &lt; 12ms Deterministic Rollback [reflog]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">PAIRING</span>
-                <span className="font-semibold px-1 py-0.2 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right">
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">PAIRING</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right text-xs">
                   50/50 Dual-Author [crew-swap.sh]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 hairline-b gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">RELEASE</span>
-                <span className="font-semibold text-[#F4F4F0] text-right">
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">RELEASE</span>
+                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
                   Signed App Bundle (AAB) &amp; Google Play Store
                 </span>
               </div>
-              <div className="flex justify-between items-center py-0.5 gap-2">
-                <span className="text-[#8E95A5] shrink-0 text-[10px]">IP OWNERSHIP</span>
-                <span className="font-semibold text-[#10B981] text-right">
+              <div className="flex justify-between items-center py-1 gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">IP OWNERSHIP</span>
+                <span className="font-semibold text-[#10B981] text-right text-xs">
                   100% Founder-Owned Repo &amp; Release Keys
                 </span>
               </div>
             </div>
 
             {/* Single Primary Interaction Contract */}
-            <div className="pt-1">
+            <div className="pt-2">
               <a
                 href="#contract"
                 onClick={() => audio.commit()}
-                className="btn-primary-tactile rounded-sm block w-full py-2.5 sm:py-3 text-center font-mono text-xs font-bold uppercase tracking-wider"
+                className="btn-primary-tactile rounded-sm block w-full py-3.5 text-center font-mono text-xs sm:text-sm font-bold uppercase tracking-wider"
               >
-                Claim Founder Seat [10 Crews] &rarr;
+                Apply for Founder Crew Seat [10 Crews] &rarr;
               </a>
-              <span className="block text-center font-mono text-[9px] text-[#8E95A5] mt-1">
-                Inaugural Residency · Mayo College, Ajmer · Ship Real Software
+              <span className="block text-center font-mono text-xs text-[#8E95A5] mt-2">
+                Inaugural Campus Pilot · Mayo College, Ajmer · Ship Real Software
               </span>
             </div>
           </div>
 
-          {/* Right 8 Columns: Git DAG State Convergence Engine */}
-          <div className="lg:col-span-8 flex flex-col justify-between bg-[#0B0C0E] relative overflow-hidden">
+          {/* Right 7 Columns: Git DAG State Convergence Engine */}
+          <div className="lg:col-span-7 flex flex-col justify-between bg-[#0B0C0E] relative overflow-hidden">
             {/* Control Header & Mechanical State Switchers */}
-            <div className="hairline-b px-4 sm:px-6 py-2 bg-[#111317]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 font-mono text-xs relative z-10">
-              <span className="text-[10px] text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
+            <div className="hairline-b px-4 sm:px-6 py-2.5 bg-[#111317]/90 backdrop-blur-md flex flex-wrap items-center justify-between gap-3 font-mono text-xs relative z-10">
+              <span className="text-xs text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
                 <span
                   className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
                   style={{
@@ -1087,7 +1124,7 @@ export default function WeLiftoffPage() {
                     audio.commit();
                     setDagMode("atomic");
                   }}
-                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-xs font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "atomic"
                       ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-md shadow-[#10B981]/30 border border-[#10B981]"
                       : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
@@ -1106,7 +1143,7 @@ export default function WeLiftoffPage() {
                     audio.drift();
                     setDagMode("drift");
                   }}
-                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-xs font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "drift"
                       ? "bg-[#EF4444] text-[#0B0C0E] font-bold shadow-md shadow-[#EF4444]/30 border border-[#EF4444]"
                       : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
@@ -1125,7 +1162,7 @@ export default function WeLiftoffPage() {
                     audio.restore();
                     setDagMode("reflog");
                   }}
-                  className={`px-2.5 py-1 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
+                  className={`px-3 py-1.5 rounded-sm text-center text-xs font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
                     dagMode === "reflog"
                       ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30 border border-[#FF4F00]"
                       : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
@@ -1142,139 +1179,45 @@ export default function WeLiftoffPage() {
             </div>
 
             {/* Interactive Physics Canvas with Oscilloscope Reticles */}
-            <div className="relative flex-1 min-h-[300px] lg:min-h-0 w-full overflow-hidden cursor-crosshair">
+            <div className="relative flex-1 min-h-[380px] lg:min-h-0 w-full overflow-hidden cursor-crosshair">
               {/* Corner crosshairs */}
-              <div className="absolute top-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute top-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute bottom-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute bottom-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
+              <div className="absolute top-2 left-2 text-white/20 font-mono text-xs pointer-events-none">+</div>
+              <div className="absolute top-2 right-2 text-white/20 font-mono text-xs pointer-events-none">+</div>
+              <div className="absolute bottom-2 left-2 text-white/20 font-mono text-xs pointer-events-none">+</div>
+              <div className="absolute bottom-2 right-2 text-white/20 font-mono text-xs pointer-events-none">+</div>
 
               <canvas
                 ref={canvasRef}
                 className="absolute inset-0 w-full h-full"
               />
-              <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+              <div className="absolute top-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
                 7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
               </div>
-              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
+              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
                 INTERACTIVE CONVERGENCE: CLICK OR DRAG PARTICLES TO AUDIT RECOVERY
               </div>
             </div>
 
             {/* Telemetry Readout Console */}
-            <div className="hairline-t px-4 sm:px-6 py-2 bg-[#111317]/95 backdrop-blur-sm font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
-              <span className="text-[10px] text-[#8E95A5] uppercase tracking-wider flex items-center gap-2">
-                <span
-                  className="w-2.5 h-2.5 rounded-full inline-block border border-white/20"
-                  style={{
-                    backgroundColor: telemetry.accentColor,
-                  }}
-                />
-                CANVAS TELEMETRY // GIT DAG STATE CONVERGENCE SIMULATOR
-              </span>
-
-              {/* Bounded Mechanical States */}
-              <div className="grid grid-cols-3 sm:flex sm:items-center gap-2 w-full sm:w-auto">
-                <button
-                  type="button"
-                  onClick={() => {
-                    audio.commit();
-                    setDagMode("atomic");
-                  }}
-                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
-                    dagMode === "atomic"
-                      ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-md shadow-[#10B981]/30 border border-[#10B981]"
-                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      dagMode === "atomic" ? "bg-[#0B0C0E]" : "bg-[#10B981]"
-                    }`}
-                  />
-                  Atomic Commit
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    audio.drift();
-                    setDagMode("drift");
-                  }}
-                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
-                    dagMode === "drift"
-                      ? "bg-[#EF4444] text-[#0B0C0E] font-bold shadow-md shadow-[#EF4444]/30 border border-[#EF4444]"
-                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      dagMode === "drift" ? "bg-[#0B0C0E]" : "bg-[#EF4444]"
-                    }`}
-                  />
-                  Unbounded Drift
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    audio.restore();
-                    setDagMode("reflog");
-                  }}
-                  className={`px-3 py-1.5 rounded-sm text-center text-[10px] sm:text-[11px] font-mono uppercase cursor-pointer transition-all flex items-center justify-center gap-1.5 ${
-                    dagMode === "reflog"
-                      ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30 border border-[#FF4F00]"
-                      : "border border-white/10 bg-[#161820] text-[#F4F4F0] hover:border-white/30"
-                  }`}
-                >
-                  <span
-                    className={`w-1.5 h-1.5 rounded-full ${
-                      dagMode === "reflog" ? "bg-[#0B0C0E]" : "bg-[#FF4F00]"
-                    }`}
-                  />
-                  Reflog Restore
-                </button>
-              </div>
-            </div>
-
-            {/* Interactive Physics Canvas with Oscilloscope Reticles */}
-            <div className="relative flex-1 min-h-[420px] sm:min-h-[480px] w-full overflow-hidden cursor-crosshair">
-              {/* Corner crosshairs */}
-              <div className="absolute top-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute top-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute bottom-2 left-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-              <div className="absolute bottom-2 right-2 text-white/20 font-mono text-[10px] pointer-events-none">+</div>
-
-              <canvas
-                ref={canvasRef}
-                className="absolute inset-0 w-full h-full"
-              />
-              <div className="absolute top-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
-                7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
-              </div>
-              <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-[10px] text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
-                INTERACTIVE CONVERGENCE: CLICK OR DRAG PARTICLES TO AUDIT RECOVERY
-              </div>
-            </div>
-
-            {/* Telemetry Readout Console */}
-            <div className="hairline-t px-4 sm:px-6 py-3 bg-[#111317]/95 backdrop-blur-sm font-mono text-[10px] sm:text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
-              <span className="flex items-center gap-1.5">
+            <div className="hairline-t px-4 sm:px-6 py-3 bg-[#111317]/95 backdrop-blur-sm font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
+              <span className="flex items-center gap-2">
                 <span className="text-[#8E95A5]">REF:</span>
                 <strong
                   style={{ color: telemetry.accentColor }}
-                  className="font-bold bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10"
+                  className="font-bold bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10"
                 >
                   {telemetry.headRef}
                 </strong>
               </span>
               <span>
                 STATE ENTROPY:{" "}
-                <strong className="text-[#F4F4F0] bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10">
+                <strong className="text-[#F4F4F0] bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10 font-bold">
                   {telemetry.entropyBits}
                 </strong>
               </span>
               <span>
                 RECOVERY BOUND:{" "}
-                <strong className="text-[#10B981] bg-[#0B0C0E] px-2 py-0.5 rounded-sm border border-white/10">
+                <strong className="text-[#10B981] bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10 font-bold">
                   {telemetry.rollbackBound}
                 </strong>
               </span>
@@ -1284,12 +1227,12 @@ export default function WeLiftoffPage() {
       </section>
 
       {/* The Anti-Tutorial Pitch & Founder Comparison Matrix */}
-      <section id="anti-tutorial" className="hairline-b bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E]">
-        <div className="max-w-6xl mx-auto p-6 sm:p-12 space-y-12">
+      <section id="anti-tutorial" className="hairline-b bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full space-y-8 lg:space-y-10">
           {/* Header */}
           <div className="max-w-3xl space-y-3">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
               THE ANTI-TUTORIAL PITCH
             </div>
             <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
@@ -1299,45 +1242,45 @@ export default function WeLiftoffPage() {
               </code>{" "}
               folders.
             </h2>
-            <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
+            <p className="text-base text-[#8E95A5] leading-relaxed">
               Prompting an app into existence is easy. Maintaining, versioning, and deploying software that doesn&apos;t shatter when real users touch it is what separates a hobbyist from a technical founder.
             </p>
           </div>
 
           {/* 3-Column Pain Points */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
-              <div className="w-9 h-9 rounded-sm bg-[#EF4444]/15 border border-[#EF4444]/30 flex items-center justify-center text-[#EF4444]">
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40 card-tactile">
+              <div className="w-10 h-10 rounded-sm bg-[#EF4444]/15 border border-[#EF4444]/30 flex items-center justify-center text-[#EF4444]">
                 <AlertTriangle className="w-5 h-5" />
               </div>
-              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+              <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
                 The Vibe-Coder Trap
               </h3>
-              <p className="text-xs text-[#8E95A5] leading-relaxed">
+              <p className="text-sm text-[#8E95A5] leading-relaxed">
                 You can prompt an app into existence in an afternoon, but the moment a feature breaks, you have no rollback strategy and are scared to touch your own codebase.
               </p>
             </div>
 
-            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
-              <div className="w-9 h-9 rounded-sm bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex items-center justify-center text-[#F59E0B]">
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40 card-tactile">
+              <div className="w-10 h-10 rounded-sm bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex items-center justify-center text-[#F59E0B]">
                 <XCircle className="w-5 h-5" />
               </div>
-              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+              <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
                 Tutorial Hell
               </h3>
-              <p className="text-xs text-[#8E95A5] leading-relaxed">
+              <p className="text-sm text-[#8E95A5] leading-relaxed">
                 Courses teach syntax and isolated commands in a sterile sandbox, leaving you clueless on how to actually structure, version, and deploy a live product.
               </p>
             </div>
 
-            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
-              <div className="w-9 h-9 rounded-sm bg-[#8E95A5]/15 border border-white/15 flex items-center justify-center text-[#8E95A5]">
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40 card-tactile">
+              <div className="w-10 h-10 rounded-sm bg-[#8E95A5]/15 border border-white/15 flex items-center justify-center text-[#8E95A5]">
                 <Cpu className="w-5 h-5" />
               </div>
-              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+              <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
                 Solo Amateurism
               </h3>
-              <p className="text-xs text-[#8E95A5] leading-relaxed">
+              <p className="text-sm text-[#8E95A5] leading-relaxed">
                 You treat version control like a clumsy save button instead of a release pipeline, making it impossible to iterate fast or bring on co-founders later.
               </p>
             </div>
@@ -1345,78 +1288,78 @@ export default function WeLiftoffPage() {
 
           {/* High-Contrast Comparison Matrix Card */}
           <div className="rounded-sm border border-white/15 overflow-hidden shadow-2xl bg-[#0E1015]">
-            <div className="p-4 sm:p-6 hairline-b bg-[#14171E] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+            <div className="p-4 sm:p-5 hairline-b bg-[#14171E] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
               <span className="text-[#F4F4F0] font-bold text-sm uppercase tracking-wider flex items-center gap-2">
                 <Workflow className="w-4 h-4 text-[#FF4F00]" />
                 THE OPERATING SYSTEM: HOBBYIST VS. TECHNICAL FOUNDER
               </span>
-              <span className="text-[11px] text-[#8E95A5]">
+              <span className="text-xs text-[#8E95A5]">
                 DETERMINISTIC VERIFICATION INVARIANT
               </span>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2">
               {/* The Hobbyist Column */}
-              <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E]/90 space-y-5">
+              <div className="p-6 sm:p-7 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E]/90 space-y-4">
                 <div className="flex items-center justify-between pb-3 hairline-b">
                   <span className="font-mono text-xs uppercase tracking-wider text-[#EF4444] font-bold flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
                     THE HOBBYIST
                   </span>
-                  <span className="text-[10px] font-mono text-[#8E95A5]">
+                  <span className="text-xs font-mono text-[#8E95A5]">
                     STUCK ON LOCALHOST
                   </span>
                 </div>
 
-                <ul className="space-y-3.5 text-xs text-[#8E95A5]">
+                <ul className="space-y-3 text-sm text-[#8E95A5]">
                   <li className="flex items-start gap-2.5">
-                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
-                    <span><strong>Codes on main:</strong> Zero branch isolation; breaking one experimental feature crashes the entire application.</span>
+                    <span className="text-[#EF4444] font-mono text-base leading-none mt-0.5">&times;</span>
+                    <span><strong className="text-[#C4C8D4]">Codes on main:</strong> Zero branch isolation; breaking one experimental feature crashes the entire application.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
-                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
-                    <span><strong>Scared to refactor:</strong> Has no atomic commit history or reflog checkpoints; terrified of regression.</span>
+                    <span className="text-[#EF4444] font-mono text-base leading-none mt-0.5">&times;</span>
+                    <span><strong className="text-[#C4C8D4]">Scared to refactor:</strong> Has no atomic commit history or reflog checkpoints; terrified of regression.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
-                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
-                    <span><strong>Projects die locally:</strong> Trapped on <code>localhost:3000</code> or simulator windows; never published to real users.</span>
+                    <span className="text-[#EF4444] font-mono text-base leading-none mt-0.5">&times;</span>
+                    <span><strong className="text-[#C4C8D4]">Projects die locally:</strong> Trapped on <code>localhost:3000</code> or simulator windows; never published to real users.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
-                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
-                    <span><strong>Quits when messy:</strong> Abandons the codebase the moment merge conflicts or prompt drift overwhelms the folder.</span>
+                    <span className="text-[#EF4444] font-mono text-base leading-none mt-0.5">&times;</span>
+                    <span><strong className="text-[#C4C8D4]">Quits when messy:</strong> Abandons the codebase the moment merge conflicts or prompt drift overwhelms the folder.</span>
                   </li>
                 </ul>
               </div>
 
               {/* The Technical Founder Column */}
-              <div className="p-6 sm:p-8 bg-[#11141C] space-y-5 relative">
+              <div className="p-6 sm:p-7 bg-[#11141C] space-y-4 relative">
                 <div className="absolute top-0 right-0 left-0 h-[2px] bg-gradient-to-r from-[#FF5E14] to-[#10B981]" />
                 <div className="flex items-center justify-between pb-3 hairline-b border-white/10">
                   <span className="font-mono text-xs uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
                     THE TECHNICAL FOUNDER
                   </span>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold">
+                  <span className="text-xs font-mono px-2 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold">
                     SHIPS TO PRODUCTION
                   </span>
                 </div>
 
-                <ul className="space-y-3.5 text-xs text-[#F4F4F0]">
+                <ul className="space-y-3 text-sm text-[#F4F4F0]">
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
-                    <span><strong>Ships in isolated branches:</strong> Builds features in dedicated, bisect-safe slices without risking the core runtime.</span>
+                    <span><strong className="text-[#10B981]">Ships in isolated branches:</strong> Builds features in dedicated, bisect-safe slices without risking the core runtime.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
-                    <span><strong>Experiments aggressively:</strong> Backed by 10-second <code>git reflog</code> rollbacks; refactors fearlessly at high speed.</span>
+                    <span><strong className="text-[#10B981]">Experiments aggressively:</strong> Backed by 10-second <code>git reflog</code> rollbacks; refactors fearlessly at high speed.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
-                    <span><strong>Deploys every merge:</strong> Code flows automatically to live Android glass and signed Google Play Store tracks.</span>
+                    <span><strong className="text-[#10B981]">Deploys every merge:</strong> Code flows automatically to live Android glass and signed Google Play Store tracks.</span>
                   </li>
                   <li className="flex items-start gap-2.5">
                     <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
-                    <span><strong>Treats repo as an asset:</strong> Clean commit provenance, in-app colophons, and verified architectures that co-founders can build on.</span>
+                    <span><strong className="text-[#10B981]">Treats repo as an asset:</strong> Clean commit provenance, in-app colophons, and verified architectures that co-founders can build on.</span>
                   </li>
                 </ul>
               </div>
@@ -1426,126 +1369,132 @@ export default function WeLiftoffPage() {
       </section>
 
       {/* Pairing Topology & Verification Cadence */}
-      <section id="pairing" className="hairline-b bg-gradient-to-b from-[#111317] to-[#0D0F13]">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-6">
-            <div className="space-y-4">
-              <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                Separation of Steering{" "}
-                <span className="font-serif italic font-normal text-[#FF4F00] block">
-                  And Verification.
-                </span>
-              </h2>
-              <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                Autonomous software synthesis requires strict separation between the implementer and the auditor.
-                Builders operate in two-person founder crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F]">crew-swap.sh</code>,
-                rotating author credentials and commit templates to enforce 50/50 contribution parity across both co-founders.
-              </p>
-            </div>
-
-            <div className="pt-6 hairline-t font-mono text-[11px] text-[#8E95A5] flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
-              <span>CONFIDENCE 1.0 DUAL-AUTHOR GIT TRAILERS ENFORCED</span>
-            </div>
-          </div>
-
-          <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2">
-            {/* Primary Terminal 1 */}
-            <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E] flex flex-col justify-between space-y-6">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF6A1F] font-bold flex items-center gap-1.5">
-                    <Cpu className="w-3.5 h-3.5" />
-                    TERMINAL 1 // FOUNDER A (SHIPPING ENGINE)
-                  </span>
-                  <span className="px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] font-mono text-[9px] font-bold border border-[#FF4F00]/30">
-                    HARDWARE TETHER
-                  </span>
+      <section id="pairing" className="hairline-b bg-gradient-to-b from-[#111317] to-[#0D0F13] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-white/10 rounded-sm overflow-hidden bg-[#0B0C0E]">
+            <div className="lg:col-span-4 p-6 sm:p-8 lg:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-6 bg-[#0E1015]">
+              <div className="space-y-4">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
+                  PAIRING TOPOLOGY // 50/50 CREW SEATS
                 </div>
-                <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
-                  Synthesis &amp; Hardware Tether
-                </h3>
-                <p className="text-xs text-[#8E95A5] leading-relaxed">
-                  Tethered to the physical Android handset over ADB. Executes Antigravity 2.0 code synthesis,
-                  Gradle builds, and on-device runtime deployments under a 20,000 active token budget ceiling.
+                <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
+                  Separation of Steering{" "}
+                  <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
+                    And Verification.
+                  </span>
+                </h2>
+                <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
+                  Autonomous software synthesis requires strict separation between the implementer and the auditor.
+                  Builders operate in two-person founder crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F] font-mono">crew-swap.sh</code>,
+                  rotating author credentials and commit templates to enforce 50/50 contribution parity across both co-founders.
                 </p>
               </div>
 
-              {/* Machined Terminal Window */}
-              <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-[11px]">
-                <div className="bg-[#151820] px-3 py-2 border-b border-white/10 flex items-center justify-between text-[10px] text-[#8E95A5]">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
-                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-1: founder-a@launch-mvp (pixel-8a)</span>
-                  </div>
-                  <span className="text-[#10B981]">ONLINE</span>
-                </div>
-                <div className="p-4 space-y-2 text-[#8E95A5]">
-                  <div className="text-[#FF6A1F] font-bold">
-                    $ agy-skills status --json
-                  </div>
-                  <div className="text-[#F4F4F0] bg-[#07080A] p-2 rounded-sm border border-white/5 font-mono text-[10px]">
-                    {'{ "budget_ceiling": 20000, "active_tokens": 4820, "status": "nominal" }'}
-                  </div>
-                  <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Token consumption within sovereign 20k cap
-                  </div>
-                  <div className="text-[#8E95A5] pt-1">
-                    $ <span className="text-[#F4F4F0]">android run --release</span> &rarr; deploy native APK to connected hardware
-                  </div>
-                </div>
+              <div className="pt-6 hairline-t font-mono text-xs text-[#8E95A5] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
+                <span>CONFIDENCE 1.0 DUAL-AUTHOR GIT TRAILERS ENFORCED</span>
               </div>
             </div>
 
-            {/* Auditor Station 2 */}
-            <div className="p-6 sm:p-8 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
-              <div className="space-y-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
-                    <GitBranch className="w-3.5 h-3.5" />
-                    TERMINAL 2 // FOUNDER B (VERIFICATION GATE)
-                  </span>
-                  <span className="px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] font-mono text-[9px] font-bold border border-[#10B981]/30">
-                    VERIFICATION GATE
-                  </span>
+            <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2">
+              {/* Primary Terminal 1 */}
+              <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E] flex flex-col justify-between space-y-6">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#FF6A1F] font-bold flex items-center gap-1.5">
+                      <Cpu className="w-4 h-4" />
+                      TERMINAL 1 // FOUNDER A (SHIPPING ENGINE)
+                    </span>
+                    <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] font-mono text-xs font-bold border border-[#FF4F00]/30">
+                      HARDWARE TETHER
+                    </span>
+                  </div>
+                  <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
+                    Synthesis &amp; Hardware Tether
+                  </h3>
+                  <p className="text-sm text-[#8E95A5] leading-relaxed">
+                    Tethered to the physical Android handset over ADB. Executes Antigravity 2.0 code synthesis,
+                    Gradle builds, and on-device runtime deployments under a 20,000 active token budget ceiling.
+                  </p>
                 </div>
-                <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
-                  Verification &amp; Specification Gate
-                </h3>
-                <p className="text-xs text-[#8E95A5] leading-relaxed">
-                  Dedicated to architectural specification (docs/spec.md), read-only AST diff auditing
-                  with git-ledger, scrcpy device mirroring, and compile-time zero-egress validation.
-                </p>
+
+                {/* Machined Terminal Window */}
+                <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-xs">
+                  <div className="bg-[#151820] px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between text-xs text-[#8E95A5]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
+                      <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-1: founder-a@launch-mvp (pixel-8a)</span>
+                    </div>
+                    <span className="text-[#10B981] font-bold">ONLINE</span>
+                  </div>
+                  <div className="p-4 space-y-2.5 text-[#8E95A5]">
+                    <div className="text-[#FF6A1F] font-bold">
+                      $ agy-skills status --json
+                    </div>
+                    <div className="text-[#F4F4F0] bg-[#07080A] p-2.5 rounded-sm border border-white/5 font-mono text-xs">
+                      {'{ "budget_ceiling": 20000, "active_tokens": 4820, "status": "nominal" }'}
+                    </div>
+                    <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Token consumption within sovereign 20k cap
+                    </div>
+                    <div className="text-[#8E95A5] pt-1">
+                      $ <span className="text-[#F4F4F0]">android run --release</span> &rarr; deploy native APK to connected hardware
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              {/* Machined Terminal Window */}
-              <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-[11px]">
-                <div className="bg-[#151820] px-3 py-2 border-b border-white/10 flex items-center justify-between text-[10px] text-[#8E95A5]">
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
-                    <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
-                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-2: founder-b@launch-mvp (audit)</span>
+              {/* Auditor Station 2 */}
+              <div className="p-6 sm:p-8 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <span className="font-mono text-xs uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
+                      <GitBranch className="w-4 h-4" />
+                      TERMINAL 2 // FOUNDER B (VERIFICATION GATE)
+                    </span>
+                    <span className="px-2 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] font-mono text-xs font-bold border border-[#10B981]/30">
+                      VERIFICATION GATE
+                    </span>
                   </div>
-                  <span className="text-[#10B981]">SYNCED</span>
+                  <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
+                    Verification &amp; Specification Gate
+                  </h3>
+                  <p className="text-sm text-[#8E95A5] leading-relaxed">
+                    Dedicated to architectural specification (docs/spec.md), read-only AST diff auditing
+                    with git-ledger, scrcpy device mirroring, and compile-time zero-egress validation.
+                  </p>
                 </div>
-                <div className="p-4 space-y-2 text-[#8E95A5]">
-                  <div className="text-[#10B981] font-bold">
-                    $ git ledger --diff --md
+
+                {/* Machined Terminal Window */}
+                <div className="rounded-sm border border-white/10 bg-[#0E1014] overflow-hidden shadow-lg shadow-black/60 font-mono text-xs">
+                  <div className="bg-[#151820] px-3.5 py-2.5 border-b border-white/10 flex items-center justify-between text-xs text-[#8E95A5]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
+                      <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-2: founder-b@launch-mvp (audit)</span>
+                    </div>
+                    <span className="text-[#10B981] font-bold">SYNCED</span>
                   </div>
-                  <div className="text-[#F4F4F0] bg-[#07080A] p-2 rounded-sm border border-white/5 font-mono text-[10px] space-y-0.5">
-                    <div>Agent: antigravity | Repo: launch-mvp</div>
-                    <div>Founder-A: @handle-a | Founder-B: @handle-b</div>
-                  </div>
-                  <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
-                    Confidence 1.0 dual-founder attribution verified
-                  </div>
-                  <div className="text-[#8E95A5] pt-1">
-                    $ <span className="text-[#F4F4F0]">./gradlew verifyZeroEgress</span> &rarr; network check PASS
+                  <div className="p-4 space-y-2.5 text-[#8E95A5]">
+                    <div className="text-[#10B981] font-bold">
+                      $ git ledger --diff --md
+                    </div>
+                    <div className="text-[#F4F4F0] bg-[#07080A] p-2.5 rounded-sm border border-white/5 font-mono text-xs space-y-1">
+                      <div>Agent: antigravity | Repo: launch-mvp</div>
+                      <div>Founder-A: @handle-a | Founder-B: @handle-b</div>
+                    </div>
+                    <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Confidence 1.0 dual-founder attribution verified
+                    </div>
+                    <div className="text-[#8E95A5] pt-1">
+                      $ <span className="text-[#F4F4F0]">./gradlew verifyZeroEgress</span> &rarr; network check PASS
+                    </div>
                   </div>
                 </div>
               </div>
@@ -1555,333 +1504,384 @@ export default function WeLiftoffPage() {
       </section>
 
       {/* Sovereign Legal & Architectural Invariants */}
-      <section id="invariants" className="hairline-b bg-[#0B0C0E]">
-        <div className="p-6 sm:p-10 hairline-b flex flex-wrap items-end justify-between gap-4 bg-gradient-to-r from-[#12151B] to-[#0B0C0E]">
-          <div className="space-y-2">
-            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight">
-              Four Non-Negotiable Institutional Invariants
-            </h2>
-          </div>
-          <p className="font-mono text-xs text-[#8E95A5] max-w-md leading-relaxed">
-            Select an invariant below to inspect its architectural enforcement
-            mechanism, statutory DPDP Act compliance, and automated test gate.
-          </p>
-        </div>
-
-        {/* 4-Column Invariant Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 hairline-b">
-          {COMPLIANCE_REGISTRY.map((item, idx) => {
-            const isSelected = item.id === activeInvariantId;
-            return (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => {
-                  audio.click();
-                  setActiveInvariantId(item.id);
-                }}
-                className={`p-6 sm:p-7 text-left ${
-                  idx < 3 ? "lg:hairline-r" : ""
-                } ${idx % 2 === 0 ? "md:hairline-r" : ""} hairline-b lg:hairline-b-0 cursor-pointer transition-all flex flex-col justify-between relative ${
-                  isSelected
-                    ? "bg-gradient-to-b from-[#181C24] to-[#12151C] shadow-inner shadow-white/5"
-                    : "bg-[#0B0C0E] hover:bg-[#111318]"
-                }`}
-              >
-                {isSelected && (
-                  <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF5E14] to-[#FF9248] shadow-sm shadow-[#FF4F00]" />
-                )}
-
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between font-mono text-[10px]">
-                    <span
-                      className={`font-bold uppercase tracking-wider ${
-                        isSelected ? "text-[#FF6A1F]" : "text-[#8E95A5]"
-                      }`}
-                    >
-                      {item.code}
-                    </span>
-                    {isSelected && (
-                      <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00] text-[#0B0C0E] font-bold text-[9px] shadow-sm">
-                        ACTIVE
-                      </span>
-                    )}
-                  </div>
-                  <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
-                    {item.title}
-                  </h3>
-                  <p className="text-xs text-[#8E95A5] leading-relaxed">
-                    {item.summary}
-                  </p>
-                </div>
-
-                <div className="pt-5 mt-5 hairline-t font-mono text-[11px] text-[#10B981] font-semibold flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5" />
-                  BOUND: {item.metric}
-                </div>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Invariant Detail Dossier Panel */}
-        <div className="p-6 sm:p-10 bg-[#111317] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center border-t border-white/5">
-          <div className="lg:col-span-4 space-y-2 hairline-b lg:hairline-b-0 lg:hairline-r pb-6 lg:pb-0 lg:pr-8">
-            <span className="font-mono text-[10px] uppercase tracking-widest text-[#FF6A1F] font-bold block">
-              ACTIVE SPECIFICATION // {activeInvariant.code}
-            </span>
-            <h4 className="font-display text-2xl font-bold text-[#F4F4F0]">
-              {activeInvariant.title}
-            </h4>
-            <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-mono text-xs font-semibold">
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              {activeInvariant.metric}
+      <section id="invariants" className="hairline-b bg-[#0B0C0E] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full space-y-6">
+          <div className="p-6 sm:p-8 hairline-b flex flex-wrap items-end justify-between gap-4 bg-gradient-to-r from-[#12151B] to-[#0B0C0E] rounded-sm border border-white/10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
+                STATUTORY COMPLIANCE &amp; ARCHITECTURAL GATES
+              </div>
+              <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
+                Four Non-Negotiable Institutional Invariants
+              </h2>
             </div>
+            <p className="font-mono text-xs sm:text-sm text-[#8E95A5] max-w-lg leading-relaxed">
+              Select an invariant below to inspect its architectural enforcement
+              mechanism, statutory DPDP Act compliance, and automated test gate.
+            </p>
           </div>
 
-          <div className="lg:col-span-4 space-y-2 text-xs text-[#8E95A5] leading-relaxed">
-            <span className="font-mono text-[10px] uppercase text-[#F4F4F0] font-bold block tracking-wider">
-              ARCHITECTURAL ENFORCEMENT &amp; STATUTORY DPDP BOUNDARY
-            </span>
-            <p className="text-[#C4C8D4]">{activeInvariant.architecturalMechanism}</p>
-            <p className="pt-1 text-[#8E95A5]">{activeInvariant.legalBound}</p>
+          {/* 4-Column Invariant Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-white/10 rounded-sm overflow-hidden bg-[#0B0C0E]">
+            {COMPLIANCE_REGISTRY.map((item, idx) => {
+              const isSelected = item.id === activeInvariantId;
+              return (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => {
+                    audio.click();
+                    setActiveInvariantId(item.id);
+                  }}
+                  className={`p-6 sm:p-7 text-left ${
+                    idx < 3 ? "lg:hairline-r" : ""
+                  } ${idx % 2 === 0 ? "md:hairline-r" : ""} hairline-b lg:hairline-b-0 cursor-pointer transition-all flex flex-col justify-between relative ${
+                    isSelected
+                      ? "bg-gradient-to-b from-[#181C24] to-[#12151C] shadow-inner shadow-white/5"
+                      : "bg-[#0B0C0E] hover:bg-[#111318]"
+                  }`}
+                >
+                  {isSelected && (
+                    <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF5E14] to-[#FF9248] shadow-sm shadow-[#FF4F00]" />
+                  )}
+
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between font-mono text-xs">
+                      <span
+                        className={`font-bold uppercase tracking-wider ${
+                          isSelected ? "text-[#FF6A1F]" : "text-[#8E95A5]"
+                        }`}
+                      >
+                        {item.code}
+                      </span>
+                      {isSelected && (
+                        <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00] text-[#0B0C0E] font-bold text-xs shadow-sm">
+                          ACTIVE
+                        </span>
+                      )}
+                    </div>
+                    <h3 className="font-display text-xl font-bold text-[#F4F4F0]">
+                      {item.title}
+                    </h3>
+                    <p className="text-sm text-[#8E95A5] leading-relaxed">
+                      {item.summary}
+                    </p>
+                  </div>
+
+                  <div className="pt-5 mt-5 hairline-t font-mono text-xs text-[#10B981] font-semibold flex items-center gap-1.5">
+                    <ShieldCheck className="w-4 h-4" />
+                    BOUND: {item.metric}
+                  </div>
+                </button>
+              );
+            })}
           </div>
 
-          <div className="lg:col-span-4 p-5 bg-[#0B0C0E] rounded-sm border border-white/10 space-y-2 font-mono text-xs shadow-md shadow-black/40">
-            <span className="text-[10px] uppercase text-[#FF6A1F] font-bold block tracking-wider flex items-center gap-1.5">
-              <Terminal className="w-3 h-3" />
-              DETERMINISTIC VERIFICATION GATE
-            </span>
-            <div className="bg-[#14171E] p-3 rounded-sm border border-white/5 text-[#F4F4F0] leading-relaxed">
-              {activeInvariant.verificationGate}
+          {/* Invariant Detail Dossier Panel */}
+          <div className="p-6 sm:p-8 bg-[#111317] grid grid-cols-1 lg:grid-cols-12 gap-8 items-center rounded-sm border border-white/10 shadow-lg shadow-black/50">
+            <div className="lg:col-span-4 space-y-2.5 hairline-b lg:hairline-b-0 lg:hairline-r pb-6 lg:pb-0 lg:pr-8">
+              <span className="font-mono text-xs uppercase tracking-widest text-[#FF6A1F] font-bold block">
+                ACTIVE SPECIFICATION // {activeInvariant.code}
+              </span>
+              <h4 className="font-display text-2xl font-bold text-[#F4F4F0]">
+                {activeInvariant.title}
+              </h4>
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-mono text-xs font-semibold">
+                <CheckCircle2 className="w-4 h-4" />
+                {activeInvariant.metric}
+              </div>
+            </div>
+
+            <div className="lg:col-span-4 space-y-2 text-sm text-[#8E95A5] leading-relaxed">
+              <span className="font-mono text-xs uppercase text-[#F4F4F0] font-bold block tracking-wider">
+                ARCHITECTURAL ENFORCEMENT &amp; STATUTORY DPDP BOUNDARY
+              </span>
+              <p className="text-[#C4C8D4] leading-relaxed">{activeInvariant.architecturalMechanism}</p>
+              <p className="pt-1 text-[#8E95A5] leading-relaxed">{activeInvariant.legalBound}</p>
+            </div>
+
+            <div className="lg:col-span-4 p-5 bg-[#0B0C0E] rounded-sm border border-white/10 space-y-2.5 font-mono text-xs shadow-md shadow-black/40">
+              <span className="text-xs uppercase text-[#FF6A1F] font-bold block tracking-wider flex items-center gap-2">
+                <Terminal className="w-3.5 h-3.5" />
+                DETERMINISTIC VERIFICATION GATE
+              </span>
+              <div className="bg-[#14171E] p-3.5 rounded-sm border border-white/5 text-[#F4F4F0] leading-relaxed text-xs">
+                {activeInvariant.verificationGate}
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 14-Day Execution DAG Syllabus */}
-      <section id="syllabus" className="hairline-b bg-gradient-to-b from-[#0B0C0E] to-[#0E1015]">
-        <div className="p-6 sm:p-10 hairline-b flex flex-wrap items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
-              FOUNDER MILESTONES // 14-DAY DAG
+      <section id="syllabus" className="hairline-b bg-gradient-to-b from-[#0B0C0E] to-[#0E1015] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full space-y-8">
+          <div className="p-6 sm:p-8 hairline-b flex flex-wrap items-center justify-between gap-4 bg-gradient-to-r from-[#12151B] to-[#0B0C0E] rounded-sm border border-white/10">
+            <div className="space-y-2">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
+                FOUNDER MILESTONES // 14-DAY DAG
+              </div>
+              <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
+                From Empty Repo to Production Release in 14 Days
+              </h2>
             </div>
-            <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight">
-              From Empty Repo to Production Release in 14 Days
-            </h2>
+
+            {/* 2 Bounded Phase Levers */}
+            <div className="flex items-center gap-2 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
+              <button
+                type="button"
+                onClick={() => {
+                  audio.click();
+                  setActivePhase("phase1");
+                }}
+                className={`px-4 py-2.5 rounded-sm uppercase cursor-pointer transition-all ${
+                  activePhase === "phase1"
+                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                    : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+                }`}
+              >
+                Phase 1: Company Foundation (Days 01–07)
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  audio.click();
+                  setActivePhase("phase2");
+                }}
+                className={`px-4 py-2.5 rounded-sm uppercase cursor-pointer transition-all ${
+                  activePhase === "phase2"
+                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                    : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+                }`}
+              >
+                Phase 2: The Shipping Pipeline (Days 08–14)
+              </button>
+            </div>
           </div>
 
-          {/* 2 Bounded Phase Levers */}
-          <div className="flex items-center gap-2 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
-            <button
-              type="button"
-              onClick={() => {
-                audio.click();
-                setActivePhase("phase1");
-              }}
-              className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
-                activePhase === "phase1"
-                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
-                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
-              }`}
-            >
-              Phase 1: Company Foundation (Days 01–07)
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                audio.click();
-                setActivePhase("phase2");
-              }}
-              className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
-                activePhase === "phase2"
-                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
-                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
-              }`}
-            >
-              Phase 2: The Shipping Pipeline (Days 08–14)
-            </button>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 border border-white/10 rounded-sm overflow-hidden bg-[#0B0C0E]">
+            {SYLLABUS_DAG[activePhase].map((node, idx) => (
+              <div
+                key={node.code}
+                className={`p-6 sm:p-7 ${
+                  idx < 3 ? "lg:hairline-r" : ""
+                } hairline-b lg:hairline-b-0 flex flex-col justify-between space-y-6 bg-[#0B0C0E] hover:bg-[#111319] transition-colors relative group`}
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between font-mono text-xs">
+                    <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 font-bold">
+                      {node.dayRange}
+                    </span>
+                    <span className="text-[#8E95A5]">{node.code}</span>
+                  </div>
+                  <h3 className="font-display text-xl font-bold text-[#F4F4F0] group-hover:text-[#FF6A1F] transition-colors">
+                    {node.title}
+                  </h3>
+                  <p className="text-sm text-[#8E95A5] leading-relaxed">
+                    {node.specification}
+                  </p>
+                </div>
+
+                <div className="space-y-2.5 pt-5 hairline-t font-mono text-xs">
+                  <div className="text-[#8E95A5]">
+                    FOUNDER DELIVERABLE:{" "}
+                    <strong className="text-[#F4F4F0] block font-semibold mt-1 text-xs sm:text-sm">{node.artifact}</strong>
+                  </div>
+                  <div className="p-2.5 bg-[#12151C] rounded-sm border border-white/10 text-[#10B981] overflow-x-auto text-xs whitespace-nowrap" title={node.verificationCmd}>
+                    $ {node.verificationCmd}
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-          {SYLLABUS_DAG[activePhase].map((node, idx) => (
-            <div
-              key={node.code}
-              className={`p-6 sm:p-7 ${
-                idx < 3 ? "lg:hairline-r" : ""
-              } hairline-b lg:hairline-b-0 flex flex-col justify-between space-y-6 bg-[#0B0C0E] hover:bg-[#111319] transition-colors relative group`}
-            >
-              <div className="space-y-3">
-                <div className="flex items-center justify-between font-mono text-[10px]">
-                  <span className="px-2 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 font-bold">
-                    {node.dayRange}
-                  </span>
-                  <span className="text-[#8E95A5]">{node.code}</span>
-                </div>
-                <h3 className="font-display text-lg font-bold text-[#F4F4F0] group-hover:text-[#FF6A1F] transition-colors">
-                  {node.title}
-                </h3>
-                <p className="text-xs text-[#8E95A5] leading-relaxed">
-                  {node.specification}
-                </p>
-              </div>
-
-              <div className="space-y-2.5 pt-4 hairline-t font-mono text-[11px]">
-                <div className="text-[#8E95A5]">
-                  FOUNDER DELIVERABLE:{" "}
-                  <strong className="text-[#F4F4F0] block font-semibold mt-0.5">{node.artifact}</strong>
-                </div>
-                <div className="p-2.5 bg-[#12151C] rounded-sm border border-white/10 text-[#10B981] overflow-x-auto text-[10px] whitespace-nowrap" title={node.verificationCmd}>
-                  $ {node.verificationCmd}
-                </div>
-              </div>
-            </div>
-          ))}
         </div>
       </section>
 
       {/* Institutional Operations & Founder Dossier */}
-      <section id="institutional" className="hairline-b bg-[#111317]">
-        <div className="grid grid-cols-1 lg:grid-cols-12">
-          {/* Left 7 Columns: Operations Architecture */}
-          <div className="lg:col-span-7 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-8">
-            <div className="space-y-3">
-              <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                Zero-Impact Campus Integration.
-              </h2>
-              <p className="text-sm text-[#8E95A5] leading-relaxed max-w-2xl">
-                Engineered specifically for residential boarding schools and rigorous academic schedules.
-                Substrata Labs operates directly within the 18:00–20:00 evening prep window,
-                managing hardware reserves and statutory child safeguarding with zero campus IT burden.
-              </p>
+      <section id="institutional" className="hairline-b bg-[#111317] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
+        <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-12 border border-white/10 rounded-sm overflow-hidden bg-[#0B0C0E]">
+            {/* Left 7 Columns: Operations Architecture */}
+            <div className="lg:col-span-7 p-6 sm:p-8 lg:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between space-y-8 bg-[#0E1015]">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
+                  ZERO-IMPACT RESIDENTIAL INTEGRATION
+                </div>
+                <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
+                  Zero-Impact Campus Integration.
+                </h2>
+                <p className="text-base text-[#8E95A5] leading-relaxed max-w-2xl">
+                  Engineered specifically for residential boarding schools and rigorous academic schedules.
+                  Substrata Labs operates directly within the 18:00–20:00 evening prep window,
+                  managing hardware reserves and statutory child safeguarding with zero campus IT burden.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
+                <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
+                  <div className="text-[#FF6A1F] font-bold flex items-center gap-2 text-xs sm:text-sm">
+                    <Terminal className="w-4 h-4 text-[#FF4F00]" />
+                    ZERO CAMPUS WI-FI BURDEN
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+                    Toolchains install offline from pre-seeded 64GB USB media. Agent queries route via Substrata&apos;s autonomous cellular 5G uplink—zero campus Wi-Fi access or firewall reconfiguration required.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
+                  <div className="text-[#10B981] font-bold flex items-center gap-2 text-xs sm:text-sm">
+                    <Layers className="w-4 h-4 text-[#10B981]" />
+                    EVENING PREP INTEGRATION
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+                    Operates strictly within the 18:00–20:00 evening prep window, ensuring zero disruption to morning academic classes, sports fixtures, or mandatory dorm call timings.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
+                  <div className="text-[#10B981] font-bold flex items-center gap-2 text-xs sm:text-sm">
+                    <ShieldCheck className="w-4 h-4 text-[#10B981]" />
+                    HARDWARE CONTINGENCY RESERVE
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+                    Workstations pair iOS builders with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
+                  </p>
+                </div>
+
+                <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
+                  <div className="text-[#F4F4F0] font-bold flex items-center gap-2 text-xs sm:text-sm">
+                    <CheckCircle2 className="w-4 h-4 text-[#FF4F00]" />
+                    ADMISSIONS CREDENTIAL PORTFOLIO
+                  </div>
+                  <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+                    Graduates cite verifiable engineering deliverables—live Google Play listings, signed GitHub release APKs, in-app build fingerprints, and 60+ commit histories—directly in Common App and UCAS supplements.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 font-mono text-xs">
-              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
-                <div className="text-[#FF6A1F] font-bold flex items-center gap-2">
-                  <Terminal className="w-4 h-4 text-[#FF4F00]" />
-                  ZERO CAMPUS WI-FI BURDEN
+            {/* Right 5 Columns: Principal Instructor & Founder Dossier */}
+            <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between font-mono text-xs text-[#8E95A5] hairline-b pb-3">
+                  <span className="text-[#FF6A1F] font-bold tracking-wider">
+                    DIRECTOR DOSSIER // SUBSTRATA LABS
+                  </span>
+                  <span className="px-2 py-0.5 rounded-sm bg-white/5 border border-white/10 text-[#F4F4F0]">
+                    ALUMNUS: MAYO COLLEGE (&apos;22–&apos;23)
+                  </span>
                 </div>
-                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Toolchains install offline from pre-seeded 64GB USB media. Agent queries route via Substrata&apos;s autonomous cellular 5G uplink—zero campus Wi-Fi access or firewall reconfiguration required.
-                </p>
-              </div>
 
-              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
-                <div className="text-[#10B981] font-bold flex items-center gap-2">
-                  <Layers className="w-4 h-4 text-[#10B981]" />
-                  EVENING PREP INTEGRATION
+                <div>
+                  <h3 className="font-display text-2xl font-extrabold text-[#F4F4F0]">
+                    Kushagra Choudhary
+                  </h3>
+                  <p className="font-mono text-xs sm:text-sm text-[#10B981] mt-1 font-semibold flex items-center gap-1.5">
+                    <CheckCircle2 className="w-4 h-4" />
+                    Founder, Substrata Labs · Architect of Sol (On-Device LLM on Google Play)
+                  </p>
                 </div>
-                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Operates strictly within the 18:00–20:00 evening prep window, ensuring zero disruption to morning academic classes, sports fixtures, or mandatory dorm call timings.
-                </p>
+
+                <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug pl-4 border-l-2 border-[#FF4F00] bg-gradient-to-r from-[#FF4F00]/5 to-transparent py-3">
+                  &ldquo;When I was at Mayo College, the bottleneck was never raw
+                  curiosity—it was access to production engineering toolchains.
+                  WeLiftoff trains young builders to command version control,
+                  local-first persistence, and reproducible release pipelines so they
+                  ship durable software before graduating high school.&rdquo;
+                </blockquote>
               </div>
 
-              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
-                <div className="text-[#10B981] font-bold flex items-center gap-2">
-                  <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                  HARDWARE CONTINGENCY RESERVE
-                </div>
-                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Workstations pair iOS builders with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
-                </p>
+              <div className="pt-4 hairline-t font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-2">
+                <span className="text-[#F4F4F0] font-semibold">CAMPUS PILOT TRACK: MAYO COLLEGE, AJMER</span>
+                <a
+                  href="https://substratalabs.org"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-[#FF6A1F] hover:text-[#FFA066] transition-colors inline-flex items-center gap-1 font-semibold"
+                >
+                  substratalabs.org <ArrowUpRight className="w-3.5 h-3.5" />
+                </a>
               </div>
-
-              <div className="p-4 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2 shadow-sm">
-                <div className="text-[#F4F4F0] font-bold flex items-center gap-2">
-                  <CheckCircle2 className="w-4 h-4 text-[#FF4F00]" />
-                  ADMISSIONS CREDENTIAL PORTFOLIO
-                </div>
-                <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Graduates cite verifiable engineering deliverables—live Google Play listings, signed GitHub release APKs, in-app build fingerprints, and 60+ commit histories—directly in Common App and UCAS supplements.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Right 5 Columns: Principal Instructor & Founder Dossier */}
-          <div className="lg:col-span-5 p-6 sm:p-10 bg-[#0B0C0E] flex flex-col justify-between space-y-6">
-            <div className="space-y-5">
-              <div className="flex items-center justify-between font-mono text-[10px] text-[#8E95A5] hairline-b pb-3">
-                <span className="text-[#FF6A1F] font-bold tracking-wider">
-                  DIRECTOR DOSSIER // SUBSTRATA LABS
-                </span>
-                <span className="px-2 py-0.5 rounded-sm bg-white/5 border border-white/10 text-[#F4F4F0]">
-                  ALUMNUS: MAYO COLLEGE (&apos;22–&apos;23)
-                </span>
-              </div>
-
-              <div>
-                <h3 className="font-display text-2xl font-extrabold text-[#F4F4F0]">
-                  Kushagra Choudhary
-                </h3>
-                <p className="font-mono text-xs text-[#10B981] mt-1 font-semibold flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  Founder, Substrata Labs · Architect of Sol (On-Device LLM on Google Play)
-                </p>
-              </div>
-
-              <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug pl-4 border-l-2 border-[#FF4F00] bg-gradient-to-r from-[#FF4F00]/5 to-transparent py-2">
-                &ldquo;When I was at Mayo College, the bottleneck was never raw
-                curiosity—it was access to production engineering toolchains.
-                WeLiftoff trains young builders to command version control,
-                local-first persistence, and reproducible release pipelines so they
-                ship durable software before graduating high school.&rdquo;
-              </blockquote>
-            </div>
-
-            <div className="pt-4 hairline-t font-mono text-[11px] text-[#8E95A5] flex flex-wrap items-center justify-between gap-2">
-              <span className="text-[#F4F4F0]">INAUGURAL PARTNER: MAYO COLLEGE, AJMER</span>
-              <a
-                href="https://substratalabs.org"
-                target="_blank"
-                rel="noreferrer"
-                className="text-[#FF6A1F] hover:text-[#FFA066] transition-colors inline-flex items-center gap-1 font-semibold"
-              >
-                substratalabs.org <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Institutional Reservation Terminal */}
-      <section id="contract" className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E] relative">
-        <div className="max-w-2xl mx-auto panel-machined rounded-sm p-6 sm:p-10 shadow-2xl shadow-black/80">
-          <div className="space-y-2.5 mb-6">
-            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] led-indicator-amber" />
+      {/* Founder Crew & Institutional Reservation Terminal */}
+      <section id="contract" className="py-14 sm:py-20 px-4 sm:px-8 bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E] relative min-h-[100dvh] flex flex-col justify-center">
+        <div className="max-w-3xl mx-auto panel-machined rounded-sm p-6 sm:p-10 shadow-2xl shadow-black/80 w-full space-y-6">
+          <div className="space-y-3">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+              <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
               10 CREWS · 20 SEATS · SHIP PRODUCTION SOFTWARE
             </div>
-            <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#F4F4F0] tracking-tight">
+            <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
               Stop sitting on localhost. Ship your first product today.
             </h2>
-            <p className="font-mono text-xs text-[#8E95A5] leading-relaxed">
-              Reserve your two-person founder crew for the 14-day on-campus engineering residency at Mayo College.
+            <p className="font-mono text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
+              Reserve your two-person founder crew for the 14-day on-campus engineering residency.
               Receive the executive prospectus, hardware pairing checklist, and parental assent documentation.
             </p>
 
             {/* Tuition Breakdown Card */}
-            <div className="mt-4 p-3.5 rounded-sm bg-[#0A0C0E] border border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+            <div className="p-4 rounded-sm bg-[#0A0C0E] border border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs sm:text-sm">
               <div>
-                <span className="text-[#8E95A5] block text-[10px] uppercase">CATALOG TUITION</span>
-                <span className="text-[#F4F4F0] font-bold text-sm">₹95,000</span>{" "}
+                <span className="text-[#8E95A5] block text-xs uppercase">CATALOG TUITION</span>
+                <span className="text-[#F4F4F0] font-bold text-base">₹95,000</span>{" "}
                 <span className="text-[#8E95A5]">($1,125 USD)</span>
               </div>
               <div className="text-right">
-                <span className="text-[#FF6A1F] block text-[10px] uppercase font-bold flex items-center gap-1 justify-end">
+                <span className="text-[#FF6A1F] block text-xs uppercase font-bold flex items-center gap-1 justify-end">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
-                  PILOT RESIDENCY RATE (MAYO COLLEGE)
+                  CAMPUS PILOT RATE (MAYO COLLEGE)
                 </span>
-                <span className="text-[#10B981] font-bold text-sm">₹49,000–₹55,000</span>{" "}
+                <span className="text-[#10B981] font-bold text-base">₹49,000–₹55,000</span>{" "}
                 <span className="text-[#8E95A5]">($580–$650 USD)</span>
               </div>
             </div>
           </div>
 
+          {/* Dual-Path Mode Switcher */}
+          <div className="grid grid-cols-2 gap-2 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
+            <button
+              type="button"
+              onClick={() => {
+                audio.click();
+                setIntakeMode("crew");
+                setFormErrors({});
+              }}
+              className={`py-2.5 px-3 rounded-sm uppercase cursor-pointer transition-all text-center flex items-center justify-center gap-2 ${
+                intakeMode === "crew"
+                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+              }`}
+            >
+              <Cpu className="w-4 h-4" />
+              <span>Apply for Founder Crew (Students)</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                audio.click();
+                setIntakeMode("institutional");
+                setFormErrors({});
+              }}
+              className={`py-2.5 px-3 rounded-sm uppercase cursor-pointer transition-all text-center flex items-center justify-center gap-2 ${
+                intakeMode === "institutional"
+                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
+                  : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              <span>Institutional Faculty Inquiry</span>
+            </button>
+          </div>
+
           {/* Cohort Window Selector */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-6 font-mono text-[11px]">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
             {[
               "Winter 2026 Residency (Mayo College Pilot)",
               "Spring 2027 Residency",
@@ -1903,33 +1903,47 @@ export default function WeLiftoffPage() {
               >
                 <span>{slot}</span>
                 {cohortWindow === slot && (
-                  <CheckCircle2 className="w-3.5 h-3.5 text-[#0B0C0E]" />
+                  <CheckCircle2 className="w-4 h-4 text-[#0B0C0E]" />
                 )}
               </button>
             ))}
           </div>
 
           {inquirySubmitted ? (
-            <div className="p-6 bg-[#0B0C0E] rounded-sm border border-[#10B981]/40 font-mono text-xs space-y-3">
-              <div className="text-[#10B981] font-bold text-sm flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-[#10B981]" />
-                RESERVATION TRANSMISSION LOGGED [{cohortWindow.toUpperCase()}]
+            <div className="p-6 bg-[#0B0C0E] rounded-sm border border-[#10B981]/40 font-mono text-xs sm:text-sm space-y-3">
+              <div className="text-[#10B981] font-bold text-sm sm:text-base flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-[#10B981]" />
+                {intakeMode === "crew"
+                  ? `FOUNDER CREW REGISTRATION TRANSMITTED [${cohortWindow.toUpperCase()}]`
+                  : `INSTITUTIONAL DOSSIER TRANSMITTED [${cohortWindow.toUpperCase()}]`}
               </div>
-              <p className="text-[#8E95A5] leading-relaxed">
-                Dossier request registered for{" "}
-                <strong className="text-[#F4F4F0]">
-                  {formData.institution || "your institution"}
-                </strong>
-                . Substrata Labs will provide the executive proposal, hardware pairing manifest,
-                and DPDP Act 2023 assent documentation within 24 hours.
-              </p>
+              {intakeMode === "crew" ? (
+                <p className="text-[#8E95A5] leading-relaxed">
+                  Founder crew application logged for{" "}
+                  <strong className="text-[#F4F4F0]">
+                    {crewData.studentName || "Student Founder"}
+                  </strong>{" "}
+                  ({crewData.house ? `${crewData.house} House` : "Mayo College Pilot"}). Substrata Labs will verify the cohort window and send the DPDP Act 2023 §9 Parental Assent Link via WhatsApp to{" "}
+                  <strong className="text-[#F4F4F0]">{crewData.parentWhatsApp || "your registered contact"}</strong>{" "}
+                  within 24 hours.
+                </p>
+              ) : (
+                <p className="text-[#8E95A5] leading-relaxed">
+                  Institutional dossier request registered for{" "}
+                  <strong className="text-[#F4F4F0]">
+                    {formData.institution || "your institution"}
+                  </strong>{" "}
+                  ({formData.name}). Substrata Labs will provide the executive proposal, hardware pairing manifest,
+                  and DPDP Act 2023 institutional clearance documentation within 24 hours.
+                </p>
+              )}
               <button
                 type="button"
                 onClick={() => {
                   audio.click();
                   setInquirySubmitted(false);
                 }}
-                className="btn-tactile rounded-sm px-4 py-2 text-[11px] uppercase cursor-pointer"
+                className="btn-tactile rounded-sm px-4 py-2 text-xs uppercase cursor-pointer"
               >
                 Reset Intake Terminal
               </button>
@@ -1940,152 +1954,309 @@ export default function WeLiftoffPage() {
               onKeyDown={(e) => audio.keyDown(e.code, e.repeat)}
               onKeyUp={(e) => audio.keyUp(e.code)}
               onSubmit={handleFormSubmit}
-              className="space-y-4 font-mono text-xs"
+              className="space-y-4 font-mono text-xs sm:text-sm"
             >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="intake-name" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
-                    FULL NAME *
-                  </label>
-                  <input
-                    id="intake-name"
-                    type="text"
-                    maxLength={100}
-                    aria-invalid={!!formErrors.name}
-                    aria-describedby={formErrors.name ? "name-error" : undefined}
-                    placeholder="Dr. / Principal / Head of Department"
-                    value={formData.name}
-                    onChange={(e) => {
-                      setFormData({ ...formData, name: e.target.value });
-                      if (formErrors.name) setFormErrors({ ...formErrors, name: undefined });
-                    }}
-                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
-                      formErrors.name ? "border-[#EF4444] focus:border-[#EF4444]" : ""
-                    }`}
-                  />
-                  {formErrors.name && (
-                    <span id="name-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
-                      ! {formErrors.name}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="intake-role" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
-                    OFFICIAL DESIGNATION *
-                  </label>
-                  <input
-                    id="intake-role"
-                    type="text"
-                    maxLength={100}
-                    aria-invalid={!!formErrors.role}
-                    aria-describedby={formErrors.role ? "role-error" : undefined}
-                    placeholder="Principal / HOD CS / Housemaster"
-                    value={formData.role}
-                    onChange={(e) => {
-                      setFormData({ ...formData, role: e.target.value });
-                      if (formErrors.role) setFormErrors({ ...formErrors, role: undefined });
-                    }}
-                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
-                      formErrors.role ? "border-[#EF4444] focus:border-[#EF4444]" : ""
-                    }`}
-                  />
-                  {formErrors.role && (
-                    <span id="role-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
-                      ! {formErrors.role}
-                    </span>
-                  )}
-                </div>
-              </div>
+              {intakeMode === "crew" ? (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="crew-studentName" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        FOUNDER STUDENT NAME *
+                      </label>
+                      <input
+                        id="crew-studentName"
+                        type="text"
+                        maxLength={100}
+                        aria-invalid={!!formErrors.studentName}
+                        aria-describedby={formErrors.studentName ? "studentName-error" : undefined}
+                        placeholder="e.g. Kushagra Chouhan"
+                        value={crewData.studentName}
+                        onChange={(e) => {
+                          setCrewData({ ...crewData, studentName: e.target.value });
+                          if (formErrors.studentName) setFormErrors({ ...formErrors, studentName: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.studentName ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.studentName && (
+                        <span id="studentName-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.studentName}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="crew-house" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        CAMPUS HOUSE / DORMITORY *
+                      </label>
+                      <input
+                        id="crew-house"
+                        type="text"
+                        maxLength={100}
+                        aria-invalid={!!formErrors.house}
+                        aria-describedby={formErrors.house ? "house-error" : undefined}
+                        placeholder="e.g. Colvin / Bharatpur / Oman House"
+                        value={crewData.house}
+                        onChange={(e) => {
+                          setCrewData({ ...crewData, house: e.target.value });
+                          if (formErrors.house) setFormErrors({ ...formErrors, house: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.house ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.house && (
+                        <span id="house-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.house}
+                        </span>
+                      )}
+                    </div>
+                  </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label htmlFor="intake-institution" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
-                    INSTITUTION NAME *
-                  </label>
-                  <input
-                    id="intake-institution"
-                    type="text"
-                    maxLength={120}
-                    aria-invalid={!!formErrors.institution}
-                    aria-describedby={formErrors.institution ? "institution-error" : undefined}
-                    placeholder="e.g. Mayo College, Ajmer"
-                    value={formData.institution}
-                    onChange={(e) => {
-                      setFormData({ ...formData, institution: e.target.value });
-                      if (formErrors.institution) setFormErrors({ ...formErrors, institution: undefined });
-                    }}
-                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
-                      formErrors.institution ? "border-[#EF4444] focus:border-[#EF4444]" : ""
-                    }`}
-                  />
-                  {formErrors.institution && (
-                    <span id="institution-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
-                      ! {formErrors.institution}
-                    </span>
-                  )}
-                </div>
-                <div>
-                  <label htmlFor="intake-email" className="block uppercase text-[10px] text-[#8E95A5] mb-1.5 font-bold">
-                    INSTITUTIONAL EMAIL *
-                  </label>
-                  <input
-                    id="intake-email"
-                    type="email"
-                    maxLength={120}
-                    aria-invalid={!!formErrors.email}
-                    aria-describedby={formErrors.email ? "email-error" : undefined}
-                    placeholder="office@institution.edu.in"
-                    value={formData.email}
-                    onChange={(e) => {
-                      setFormData({ ...formData, email: e.target.value });
-                      if (formErrors.email) setFormErrors({ ...formErrors, email: undefined });
-                    }}
-                    className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68] ${
-                      formErrors.email ? "border-[#EF4444] focus:border-[#EF4444]" : ""
-                    }`}
-                  />
-                  {formErrors.email && (
-                    <span id="email-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-[10px] mt-1.5 block">
-                      ! {formErrors.email}
-                    </span>
-                  )}
-                </div>
-              </div>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="crew-grade" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        GRADE &amp; STREAM *
+                      </label>
+                      <input
+                        id="crew-grade"
+                        type="text"
+                        maxLength={100}
+                        aria-invalid={!!formErrors.grade}
+                        aria-describedby={formErrors.grade ? "grade-error" : undefined}
+                        placeholder="e.g. Class 11 (PCM + CS) / Class 12"
+                        value={crewData.grade}
+                        onChange={(e) => {
+                          setCrewData({ ...crewData, grade: e.target.value });
+                          if (formErrors.grade) setFormErrors({ ...formErrors, grade: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.grade ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.grade && (
+                        <span id="grade-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.grade}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="crew-coFounder" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        CREW CO-FOUNDER (OPTIONAL)
+                      </label>
+                      <input
+                        id="crew-coFounder"
+                        type="text"
+                        maxLength={100}
+                        placeholder="Name of paired batchmate (or 'Solo Operator')"
+                        value={crewData.coFounder}
+                        onChange={(e) => setCrewData({ ...crewData, coFounder: e.target.value })}
+                        className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"
+                      />
+                    </div>
+                  </div>
 
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label htmlFor="intake-notes" className="block uppercase text-[10px] text-[#8E95A5] font-bold">
-                    LAB CONSTRAINTS &amp; SCHEDULING PARAMETERS
-                  </label>
-                  <span className="text-[10px] text-[#555A68] font-mono">
-                    {formData.notes.length}/1000
-                  </span>
-                </div>
-                <textarea
-                  id="intake-notes"
-                  rows={3}
-                  maxLength={1000}
-                  placeholder="Target cohort window, laboratory constraints, or evening prep timing (18:00–20:00)..."
-                  value={formData.notes}
-                  onChange={(e) =>
-                    setFormData({ ...formData, notes: e.target.value })
-                  }
-                  className="input-machined w-full px-3.5 py-2.5 rounded-sm text-base sm:text-xs font-sans placeholder:text-[#555A68]"
-                />
-              </div>
+                  <div>
+                    <label htmlFor="crew-parentWhatsApp" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                      PARENT / GUARDIAN WHATSAPP * <span className="text-[#555A68] font-normal">(DPDP Act §9 Custodial Assent)</span>
+                    </label>
+                    <input
+                      id="crew-parentWhatsApp"
+                      type="tel"
+                      maxLength={20}
+                      aria-invalid={!!formErrors.parentWhatsApp}
+                      aria-describedby={formErrors.parentWhatsApp ? "parentWhatsApp-error" : undefined}
+                      placeholder="+91 98290 XXXXX"
+                      value={crewData.parentWhatsApp}
+                      onChange={(e) => {
+                        setCrewData({ ...crewData, parentWhatsApp: e.target.value });
+                        if (formErrors.parentWhatsApp) setFormErrors({ ...formErrors, parentWhatsApp: undefined });
+                      }}
+                      className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                        formErrors.parentWhatsApp ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                      }`}
+                    />
+                    {formErrors.parentWhatsApp && (
+                      <span id="parentWhatsApp-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                        ! {formErrors.parentWhatsApp}
+                      </span>
+                    )}
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label htmlFor="crew-notes" className="block uppercase text-xs text-[#8E95A5] font-bold">
+                        TARGET ANDROID APP CONCEPT / PROBLEM STATEMENT
+                      </label>
+                      <span className="text-xs text-[#555A68] font-mono">
+                        {crewData.notes.length}/1000
+                      </span>
+                    </div>
+                    <textarea
+                      id="crew-notes"
+                      rows={3}
+                      maxLength={1000}
+                      placeholder="What real native Android app do you want to build and ship to the Play Store during the 14 days? (e.g. offline mess menu & laundry tracker, sports tournament manager, on-device audio journal...)"
+                      value={crewData.notes}
+                      onChange={(e) => setCrewData({ ...crewData, notes: e.target.value })}
+                      className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="intake-name" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        FULL NAME *
+                      </label>
+                      <input
+                        id="intake-name"
+                        type="text"
+                        maxLength={100}
+                        aria-invalid={!!formErrors.name}
+                        aria-describedby={formErrors.name ? "name-error" : undefined}
+                        placeholder="Dr. / Principal / Head of Department"
+                        value={formData.name}
+                        onChange={(e) => {
+                          setFormData({ ...formData, name: e.target.value });
+                          if (formErrors.name) setFormErrors({ ...formErrors, name: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.name ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.name && (
+                        <span id="name-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.name}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="intake-role" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        OFFICIAL DESIGNATION *
+                      </label>
+                      <input
+                        id="intake-role"
+                        type="text"
+                        maxLength={100}
+                        aria-invalid={!!formErrors.role}
+                        aria-describedby={formErrors.role ? "role-error" : undefined}
+                        placeholder="Principal / HOD CS / Housemaster"
+                        value={formData.role}
+                        onChange={(e) => {
+                          setFormData({ ...formData, role: e.target.value });
+                          if (formErrors.role) setFormErrors({ ...formErrors, role: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.role ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.role && (
+                        <span id="role-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.role}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label htmlFor="intake-institution" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        INSTITUTION NAME *
+                      </label>
+                      <input
+                        id="intake-institution"
+                        type="text"
+                        maxLength={120}
+                        aria-invalid={!!formErrors.institution}
+                        aria-describedby={formErrors.institution ? "institution-error" : undefined}
+                        placeholder="e.g. Mayo College, Ajmer"
+                        value={formData.institution}
+                        onChange={(e) => {
+                          setFormData({ ...formData, institution: e.target.value });
+                          if (formErrors.institution) setFormErrors({ ...formErrors, institution: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.institution ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.institution && (
+                        <span id="institution-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.institution}
+                        </span>
+                      )}
+                    </div>
+                    <div>
+                      <label htmlFor="intake-email" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        INSTITUTIONAL EMAIL *
+                      </label>
+                      <input
+                        id="intake-email"
+                        type="email"
+                        maxLength={120}
+                        aria-invalid={!!formErrors.email}
+                        aria-describedby={formErrors.email ? "email-error" : undefined}
+                        placeholder="office@institution.edu.in"
+                        value={formData.email}
+                        onChange={(e) => {
+                          setFormData({ ...formData, email: e.target.value });
+                          if (formErrors.email) setFormErrors({ ...formErrors, email: undefined });
+                        }}
+                        className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
+                          formErrors.email ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                        }`}
+                      />
+                      {formErrors.email && (
+                        <span id="email-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.email}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  <div>
+                    <div className="flex items-center justify-between mb-1.5">
+                      <label htmlFor="intake-notes" className="block uppercase text-xs text-[#8E95A5] font-bold">
+                        LAB CONSTRAINTS &amp; SCHEDULING PARAMETERS
+                      </label>
+                      <span className="text-xs text-[#555A68] font-mono">
+                        {formData.notes.length}/1000
+                      </span>
+                    </div>
+                    <textarea
+                      id="intake-notes"
+                      rows={3}
+                      maxLength={1000}
+                      placeholder="Target cohort window, laboratory constraints, or evening prep timing (18:00–20:00)..."
+                      value={formData.notes}
+                      onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
+                      className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"
+                    />
+                  </div>
+                </>
+              )}
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-primary-tactile rounded-sm w-full py-4 font-mono text-xs font-bold uppercase tracking-wider cursor-pointer shadow-lg shadow-[#FF4F00]/25 disabled:opacity-75 disabled:cursor-wait flex items-center justify-center gap-2"
+                className="btn-primary-tactile rounded-sm w-full py-4 font-mono text-sm font-bold uppercase tracking-wider cursor-pointer shadow-lg shadow-[#FF4F00]/25 disabled:opacity-75 disabled:cursor-wait flex items-center justify-center gap-2"
               >
                 {isSubmitting ? (
                   <>
-                    <span className="w-3.5 h-3.5 border-2 border-[#0B0C0E] border-t-transparent rounded-full animate-spin" />
-                    <span>TRANSMITTING FOUNDER CREW RESERVATION...</span>
+                    <span className="w-4 h-4 border-2 border-[#0B0C0E] border-t-transparent rounded-full animate-spin" />
+                    <span>
+                      {intakeMode === "crew"
+                        ? "TRANSMITTING FOUNDER CREW REGISTRATION..."
+                        : "TRANSMITTING INSTITUTIONAL INQUIRY..."}
+                    </span>
                   </>
                 ) : (
-                  <span>Claim Founder Cohort Seat [{cohortWindow.toUpperCase()}] &rarr;</span>
+                  <span>
+                    {intakeMode === "crew"
+                      ? `Claim Founder Crew Seat [${cohortWindow.split(" ")[0]} Cohort] →`
+                      : `Request Institutional Pilot Dossier [${cohortWindow.split(" ")[0]} Cohort] →`}
+                  </span>
                 )}
               </button>
             </form>
@@ -2094,10 +2265,10 @@ export default function WeLiftoffPage() {
       </section>
 
       {/* Architectural Footer */}
-      <footer className="hairline-t bg-[#0B0C0E] py-10 px-4 sm:px-8 font-mono text-xs text-[#8E95A5]">
-        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+      <footer className="hairline-t bg-[#0B0C0E] py-10 px-4 sm:px-8 font-mono text-xs sm:text-sm text-[#8E95A5]">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <span className="text-base select-none">
+            <span className="text-lg select-none">
               🚀
             </span>
             <span className="text-[#F4F4F0] font-bold">WELIFTOFF.NOW</span>
@@ -2105,14 +2276,14 @@ export default function WeLiftoffPage() {
             <span>SUBSTRATA LABS</span>
           </div>
 
-          <div className="text-[11px]">
+          <div className="text-xs">
             GOVT. OF INDIA MSME:{" "}
             <code className="text-[#F4F4F0] bg-white/5 px-2 py-0.5 rounded-sm border border-white/10">
               UDYAM-RJ-37-0014993
             </code>
           </div>
 
-          <div className="flex items-center gap-5 text-[11px]">
+          <div className="flex items-center gap-5 text-xs sm:text-sm">
             <a
               href="mailto:founders@substratalabs.in"
               className="hover:text-[#FF6A1F] transition-colors"
@@ -2125,7 +2296,7 @@ export default function WeLiftoffPage() {
               rel="noreferrer"
               className="hover:text-[#FF6A1F] transition-colors inline-flex items-center gap-1"
             >
-              substratalabs.org <ArrowUpRight className="w-3 h-3" />
+              substratalabs.org <ArrowUpRight className="w-3.5 h-3.5" />
             </a>
           </div>
         </div>
