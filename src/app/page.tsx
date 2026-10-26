@@ -18,6 +18,9 @@ import {
   FileCode2,
   ShieldAlert,
   ArrowRight,
+  AlertTriangle,
+  XCircle,
+  Workflow,
 } from "lucide-react";
 
 /* --- Ephemeral Acoustic Feedback Synthesizer (Native AudioContext < 80ms) --- */
@@ -336,76 +339,76 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
   phase1: [
     {
       dayRange: "DAYS 01–02",
-      code: "NODE.01 // TOOLCHAIN",
-      title: "Offline Toolchain & Terminal Mechanics",
-      artifact: "Configured Workstation + ADB Handset Pairing",
+      code: "MILESTONE.01 // FOUNDATION",
+      title: "Repository Architecture & Offline Toolchain",
+      artifact: "Configured Workstation + Handset ADB Pair",
       specification:
-        "Boot an offline development environment directly from a pre-seeded 64GB USB drive. Students master terminal recovery, atomic Git commits, and pair physical Android handsets over ADB.",
+        "Structure a production repository that scales from day one. Boot an offline toolchain directly from pre-seeded 64GB USB media, master atomic commit discipline, and pair physical test handsets over ADB.",
       verificationCmd: "android --version && git reflog --oneline -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
-      code: "NODE.02 // ARCHITECTURE",
+      code: "MILESTONE.02 // SPECIFICATION",
       title: "System Architecture & State Modeling",
       artifact: "docs/spec.md + Deterministic UiState Container",
       specification:
-        "Draft precise system specifications using AI agent workflows under a strict 20,000 token budget ceiling. Model screen states deterministically to prevent state corruption.",
+        "Draft rock-solid technical specifications using AI agent workflows under a strict 20,000 token budget. Model screen states deterministically to guarantee zero runtime crashes.",
       verificationCmd: "agy-skills status --json && ./gradlew compileDebugKotlin --console=plain",
     },
     {
       dayRange: "DAYS 05–06",
-      code: "NODE.03 // PERSISTENCE",
-      title: "Offline-First Database Engine (Room SQLite)",
+      code: "MILESTONE.03 // PERSISTENCE",
+      title: "Local-First SQLite Engine (Room Database)",
       artifact: "Room @Entity + KSP @Dao + Offline Migrations",
       specification:
-        "Architect local SQLite storage that runs completely offline with zero network connectivity. Ensure student data never leaves the physical handset.",
+        "Architect local-first data storage that runs completely offline with zero network connectivity. Ensure user records never leave the physical handset under statutory DPDP Act bounds.",
       verificationCmd: "./gradlew testDebugUnitTest verifyZeroEgress",
     },
     {
       dayRange: "DAY 07",
-      code: "NODE.04 // FEATURE FREEZE",
+      code: "MILESTONE.04 // SCOPE LOCK",
       title: "Feature Freeze & Cross-Crew Code Audit",
-      artifact: "Merged Main Branch + Physical Handset Audit",
+      artifact: "Merged Main Branch + Physical Glass 60FPS Audit",
       specification:
-        "Conduct peer code audits across student crews. Inspect UI rendering at 60 FPS on physical glass using scrcpy and lock release scope.",
+        "Conduct peer code audits across co-founder crews. Inspect 60 FPS UI rendering on physical glass using scrcpy and lock release scope for the shipping pipeline.",
       verificationCmd: "git ledger --last --agents-only",
     },
   ],
   phase2: [
     {
       dayRange: "DAYS 08–09",
-      code: "NODE.05 // PACKAGING",
+      code: "MILESTONE.05 // PACKAGING",
       title: "Production Packaging & In-App Colophon",
-      artifact: "Signed Production APK + In-App Identity Screen",
+      artifact: "Signed Production APK + Tamper-Proof Identity",
       specification:
-        "Implement native Material 3 design tokens and edge-to-edge layout. Embed a tamper-proof in-app Colophon Screen displaying student names, commit SHA, and open-source license.",
+        "Implement native Material 3 design tokens and edge-to-edge window insets. Embed a tamper-proof in-app Colophon Screen displaying founder handles, commit SHA, and open-source license.",
       verificationCmd: "./gradlew assembleRelease && android layout",
     },
     {
       dayRange: "DAYS 10–11",
-      code: "NODE.06 // PLAY STORE",
+      code: "MILESTONE.06 // PLAY STORE",
       title: "Google Play Store Publishing",
-      artifact: "Track 1 Internal Sharing + Signed GitHub APK",
+      artifact: "Track 1 Internal Sharing + Signed GitHub Release",
       specification:
-        "Author compliant Store listings with zero-data-collection disclosures. Build signed Android App Bundles and deploy to Google Play Store internal testing tracks.",
+        "Author compliant Store listings with zero-data disclosures. Build signed Android App Bundles (AAB) and deploy directly to Google Play Store internal testing tracks.",
       verificationCmd: "./gradlew uploadReleasePrivateBundle",
     },
     {
       dayRange: "DAYS 12–13",
-      code: "NODE.07 // TECHNICAL DOSSIER",
-      title: "Architecture Dossier & Closed Testing",
-      artifact: "Architecture README + Closed Testing Deployment",
+      code: "MILESTONE.07 // INCIDENT DRILL",
+      title: "Incident Recovery & Emergency Hotfix Drills",
+      artifact: "Hotfix Pull Request + 10-Second Reflog Rollback",
       specification:
-        "Author complete architectural documentation and run closed testing with Mayo College campus peers to gather verifiable user feedback.",
+        "Simulate production regressions and execute instantaneous rollbacks via git reflog. Verify release pipelines and test assertions remain resilient under incident pressure.",
       verificationCmd: "gh pr status && ls -lh docs/architecture.md",
     },
     {
       dayRange: "DAY 14",
-      code: "NODE.08 // EXHIBITION",
-      title: "Campus Demo Day & Technical Defense",
-      artifact: "Auditorium Presentation + Direct QR Installation",
+      code: "MILESTONE.08 // DEMO DAY",
+      title: "Founder Demo Day & Public Installation",
+      artifact: "Auditorium Defense + Direct QR Distribution",
       specification:
-        "Live presentation before school faculty, parents, and peers. Attendees install the finished app directly via QR codes and inspect the crew's 60+ atomic commit history.",
+        "Live product defense before faculty, investors, parents, and peers. Attendees install the finished native app directly via QR codes and inspect the crew's 60+ atomic commit history.",
       verificationCmd: "sha256sum app-release-signed.apk",
     },
   ],
@@ -932,18 +935,18 @@ export default function WeLiftoffPage() {
 
         <nav className="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-wider text-[#8E95A5]">
           <a
-            href="#thesis"
+            href="#anti-tutorial"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Thesis
+            The Anti-Tutorial
           </a>
           <a
             href="#pairing"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Pairing
+            Founder Operating System
           </a>
           <a
             href="#invariants"
@@ -957,7 +960,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Curriculum
+            Founder Milestones
           </a>
           <a
             href="#institutional"
@@ -973,7 +976,7 @@ export default function WeLiftoffPage() {
           onClick={() => audio.click()}
           className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
         >
-          Reserve Cohort <ArrowRight className="w-3.5 h-3.5" />
+          Start Shipping <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </header>
 
@@ -983,29 +986,31 @@ export default function WeLiftoffPage() {
           {/* Left 4 Columns: Architectural Thesis Pane */}
           <div className="lg:col-span-4 p-6 sm:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-6">
             <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] led-indicator-amber" />
+                FOR BUILDERS GOING FROM 0 TO 1
+              </div>
+
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
-                Zero to Signed APK.{" "}
+                Don&apos;t just learn to code.{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
-                  In 14 Deterministic Days.
+                  Ship like a technical founder.
                 </span>
               </h1>
 
               <p className="text-sm text-[#8E95A5] leading-relaxed">
-                An intensive on-campus engineering residency where high school builders master
-                terminal mechanics, local-first Android architecture, and AI agent steering.
-                Every crew delivers a verified open-source repository, in-app cryptographic build
-                fingerprint, and production software published directly to Google Play.
+                Anyone can generate code today. The difference between a forgotten weekend script and a real product is how you version, structure, and ship it. Master the exact engineering operating system used by fast-moving technical founders—going from an empty repo to live Google Play software in 14 deterministic days.
               </p>
             </div>
 
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
             <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2.5">
               <div className="flex items-center justify-between pb-2 hairline-b text-[10px] text-[#8E95A5] font-bold uppercase tracking-wider">
-                <span>INSTITUTIONAL SPECIFICATION</span>
+                <span>FOUNDER SPECIFICATION</span>
                 <span className="text-[#10B981]">STATUTORY GUARANTEES</span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">PROGRAM DURATION</span>
+                <span className="text-[#8E95A5]">RESIDENCY WINDOW</span>
                 <span className="font-semibold text-[#F4F4F0]">
                   14 Days · 28.0 Dedicated Lab Hours
                 </span>
@@ -1013,7 +1018,7 @@ export default function WeLiftoffPage() {
               <div className="flex justify-between items-center py-1 hairline-b">
                 <span className="text-[#8E95A5]">COHORT TOPOLOGY</span>
                 <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30">
-                  10 Two-Student Crews (20 Seats)
+                  10 Two-Person Founder Crews (20 Seats)
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b">
@@ -1049,10 +1054,10 @@ export default function WeLiftoffPage() {
                 onClick={() => audio.commit()}
                 className="btn-primary-tactile rounded-sm block w-full py-4 text-center font-mono text-xs font-bold uppercase tracking-wider"
               >
-                Request Institutional Prospectus &rarr;
+                Claim Founder Seat [10 Crews] &rarr;
               </a>
               <span className="block text-center font-mono text-[10px] text-[#8E95A5] mt-2">
-                Inaugural Cohort · Mayo College, Ajmer (Pilot Rates Apply)
+                Inaugural Residency · Mayo College, Ajmer · Ship Real Software
               </span>
             </div>
           </div>
@@ -1181,6 +1186,148 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
+      {/* The Anti-Tutorial Pitch & Founder Comparison Matrix */}
+      <section id="anti-tutorial" className="hairline-b bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E]">
+        <div className="max-w-6xl mx-auto p-6 sm:p-12 space-y-12">
+          {/* Header */}
+          <div className="max-w-3xl space-y-3">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
+              THE ANTI-TUTORIAL PITCH
+            </div>
+            <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
+              Why 90% of side projects die in{" "}
+              <code className="text-[#FF4F00] font-mono text-2xl sm:text-3xl bg-[#FF4F00]/10 px-2 py-0.5 rounded border border-[#FF4F00]/25">
+                final_v2_new
+              </code>{" "}
+              folders.
+            </h2>
+            <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
+              Prompting an app into existence is easy. Maintaining, versioning, and deploying software that doesn&apos;t shatter when real users touch it is what separates a hobbyist from a technical founder.
+            </p>
+          </div>
+
+          {/* 3-Column Pain Points */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
+              <div className="w-9 h-9 rounded-sm bg-[#EF4444]/15 border border-[#EF4444]/30 flex items-center justify-center text-[#EF4444]">
+                <AlertTriangle className="w-5 h-5" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+                The Vibe-Coder Trap
+              </h3>
+              <p className="text-xs text-[#8E95A5] leading-relaxed">
+                You can prompt an app into existence in an afternoon, but the moment a feature breaks, you have no rollback strategy and are scared to touch your own codebase.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
+              <div className="w-9 h-9 rounded-sm bg-[#F59E0B]/15 border border-[#F59E0B]/30 flex items-center justify-center text-[#F59E0B]">
+                <XCircle className="w-5 h-5" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+                Tutorial Hell
+              </h3>
+              <p className="text-xs text-[#8E95A5] leading-relaxed">
+                Courses teach syntax and isolated commands in a sterile sandbox, leaving you clueless on how to actually structure, version, and deploy a live product.
+              </p>
+            </div>
+
+            <div className="p-6 rounded-sm bg-[#111317] border border-white/10 space-y-3 shadow-md shadow-black/40">
+              <div className="w-9 h-9 rounded-sm bg-[#8E95A5]/15 border border-white/15 flex items-center justify-center text-[#8E95A5]">
+                <Cpu className="w-5 h-5" />
+              </div>
+              <h3 className="font-display text-lg font-bold text-[#F4F4F0]">
+                Solo Amateurism
+              </h3>
+              <p className="text-xs text-[#8E95A5] leading-relaxed">
+                You treat version control like a clumsy save button instead of a release pipeline, making it impossible to iterate fast or bring on co-founders later.
+              </p>
+            </div>
+          </div>
+
+          {/* High-Contrast Comparison Matrix Card */}
+          <div className="rounded-sm border border-white/15 overflow-hidden shadow-2xl bg-[#0E1015]">
+            <div className="p-4 sm:p-6 hairline-b bg-[#14171E] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
+              <span className="text-[#F4F4F0] font-bold text-sm uppercase tracking-wider flex items-center gap-2">
+                <Workflow className="w-4 h-4 text-[#FF4F00]" />
+                THE OPERATING SYSTEM: HOBBYIST VS. TECHNICAL FOUNDER
+              </span>
+              <span className="text-[11px] text-[#8E95A5]">
+                DETERMINISTIC VERIFICATION INVARIANT
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              {/* The Hobbyist Column */}
+              <div className="p-6 sm:p-8 hairline-b md:hairline-b-0 md:hairline-r bg-[#0B0C0E]/90 space-y-5">
+                <div className="flex items-center justify-between pb-3 hairline-b">
+                  <span className="font-mono text-xs uppercase tracking-wider text-[#EF4444] font-bold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#EF4444]" />
+                    THE HOBBYIST
+                  </span>
+                  <span className="text-[10px] font-mono text-[#8E95A5]">
+                    STUCK ON LOCALHOST
+                  </span>
+                </div>
+
+                <ul className="space-y-3.5 text-xs text-[#8E95A5]">
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
+                    <span><strong>Codes on main:</strong> Zero branch isolation; breaking one experimental feature crashes the entire application.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
+                    <span><strong>Scared to refactor:</strong> Has no atomic commit history or reflog checkpoints; terrified of regression.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
+                    <span><strong>Projects die locally:</strong> Trapped on <code>localhost:3000</code> or simulator windows; never published to real users.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <span className="text-[#EF4444] font-mono text-sm leading-none mt-0.5">&times;</span>
+                    <span><strong>Quits when messy:</strong> Abandons the codebase the moment merge conflicts or prompt drift overwhelms the folder.</span>
+                  </li>
+                </ul>
+              </div>
+
+              {/* The Technical Founder Column */}
+              <div className="p-6 sm:p-8 bg-[#11141C] space-y-5 relative">
+                <div className="absolute top-0 right-0 left-0 h-[2px] bg-gradient-to-r from-[#FF5E14] to-[#10B981]" />
+                <div className="flex items-center justify-between pb-3 hairline-b border-white/10">
+                  <span className="font-mono text-xs uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
+                    THE TECHNICAL FOUNDER
+                  </span>
+                  <span className="text-[10px] font-mono px-2 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 font-bold">
+                    SHIPS TO PRODUCTION
+                  </span>
+                </div>
+
+                <ul className="space-y-3.5 text-xs text-[#F4F4F0]">
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
+                    <span><strong>Ships in isolated branches:</strong> Builds features in dedicated, bisect-safe slices without risking the core runtime.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
+                    <span><strong>Experiments aggressively:</strong> Backed by 10-second <code>git reflog</code> rollbacks; refactors fearlessly at high speed.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
+                    <span><strong>Deploys every merge:</strong> Code flows automatically to live Android glass and signed Google Play Store tracks.</span>
+                  </li>
+                  <li className="flex items-start gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-[#10B981] shrink-0 mt-0.5" />
+                    <span><strong>Treats repo as an asset:</strong> Clean commit provenance, in-app colophons, and verified architectures that co-founders can build on.</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Pairing Topology & Verification Cadence */}
       <section id="pairing" className="hairline-b bg-gradient-to-b from-[#111317] to-[#0D0F13]">
         <div className="grid grid-cols-1 lg:grid-cols-12">
@@ -1194,8 +1341,8 @@ export default function WeLiftoffPage() {
               </h2>
               <p className="text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
                 Autonomous software synthesis requires strict separation between the implementer and the auditor.
-                Students operate in two-person crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F]">crew-swap.sh</code>,
-                rotating author credentials and commit templates to enforce 50/50 contribution parity across both student handles.
+                Builders operate in two-person founder crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F]">crew-swap.sh</code>,
+                rotating author credentials and commit templates to enforce 50/50 contribution parity across both co-founders.
               </p>
             </div>
 
@@ -1212,7 +1359,7 @@ export default function WeLiftoffPage() {
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-[#FF6A1F] font-bold flex items-center gap-1.5">
                     <Cpu className="w-3.5 h-3.5" />
-                    TERMINAL 1 // BUILDER WORKSTATION
+                    TERMINAL 1 // FOUNDER A (SHIPPING ENGINE)
                   </span>
                   <span className="px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] font-mono text-[9px] font-bold border border-[#FF4F00]/30">
                     HARDWARE TETHER
@@ -1234,7 +1381,7 @@ export default function WeLiftoffPage() {
                     <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
-                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-1: pixel-8a (adb)</span>
+                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-1: founder-a@launch-mvp (pixel-8a)</span>
                   </div>
                   <span className="text-[#10B981]">ONLINE</span>
                 </div>
@@ -1250,7 +1397,7 @@ export default function WeLiftoffPage() {
                     Token consumption within sovereign 20k cap
                   </div>
                   <div className="text-[#8E95A5] pt-1">
-                    $ <span className="text-[#F4F4F0]">android run</span> &rarr; deploy native APK to connected hardware
+                    $ <span className="text-[#F4F4F0]">android run --release</span> &rarr; deploy native APK to connected hardware
                   </div>
                 </div>
               </div>
@@ -1262,7 +1409,7 @@ export default function WeLiftoffPage() {
                 <div className="flex items-center justify-between">
                   <span className="font-mono text-[10px] uppercase tracking-wider text-[#10B981] font-bold flex items-center gap-1.5">
                     <GitBranch className="w-3.5 h-3.5" />
-                    TERMINAL 2 // AUDITOR STATION
+                    TERMINAL 2 // FOUNDER B (VERIFICATION GATE)
                   </span>
                   <span className="px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] font-mono text-[9px] font-bold border border-[#10B981]/30">
                     VERIFICATION GATE
@@ -1284,7 +1431,7 @@ export default function WeLiftoffPage() {
                     <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#F59E0B]/80 inline-block" />
                     <span className="w-2.5 h-2.5 rounded-full bg-[#10B981]/80 inline-block" />
-                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-2: git-ledger audit</span>
+                    <span className="ml-2 text-[#F4F4F0] font-semibold">terminal-2: founder-b@launch-mvp (audit)</span>
                   </div>
                   <span className="text-[#10B981]">SYNCED</span>
                 </div>
@@ -1293,12 +1440,12 @@ export default function WeLiftoffPage() {
                     $ git ledger --diff --md
                   </div>
                   <div className="text-[#F4F4F0] bg-[#07080A] p-2 rounded-sm border border-white/5 font-mono text-[10px] space-y-0.5">
-                    <div>Agent: antigravity | Model: gemini-2.5-pro</div>
-                    <div>Prompted-by: dev-handle-a | Audited-by: dev-handle-b</div>
+                    <div>Agent: antigravity | Repo: launch-mvp</div>
+                    <div>Founder-A: @handle-a | Founder-B: @handle-b</div>
                   </div>
                   <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
                     <CheckCircle2 className="w-3.5 h-3.5" />
-                    Confidence 1.0 commit attribution verified
+                    Confidence 1.0 dual-founder attribution verified
                   </div>
                   <div className="text-[#8E95A5] pt-1">
                     $ <span className="text-[#F4F4F0]">./gradlew verifyZeroEgress</span> &rarr; network check PASS
@@ -1419,8 +1566,11 @@ export default function WeLiftoffPage() {
       <section id="syllabus" className="hairline-b bg-gradient-to-b from-[#0B0C0E] to-[#0E1015]">
         <div className="p-6 sm:p-10 hairline-b flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
+              FOUNDER MILESTONES // 14-DAY DAG
+            </div>
             <h2 className="font-display text-fluid-h3 font-bold text-[#F4F4F0] tracking-tight">
-              14-Day Curriculum State Transitions (28.0 Lab Hours)
+              From Empty Repo to Production Release in 14 Days
             </h2>
           </div>
 
@@ -1438,7 +1588,7 @@ export default function WeLiftoffPage() {
                   : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
               }`}
             >
-              Phase 1: Days 01–07 (Core Architecture)
+              Phase 1: Company Foundation (Days 01–07)
             </button>
             <button
               type="button"
@@ -1452,7 +1602,7 @@ export default function WeLiftoffPage() {
                   : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
               }`}
             >
-              Phase 2: Days 08–14 (Hardening &amp; Release)
+              Phase 2: The Shipping Pipeline (Days 08–14)
             </button>
           </div>
         </div>
@@ -1482,7 +1632,7 @@ export default function WeLiftoffPage() {
 
               <div className="space-y-2.5 pt-4 hairline-t font-mono text-[11px]">
                 <div className="text-[#8E95A5]">
-                  Deliverable:{" "}
+                  FOUNDER DELIVERABLE:{" "}
                   <strong className="text-[#F4F4F0] block font-semibold mt-0.5">{node.artifact}</strong>
                 </div>
                 <div className="p-2.5 bg-[#12151C] rounded-sm border border-white/10 text-[#10B981] overflow-x-auto text-[10px] whitespace-nowrap" title={node.verificationCmd}>
@@ -1537,7 +1687,7 @@ export default function WeLiftoffPage() {
                   HARDWARE CONTINGENCY RESERVE
                 </div>
                 <p className="font-sans text-xs text-[#8E95A5] leading-relaxed">
-                  Workstations pair iOS students with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
+                  Workstations pair iOS builders with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
                 </p>
               </div>
 
@@ -1603,12 +1753,16 @@ export default function WeLiftoffPage() {
       <section id="contract" className="py-16 sm:py-24 px-4 sm:px-8 bg-gradient-to-b from-[#0B0C0E] via-[#0E1015] to-[#0B0C0E] relative">
         <div className="max-w-2xl mx-auto panel-machined rounded-sm p-6 sm:p-10 shadow-2xl shadow-black/80">
           <div className="space-y-2.5 mb-6">
+            <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-[10px] font-bold uppercase tracking-wider">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00] led-indicator-amber" />
+              10 CREWS · 20 SEATS · SHIP PRODUCTION SOFTWARE
+            </div>
             <h2 className="font-display text-2xl sm:text-3xl font-bold text-[#F4F4F0] tracking-tight">
-              Reserve an On-Campus Cohort Window
+              Stop sitting on localhost. Ship your first product today.
             </h2>
             <p className="font-mono text-xs text-[#8E95A5] leading-relaxed">
-              Select an academic residency window (10 two-student crews / 20 builders) to receive
-              the executive prospectus, hardware pairing checklist, and parental assent documentation.
+              Reserve your two-person founder crew for the 14-day on-campus engineering residency at Mayo College.
+              Receive the executive prospectus, hardware pairing checklist, and parental assent documentation.
             </p>
 
             {/* Tuition Breakdown Card */}
@@ -1831,10 +1985,10 @@ export default function WeLiftoffPage() {
                 {isSubmitting ? (
                   <>
                     <span className="w-3.5 h-3.5 border-2 border-[#0B0C0E] border-t-transparent rounded-full animate-spin" />
-                    <span>TRANSMITTING ENCRYPTED DOSSIER REQUEST...</span>
+                    <span>TRANSMITTING FOUNDER CREW RESERVATION...</span>
                   </>
                 ) : (
-                  <span>Transmit Dossier Request [{cohortWindow.toUpperCase()}] &rarr;</span>
+                  <span>Claim Founder Cohort Seat [{cohortWindow.toUpperCase()}] &rarr;</span>
                 )}
               </button>
             </form>

@@ -3,13 +3,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://weliftoff.now"),
-  title: "WeLiftoff — 14-Day Zero-to-Signed Android Engineering Residency",
+  title: "WeLiftoff — Don't Just Learn to Code. Ship Like a Founder.",
   description:
-    "On-campus high school software engineering residency by Substrata Labs. Students master atomic Git state machines, zero-egress SQLite/Room persistence, and reproducible Android App Bundle (AAB) + F-Droid distribution in 14 days.",
+    "The 14-day engineering residency turning high school builders into technical founders. Stop tinkering in local folders. Master repo architecture, local-first persistence, and ship live software to Google Play.",
   openGraph: {
-    title: "WeLiftoff — Zero to Signed APK in 14 Deterministic Days",
+    title: "WeLiftoff — Don't Just Learn to Code. Ship Like a Founder.",
     description:
-      "On-campus engineering residency: atomic Git discipline, local-first Android architecture, and dual-store FOSS publication (Google Play & F-Droid). Inaugural cohort at Mayo College, Ajmer.",
+      "Turn messy local folders into deployed, production-ready software. An intensive 14-day engineering residency for builders going from 0 to 1. Inaugural cohort at Mayo College, Ajmer.",
     url: "https://weliftoff.now",
     siteName: "WeLiftoff // Substrata Labs",
     locale: "en_IN",
