@@ -1007,42 +1007,45 @@ export default function WeLiftoffPage() {
             <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2.5">
               <div className="flex items-center justify-between pb-2 hairline-b text-[10px] text-[#8E95A5] font-bold uppercase tracking-wider">
                 <span>FOUNDER SPECIFICATION</span>
-                <span className="text-[#10B981]">STATUTORY GUARANTEES</span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">RESIDENCY WINDOW</span>
-                <span className="font-semibold text-[#F4F4F0]">
-                  14 Days · 28.0 Dedicated Lab Hours
+                <span className="text-[#10B981] flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10B981] led-indicator-emerald" />
+                  PRODUCTION INVARIANTS
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">COHORT TOPOLOGY</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30">
-                  10 Two-Person Founder Crews (20 Seats)
+              <div className="flex justify-between items-center py-1 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0">RUNTIME TARGET</span>
+                <span className="font-semibold text-[#F4F4F0] text-right">
+                  Native Android · Jetpack Compose (Physical Glass)
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">AI AGENT RUNTIME</span>
-                <span className="font-semibold text-[#F4F4F0]">
-                  Antigravity 2.0 (20k Token Budget)
+              <div className="flex justify-between items-center py-1 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0">DATA ENGINE</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right">
+                  Encrypted Local Room SQLite · Zero Egress
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">CHILD SAFEGUARDING</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30">
-                  DPDP Act §9 · Zero Network Egress
+              <div className="flex justify-between items-center py-1 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0">INCIDENT SLA</span>
+                <span className="font-semibold text-[#FF6A1F] text-right">
+                  &lt; 12ms Deterministic Rollback [git reflog]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b">
-                <span className="text-[#8E95A5]">APP DISTRIBUTION</span>
-                <span className="font-semibold text-[#F4F4F0]">
-                  Google Play Store &amp; Signed GitHub Releases
+              <div className="flex justify-between items-center py-1 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0">CO-FOUNDER PARITY</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right">
+                  50/50 Dual-Author Attribution [crew-swap.sh]
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1">
-                <span className="text-[#8E95A5]">PROVENANCE</span>
-                <span className="font-semibold text-[#F4F4F0]">
-                  In-App Colophon · 60+ Commit History
+              <div className="flex justify-between items-center py-1 hairline-b gap-2">
+                <span className="text-[#8E95A5] shrink-0">RELEASE PIPELINE</span>
+                <span className="font-semibold text-[#F4F4F0] text-right">
+                  Signed Android App Bundle (AAB) &amp; Google Play
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 gap-2">
+                <span className="text-[#8E95A5] shrink-0">INTELLECTUAL PROPERTY</span>
+                <span className="font-semibold text-[#10B981] text-right">
+                  100% Founder-Owned Repo &amp; Release Keys
                 </span>
               </div>
             </div>
