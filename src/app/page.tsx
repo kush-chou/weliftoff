@@ -312,9 +312,9 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
     summary:
       "Applications published under Substrata Labs during minority to satisfy Google Play testing requirements, with full legal assignment to the student at age 18.",
     architecturalMechanism:
-      "Release signing keys maintained in protected GitHub Actions Environments using per-crew isolated upload keystores (upload-<slug>.jks).",
+      "Release signing keys maintained in protected GitHub Actions Environments using isolated upload keystores (upload-<slug>.jks).",
     legalBound:
-      "Co-signed Parental & Institutional Custodial Agreement under Govt. of India MSME (UDYAM-RJ-37-0014993) granting irrevocable Apache-2.0 fork rights to both crew members.",
+      "Statutory founder agreement under Govt. of India MSME (UDYAM-RJ-37-0014993) guaranteeing 100% intellectual property ownership and irrevocable Apache-2.0 fork rights to all builders.",
     verificationGate:
       "Cryptographic SHA-256 signing fingerprint and In-App Identity Colophon Screen baked into graduation dossier.",
   },
@@ -364,7 +364,7 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "Feature Freeze & Cross-Crew Code Audit",
       artifact: "Merged Main Branch + Physical Glass 60FPS Audit",
       specification:
-        "Conduct peer code audits across co-founder crews. Inspect 60 FPS UI rendering on physical glass using scrcpy and lock release scope for the shipping pipeline.",
+        "Conduct peer code audits across cohort builders. Inspect 60 FPS UI rendering on physical glass using scrcpy and lock release scope for the shipping pipeline.",
       verificationCmd: "git ledger --last --agents-only",
     },
   ],
@@ -402,7 +402,7 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "Founder Demo Day & MSME Incorporation",
       artifact: "Auditorium Defense + Govt. MSME Certificate",
       specification:
-        "Live product defense before mentors, parents, and peers. Attendees install the finished native app directly via QR codes and inspect the crew's live web URL, verifiable commit history, and Govt. of India Udyam MSME certificate.",
+        "Live product defense before mentors, industry leaders, and peers. Attendees install the finished native app directly via QR codes and inspect the founder's live web URL, verifiable commit history, and Govt. of India Udyam MSME certificate.",
       verificationCmd: "sha256sum app-release-signed.apk && curl -I https://weliftoff.now",
     },
   ],
@@ -462,21 +462,21 @@ export default function WeLiftoffPage() {
       const trimmedPhone = crewData.parentWhatsApp.trim();
 
       if (!trimmedName) {
-        errors.studentName = "Founder student name is required.";
+        errors.studentName = "Founder name is required.";
       } else if (trimmedName.length < 2) {
         errors.studentName = "Name must be at least 2 characters.";
       }
 
       if (!trimmedSchool) {
-        errors.schoolOrCity = "School and city/region is required.";
+        errors.schoolOrCity = "Institution/College & City is required.";
       }
 
       if (!trimmedGrade) {
-        errors.grade = "Grade & academic stream is required.";
+        errors.grade = "Background / Role is required.";
       }
 
       if (!trimmedPhone) {
-        errors.parentWhatsApp = "Parent WhatsApp contact is required for DPDP custodial assent.";
+        errors.parentWhatsApp = "WhatsApp contact number is required.";
       } else if (!/^[0-9+\s\-()]{10,18}$/.test(trimmedPhone)) {
         errors.parentWhatsApp = "Enter a valid phone number (at least 10 digits).";
       }
@@ -1129,7 +1129,7 @@ export default function WeLiftoffPage() {
                     backgroundColor: telemetry.accentColor,
                   }}
                 />
-                SHIPPING PIPELINE // FROM EMPTY REPO TO GOOGLE PLAY (D01 → D14)
+                SHIPPING PIPELINE // FROM EMPTY REPO TO GOOGLE PLAY
               </span>
 
               {/* Bounded Mechanical States */}
@@ -1207,7 +1207,7 @@ export default function WeLiftoffPage() {
                 className="absolute inset-0 w-full h-full touch-pan-y"
               />
               <div className="absolute top-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
-                7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
+                7 CANONICAL RELEASE MILESTONES // ZERO-TO-ONE
               </div>
               <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
                 INTERACTIVE CONVERGENCE: CLICK OR DRAG NODES TO AUDIT RECOVERY
@@ -1392,7 +1392,7 @@ export default function WeLiftoffPage() {
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                   <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                  PAIRING TOPOLOGY // TWO-PERSON CREWS
+                  EXECUTION DISCIPLINE // SEPARATION OF CONCERNS
                 </div>
                 <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
                   Separation of Steering{" "}
@@ -1402,8 +1402,7 @@ export default function WeLiftoffPage() {
                 </h2>
                 <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
                   Autonomous software synthesis requires strict separation between the implementer and the auditor.
-                  Builders operate in two-person founder crews with scheduled 45-minute seat rotations via <code className="text-[#FF6A1F] font-mono">crew-swap.sh</code>,
-                  rotating author credentials and commit templates to enforce 50/50 contribution parity across both co-founders.
+                  Whether building solo or in co-founder pairs, founders maintain strict discipline: alternating between generative code synthesis and deterministic verification, with clean Git commit provenance and peer review.
                 </p>
               </div>
 
@@ -1637,10 +1636,10 @@ export default function WeLiftoffPage() {
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                FOUNDER MILESTONES // 14-DAY DAG
+                FOUNDER MILESTONES // RELEASE ROADMAP
               </div>
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                From Empty Repo to Production Release in 14 Days
+                From Empty Repo to Production Release on Google Play
               </h2>
             </div>
 
@@ -1658,7 +1657,7 @@ export default function WeLiftoffPage() {
                     : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
                 }`}
               >
-                Phase 1: Company Foundation (Days 01–07)
+                Phase 1: Architecture &amp; Foundation
               </button>
               <button
                 type="button"
@@ -1672,7 +1671,7 @@ export default function WeLiftoffPage() {
                     : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
                 }`}
               >
-                Phase 2: The Shipping Pipeline (Days 08–14)
+                Phase 2: The Shipping Pipeline
               </button>
             </div>
           </div>
@@ -1876,7 +1875,7 @@ export default function WeLiftoffPage() {
               }`}
             >
               <Cpu className="w-4 h-4" />
-              <span>Apply for Founder Seat (Students)</span>
+              <span>Apply for Founder Seat</span>
             </button>
             <button
               type="button"
@@ -1930,16 +1929,16 @@ export default function WeLiftoffPage() {
               <div className="text-[#10B981] font-bold text-sm sm:text-base flex items-center gap-2">
                 <CheckCircle2 className="w-5 h-5 text-[#10B981]" />
                 {intakeMode === "crew"
-                  ? `FOUNDER CREW REGISTRATION TRANSMITTED [${cohortWindow.toUpperCase()}]`
+                  ? `FOUNDER APPLICATION TRANSMITTED [${cohortWindow.toUpperCase()}]`
                   : `INSTITUTIONAL INQUIRY TRANSMITTED [${cohortWindow.toUpperCase()}]`}
               </div>
               {intakeMode === "crew" ? (
                 <p className="text-[#8E95A5] leading-relaxed">
-                  Founder crew application logged for{" "}
+                  Founder application logged for{" "}
                   <strong className="text-[#F4F4F0]">
-                    {crewData.studentName || "Student Founder"}
+                    {crewData.studentName || "Applicant"}
                   </strong>{" "}
-                  ({crewData.schoolOrCity || "Independent Applicant"}) {submissionId ? <span>[Ref: <code className="text-[#10B981] font-mono">{submissionId}</code>]</span> : null}. Substrata Labs will verify the cohort window and send the DPDP Act 2023 §9 Parental Assent Link via WhatsApp to{" "}
+                  ({crewData.schoolOrCity || "Independent Applicant"}) {submissionId ? <span>[Ref: <code className="text-[#10B981] font-mono">{submissionId}</code>]</span> : null}. Substrata Labs will verify the cohort window and send the onboarding kit and schedule via WhatsApp to{" "}
                   <strong className="text-[#F4F4F0]">{crewData.parentWhatsApp || "your registered contact"}</strong>{" "}
                   within 24 hours.
                 </p>
@@ -1976,7 +1975,7 @@ export default function WeLiftoffPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="crew-studentName" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                        FOUNDER STUDENT NAME *
+                        APPLICANT / FOUNDER NAME *
                       </label>
                       <input
                         id="crew-studentName"
@@ -2002,7 +2001,7 @@ export default function WeLiftoffPage() {
                     </div>
                     <div>
                       <label htmlFor="crew-schoolOrCity" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                        SCHOOL &amp; CITY / REGION *
+                        COLLEGE / INSTITUTION &amp; CITY *
                       </label>
                       <input
                         id="crew-schoolOrCity"
@@ -2010,7 +2009,7 @@ export default function WeLiftoffPage() {
                         maxLength={100}
                         aria-invalid={!!formErrors.schoolOrCity}
                         aria-describedby={formErrors.schoolOrCity ? "schoolOrCity-error" : undefined}
-                        placeholder="e.g. Modern School, New Delhi / DPS Gurgaon / Bhiwadi"
+                        placeholder="e.g. IIT Delhi / Delhi-NCR / Bengaluru"
                         value={crewData.schoolOrCity}
                         onChange={(e) => {
                           setCrewData({ ...crewData, schoolOrCity: e.target.value });
@@ -2031,7 +2030,7 @@ export default function WeLiftoffPage() {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                       <label htmlFor="crew-grade" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                        GRADE &amp; STREAM *
+                        BACKGROUND / ROLE *
                       </label>
                       <input
                         id="crew-grade"
@@ -2039,7 +2038,7 @@ export default function WeLiftoffPage() {
                         maxLength={100}
                         aria-invalid={!!formErrors.grade}
                         aria-describedby={formErrors.grade ? "grade-error" : undefined}
-                        placeholder="e.g. Class 11 (PCM + CS) / Class 12"
+                        placeholder="e.g. CS Undergrad / Builder / Working Engineer"
                         value={crewData.grade}
                         onChange={(e) => {
                           setCrewData({ ...crewData, grade: e.target.value });
@@ -2057,13 +2056,13 @@ export default function WeLiftoffPage() {
                     </div>
                     <div>
                       <label htmlFor="crew-coFounder" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                        CREW CO-FOUNDER (OPTIONAL)
+                        CO-FOUNDER (OPTIONAL)
                       </label>
                       <input
                         id="crew-coFounder"
                         type="text"
                         maxLength={100}
-                        placeholder="Name of paired batchmate (or 'Solo Operator')"
+                        placeholder="Name of paired builder (or leave blank if solo)"
                         value={crewData.coFounder}
                         onChange={(e) => setCrewData({ ...crewData, coFounder: e.target.value })}
                         className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"
@@ -2073,7 +2072,7 @@ export default function WeLiftoffPage() {
 
                   <div>
                     <label htmlFor="crew-parentWhatsApp" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                      PARENT / GUARDIAN WHATSAPP * <span className="text-[#555A68] font-normal">(DPDP Act §9 Custodial Assent)</span>
+                      WHATSAPP CONTACT * <span className="text-[#555A68] font-normal">(For onboarding; guardian contact if under 18)</span>
                     </label>
                     <input
                       id="crew-parentWhatsApp"
@@ -2111,7 +2110,7 @@ export default function WeLiftoffPage() {
                       id="crew-notes"
                       rows={3}
                       maxLength={1000}
-                      placeholder="What real native Android app do you want to build and ship to the Play Store during the 14 days? (e.g. offline mess menu & laundry tracker, sports tournament manager, on-device audio journal...)"
+                      placeholder="What real native Android app do you want to build and ship to Google Play? (e.g. on-device AI copilot, local-first encrypted notes, sensor toolkit, developer utility...)"
                       value={crewData.notes}
                       onChange={(e) => setCrewData({ ...crewData, notes: e.target.value })}
                       className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"
