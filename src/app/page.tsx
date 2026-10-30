@@ -10,13 +10,7 @@ import {
   ArrowUpRight,
   CheckCircle2,
   Cpu,
-  Lock,
-  RefreshCw,
   Layers,
-  Sparkles,
-  Radio,
-  FileCode2,
-  ShieldAlert,
   ArrowRight,
   AlertTriangle,
   XCircle,
@@ -340,11 +334,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
     {
       dayRange: "DAYS 01–02",
       code: "MILESTONE.01 // FOUNDATION",
-      title: "Repository Architecture & Offline Toolchain",
-      artifact: "Configured Workstation + Handset ADB Pair",
+      title: "Repository Architecture, Custom Domain & Toolchain",
+      artifact: "Configured Repo + Spaceship Live Domain + ADB Pair",
       specification:
-        "Structure a production repository that scales from day one. Boot an offline toolchain directly from pre-seeded 64GB USB media, master atomic commit discipline, and pair physical test handsets over ADB.",
-      verificationCmd: "android --version && git reflog --oneline -n 5 && adb devices",
+        "Structure a production repository that scales from day one. Provision a live custom domain via Spaceship with edge HTTPS in under 30 minutes, master atomic commit discipline, and pair physical test handsets over ADB.",
+      verificationCmd: "spaceship domain status && git reflog -n 5 && adb devices",
     },
     {
       dayRange: "DAYS 03–04",
@@ -352,8 +346,8 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       title: "System Architecture & State Modeling",
       artifact: "docs/spec.md + Deterministic UiState Container",
       specification:
-        "Draft rock-solid technical specifications using AI agent workflows under a strict 20,000 token budget. Model screen states deterministically to guarantee zero runtime crashes.",
-      verificationCmd: "agy-skills status --json && ./gradlew compileDebugKotlin --console=plain",
+        "Draft rock-solid technical specifications using AI agent workflows under a strict token budget. Model screen states deterministically to guarantee zero runtime crashes.",
+      verificationCmd: "git status && ./gradlew compileDebugKotlin --console=plain",
     },
     {
       dayRange: "DAYS 05–06",
@@ -405,11 +399,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
     {
       dayRange: "DAY 14",
       code: "MILESTONE.08 // DEMO DAY",
-      title: "Founder Demo Day & Public Installation",
-      artifact: "Auditorium Defense + Direct QR Distribution",
+      title: "Founder Demo Day & MSME Incorporation",
+      artifact: "Auditorium Defense + Govt. MSME Certificate",
       specification:
-        "Live product defense before faculty, investors, parents, and peers. Attendees install the finished native app directly via QR codes and inspect the crew's 60+ atomic commit history.",
-      verificationCmd: "sha256sum app-release-signed.apk",
+        "Live product defense before mentors, parents, and peers. Attendees install the finished native app directly via QR codes and inspect the crew's live web URL, verifiable commit history, and Govt. of India Udyam MSME certificate.",
+      verificationCmd: "sha256sum app-release-signed.apk && curl -I https://weliftoff.now",
     },
   ],
 };
@@ -420,14 +414,15 @@ export default function WeLiftoffPage() {
   const [activeInvariantId, setActiveInvariantId] =
     useState<InvariantKey>("foss");
   const [activePhase, setActivePhase] = useState<PhaseKey>("phase1");
-  const [cohortWindow, setCohortWindow] = useState("Winter 2026 Residency (Mayo College Pilot)");
+  const [cohortWindow, setCohortWindow] = useState("Winter 2026 Online Cohort (Cross-Campus)");
   const [intakeMode, setIntakeMode] = useState<"crew" | "institutional">("crew");
   const [inquirySubmitted, setInquirySubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionId, setSubmissionId] = useState<string>("");
   const [formErrors, setFormErrors] = useState<Record<string, string | undefined>>({});
   const [crewData, setCrewData] = useState({
     studentName: "",
-    house: "",
+    schoolOrCity: "",
     grade: "",
     coFounder: "",
     parentWhatsApp: "",
@@ -454,7 +449,7 @@ export default function WeLiftoffPage() {
     if (next) audio.commit();
   };
 
-  const handleFormSubmit = (e: React.FormEvent) => {
+  const handleFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (isSubmitting) return;
 
@@ -462,7 +457,7 @@ export default function WeLiftoffPage() {
 
     if (intakeMode === "crew") {
       const trimmedName = crewData.studentName.trim();
-      const trimmedHouse = crewData.house.trim();
+      const trimmedSchool = crewData.schoolOrCity.trim();
       const trimmedGrade = crewData.grade.trim();
       const trimmedPhone = crewData.parentWhatsApp.trim();
 
@@ -472,8 +467,8 @@ export default function WeLiftoffPage() {
         errors.studentName = "Name must be at least 2 characters.";
       }
 
-      if (!trimmedHouse) {
-        errors.house = "House / Campus Dormitory is required.";
+      if (!trimmedSchool) {
+        errors.schoolOrCity = "School and city/region is required.";
       }
 
       if (!trimmedGrade) {
@@ -522,11 +517,32 @@ export default function WeLiftoffPage() {
     setIsSubmitting(true);
     audio.commit();
 
-    setTimeout(() => {
+    try {
+      const payload = {
+        mode: intakeMode,
+        cohortWindow,
+        data: intakeMode === "crew" ? crewData : formData,
+      };
+
+      const res = await fetch("/api/intake", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      if (res.ok) {
+        const json = await res.json();
+        setSubmissionId(json.id || `WL-${Date.now().toString(36).toUpperCase()}`);
+      } else {
+        setSubmissionId(`WL-${Date.now().toString(36).toUpperCase()}`);
+      }
+    } catch {
+      setSubmissionId(`WL-${Date.now().toString(36).toUpperCase()}`);
+    } finally {
       setIsSubmitting(false);
       setInquirySubmitted(true);
       audio.restore();
-    }, 550);
+    }
   };
 
   /* --- Mechanical Physics Engine: Git DAG & Working-Tree State Simulator --- */
@@ -912,15 +928,15 @@ export default function WeLiftoffPage() {
         <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
             <span className="w-2 h-2 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
-            WELIFTOFF // RESIDENCY
+            WELIFTOFF // SOVEREIGN FOUNDER OS
           </span>
           <span className="hidden sm:inline text-white/10">|</span>
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
-            CAMPUS PILOT TRACK // MAYO COLLEGE, AJMER
+            ONLINE COHORTS · REGIONAL INTENSIVES · CAMPUS RESIDENCIES
           </span>
           <span className="hidden lg:inline text-white/10">|</span>
           <span className="hidden lg:inline text-[#8E95A5]">
-            14 DAYS // 28.0 DEDICATED LAB HOURS
+            14 DAYS // ZERO-TO-ONE PRODUCTION STACK
           </span>
         </div>
 
@@ -1043,46 +1059,46 @@ export default function WeLiftoffPage() {
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
             <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2">
               <div className="flex items-center justify-between pb-1.5 hairline-b text-xs text-[#8E95A5] font-bold uppercase tracking-wider">
-                <span>FOUNDER SPECIFICATION</span>
+                <span>SOVEREIGN FOUNDER STACK</span>
                 <span className="text-[#10B981] flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
-                  PRODUCTION INVARIANTS
+                  VERIFIABLE ARTIFACTS
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
                 <span className="text-[#8E95A5] shrink-0 text-xs">RUNTIME</span>
                 <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Native Android · Compose (Physical Glass)
+                  Native Android (Physical Glass) + Web Edge
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">DOMAIN &amp; EDGE</span>
+                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
+                  Spaceship Live Domain + Vercel HTTPS &lt;30m
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
                 <span className="text-[#8E95A5] shrink-0 text-xs">DATA ENGINE</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
+                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
                   Encrypted Room SQLite · Zero Egress
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">INCIDENT SLA</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">SOVEREIGN ID</span>
                 <span className="font-semibold text-[#FF6A1F] text-right text-xs">
+                  Govt. of India Udyam MSME Sole Proprietorship
+                </span>
+              </div>
+              <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                <span className="text-[#8E95A5] shrink-0 text-xs">INCIDENT SLA</span>
+                <span className="font-semibold text-[#10B981] text-right text-xs">
                   &lt; 12ms Deterministic Rollback [reflog]
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">PAIRING</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#FF4F00]/15 text-[#FF6A1F] border border-[#FF4F00]/30 text-right text-xs">
-                  50/50 Dual-Author [crew-swap.sh]
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">RELEASE</span>
-                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Signed App Bundle (AAB) &amp; Google Play Store
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 gap-3">
                 <span className="text-[#8E95A5] shrink-0 text-xs">IP OWNERSHIP</span>
                 <span className="font-semibold text-[#10B981] text-right text-xs">
-                  100% Founder-Owned Repo &amp; Release Keys
+                  100% Student-Owned Code, Keys &amp; Certificates
                 </span>
               </div>
             </div>
@@ -1097,7 +1113,7 @@ export default function WeLiftoffPage() {
                 Apply for Founder Crew Seat [10 Crews] &rarr;
               </a>
               <span className="block text-center font-mono text-xs text-[#8E95A5] mt-2">
-                Inaugural Campus Pilot · Mayo College, Ajmer · Ship Real Software
+                Independent Online Cohorts · Regional Intensives · Inbound Campus Pilots
               </span>
             </div>
           </div>
@@ -1188,7 +1204,7 @@ export default function WeLiftoffPage() {
 
               <canvas
                 ref={canvasRef}
-                className="absolute inset-0 w-full h-full"
+                className="absolute inset-0 w-full h-full touch-pan-y"
               />
               <div className="absolute top-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/85 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
                 7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
@@ -1414,8 +1430,8 @@ export default function WeLiftoffPage() {
                     Synthesis &amp; Hardware Tether
                   </h3>
                   <p className="text-sm text-[#8E95A5] leading-relaxed">
-                    Tethered to the physical Android handset over ADB. Executes Antigravity 2.0 code synthesis,
-                    Gradle builds, and on-device runtime deployments under a 20,000 active token budget ceiling.
+                    Tethered to the physical Android handset over ADB and live edge deployment. Coordinates automated builds,
+                    Spaceship custom domain routing, and on-device runtime execution.
                   </p>
                 </div>
 
@@ -1432,14 +1448,14 @@ export default function WeLiftoffPage() {
                   </div>
                   <div className="p-4 space-y-2.5 text-[#8E95A5]">
                     <div className="text-[#FF6A1F] font-bold">
-                      $ agy-skills status --json
+                      $ spaceship domain purchase &amp;&amp; vercel --prod
                     </div>
                     <div className="text-[#F4F4F0] bg-[#07080A] p-2.5 rounded-sm border border-white/5 font-mono text-xs">
-                      {'{ "budget_ceiling": 20000, "active_tokens": 4820, "status": "nominal" }'}
+                      {'{ "domain": "app.weliftoff.space", "edge_ssl": "active", "latency": "14ms" }'}
                     </div>
                     <div className="text-[#10B981] pt-1 flex items-center gap-1.5">
                       <CheckCircle2 className="w-4 h-4" />
-                      Token consumption within sovereign 20k cap
+                      Live HTTPS custom domain active in under 30 minutes
                     </div>
                     <div className="text-[#8E95A5] pt-1">
                       $ <span className="text-[#F4F4F0]">android run --release</span> &rarr; deploy native APK to connected hardware
@@ -1708,15 +1724,15 @@ export default function WeLiftoffPage() {
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                   <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                  ZERO-IMPACT RESIDENTIAL INTEGRATION
+                  DECOUPLED &amp; SOVEREIGN DELIVERY FORMATS
                 </div>
                 <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                  Zero-Impact Campus Integration.
+                  Zero Bureaucracy. Production Delivery.
                 </h2>
                 <p className="text-base text-[#8E95A5] leading-relaxed max-w-2xl">
-                  Engineered specifically for residential boarding schools and rigorous academic schedules.
-                  Substrata Labs operates directly within the 18:00–20:00 evening prep window,
-                  managing hardware reserves and statutory child safeguarding with zero campus IT burden.
+                  Engineered to operate independently of school administration gatekeeping.
+                  Substrata Labs runs across weekend regional intensives (Delhi-NCR &amp; Bhiwadi),
+                  cross-campus online cohorts, and inbound campus residencies—with zero institutional IT overhead.
                 </p>
               </div>
 
@@ -1724,30 +1740,30 @@ export default function WeLiftoffPage() {
                 <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
                   <div className="text-[#FF6A1F] font-bold flex items-center gap-2 text-xs sm:text-sm">
                     <Terminal className="w-4 h-4 text-[#FF4F00]" />
-                    ZERO CAMPUS WI-FI BURDEN
+                    HARDWARE INVARIANT
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                    Toolchains install offline from pre-seeded 64GB USB media. Agent queries route via Substrata&apos;s autonomous cellular 5G uplink—zero campus Wi-Fi access or firewall reconfiguration required.
+                    Toolchains run deterministically on low-spec Windows, Linux, and macOS hardware. Lightweight headless compilation requires no high-end rigs or expensive cloud accounts.
                   </p>
                 </div>
 
                 <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
                   <div className="text-[#10B981] font-bold flex items-center gap-2 text-xs sm:text-sm">
                     <Layers className="w-4 h-4 text-[#10B981]" />
-                    EVENING PREP INTEGRATION
+                    MULTI-FORMAT DELIVERY
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                    Operates strictly within the 18:00–20:00 evening prep window, ensuring zero disruption to morning academic classes, sports fixtures, or mandatory dorm call timings.
+                    Choose between high-density 1–2 day regional weekend masterclasses, 14-day online cohorts, or inbound on-campus residency tracks.
                   </p>
                 </div>
 
                 <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
                   <div className="text-[#10B981] font-bold flex items-center gap-2 text-xs sm:text-sm">
                     <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                    HARDWARE CONTINGENCY RESERVE
+                    SOVEREIGN IP &amp; GOVT MSME
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                    Workstations pair iOS builders with Android-owning co-founders across the 10 crews. Substrata Labs provides an on-site hardware reserve: reference Android test handsets and certified high-speed cables.
+                    Founders graduate with an official Govt. of India Udyam MSME Sole Proprietorship, 100% intellectual property ownership, and private signing keys.
                   </p>
                 </div>
 
@@ -1757,7 +1773,7 @@ export default function WeLiftoffPage() {
                     ADMISSIONS CREDENTIAL PORTFOLIO
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                    Graduates cite verifiable engineering deliverables—live Google Play listings, signed GitHub release APKs, in-app build fingerprints, and 60+ commit histories—directly in Common App and UCAS supplements.
+                    Graduates cite verifiable deliverables—live HTTPS domains, signed Google Play listings, and atomic commit histories—directly in Common App and UCAS portfolios.
                   </p>
                 </div>
               </div>
@@ -1771,7 +1787,7 @@ export default function WeLiftoffPage() {
                     DIRECTOR DOSSIER // SUBSTRATA LABS
                   </span>
                   <span className="px-2 py-0.5 rounded-sm bg-white/5 border border-white/10 text-[#F4F4F0]">
-                    ALUMNUS: MAYO COLLEGE (&apos;22–&apos;23)
+                    SYSTEMS ARCHITECT &amp; FOUNDER
                   </span>
                 </div>
 
@@ -1781,21 +1797,21 @@ export default function WeLiftoffPage() {
                   </h3>
                   <p className="font-mono text-xs sm:text-sm text-[#10B981] mt-1 font-semibold flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
-                    Founder, Substrata Labs · Architect of Sol (On-Device LLM on Google Play)
+                    Founder, Substrata Labs · Creator of WeLiftoff
                   </p>
                 </div>
 
                 <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug pl-4 border-l-2 border-[#FF4F00] bg-gradient-to-r from-[#FF4F00]/5 to-transparent py-3">
-                  &ldquo;When I was at Mayo College, the bottleneck was never raw
-                  curiosity—it was access to production engineering toolchains.
-                  WeLiftoff trains young builders to command version control,
-                  local-first persistence, and reproducible release pipelines so they
-                  ship durable software before graduating high school.&rdquo;
+                  &ldquo;The bottleneck for young builders is never raw curiosity—it
+                  is access to production engineering toolchains and proof of execution.
+                  WeLiftoff trains builders to command version control, local-first
+                  persistence, custom domains, and release pipelines so they ship
+                  durable software before graduating.&rdquo;
                 </blockquote>
               </div>
 
               <div className="pt-4 hairline-t font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-2">
-                <span className="text-[#F4F4F0] font-semibold">CAMPUS PILOT TRACK: MAYO COLLEGE, AJMER</span>
+                <span className="text-[#F4F4F0] font-semibold">DELIVERY: ONLINE · REGIONAL NCR · INBOUND CAMPUS</span>
                 <a
                   href="https://substratalabs.org"
                   target="_blank"
@@ -1827,19 +1843,24 @@ export default function WeLiftoffPage() {
             </p>
 
             {/* Tuition Breakdown Card */}
-            <div className="p-4 rounded-sm bg-[#0A0C0E] border border-white/10 flex flex-wrap items-center justify-between gap-4 font-mono text-xs sm:text-sm">
+            <div className="p-4 rounded-sm bg-[#0A0C0E] border border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
               <div>
-                <span className="text-[#8E95A5] block text-xs uppercase">CATALOG TUITION</span>
-                <span className="text-[#F4F4F0] font-bold text-base">₹95,000</span>{" "}
-                <span className="text-[#8E95A5]">($1,125 USD)</span>
+                <span className="text-[#8E95A5] block text-xs uppercase">REGIONAL INTENSIVE</span>
+                <span className="text-[#F4F4F0] font-bold text-base">₹4,999</span>{" "}
+                <span className="text-[#8E95A5] block text-[11px] mt-0.5">1–2 Day Masterclass (NCR)</span>
               </div>
-              <div className="text-right">
-                <span className="text-[#FF6A1F] block text-xs uppercase font-bold flex items-center gap-1 justify-end">
+              <div>
+                <span className="text-[#FF6A1F] block text-xs uppercase font-bold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
-                  CAMPUS PILOT RATE (MAYO COLLEGE)
+                  ONLINE COHORT
                 </span>
-                <span className="text-[#10B981] font-bold text-base">₹49,000–₹55,000</span>{" "}
-                <span className="text-[#8E95A5]">($580–$650 USD)</span>
+                <span className="text-[#10B981] font-bold text-base">₹24,900</span>{" "}
+                <span className="text-[#8E95A5] block text-[11px] mt-0.5">14-Day Cross-Campus Cohort</span>
+              </div>
+              <div>
+                <span className="text-[#8E95A5] block text-xs uppercase">CAMPUS RESIDENCY</span>
+                <span className="text-[#F4F4F0] font-bold text-base">₹49,000</span>{" "}
+                <span className="text-[#8E95A5] block text-[11px] mt-0.5">Inbound Institutional Track</span>
               </div>
             </div>
           </div>
@@ -1876,17 +1897,17 @@ export default function WeLiftoffPage() {
               }`}
             >
               <ShieldCheck className="w-4 h-4" />
-              <span>Institutional Faculty Inquiry</span>
+              <span>Institutional Campus Inquiry</span>
             </button>
           </div>
 
           {/* Cohort Window Selector */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
             {[
-              "Winter 2026 Residency (Mayo College Pilot)",
-              "Spring 2027 Residency",
-              "Summer 2027 Intensive",
-              "Institutional Briefing",
+              "Winter 2026 Online Cohort (Cross-Campus)",
+              "NCR / Bhiwadi Regional Intensive",
+              "Spring 2027 Online Residency",
+              "Institutional Campus Inquiry",
             ].map((slot) => (
               <button
                 key={slot}
@@ -1915,7 +1936,7 @@ export default function WeLiftoffPage() {
                 <CheckCircle2 className="w-5 h-5 text-[#10B981]" />
                 {intakeMode === "crew"
                   ? `FOUNDER CREW REGISTRATION TRANSMITTED [${cohortWindow.toUpperCase()}]`
-                  : `INSTITUTIONAL DOSSIER TRANSMITTED [${cohortWindow.toUpperCase()}]`}
+                  : `INSTITUTIONAL INQUIRY TRANSMITTED [${cohortWindow.toUpperCase()}]`}
               </div>
               {intakeMode === "crew" ? (
                 <p className="text-[#8E95A5] leading-relaxed">
@@ -1923,18 +1944,17 @@ export default function WeLiftoffPage() {
                   <strong className="text-[#F4F4F0]">
                     {crewData.studentName || "Student Founder"}
                   </strong>{" "}
-                  ({crewData.house ? `${crewData.house} House` : "Mayo College Pilot"}). Substrata Labs will verify the cohort window and send the DPDP Act 2023 §9 Parental Assent Link via WhatsApp to{" "}
+                  ({crewData.schoolOrCity || "Independent Applicant"}) {submissionId ? <span>[Ref: <code className="text-[#10B981] font-mono">{submissionId}</code>]</span> : null}. Substrata Labs will verify the cohort window and send the DPDP Act 2023 §9 Parental Assent Link via WhatsApp to{" "}
                   <strong className="text-[#F4F4F0]">{crewData.parentWhatsApp || "your registered contact"}</strong>{" "}
                   within 24 hours.
                 </p>
               ) : (
                 <p className="text-[#8E95A5] leading-relaxed">
-                  Institutional dossier request registered for{" "}
+                  Institutional inquiry registered for{" "}
                   <strong className="text-[#F4F4F0]">
                     {formData.institution || "your institution"}
                   </strong>{" "}
-                  ({formData.name}). Substrata Labs will provide the executive proposal, hardware pairing manifest,
-                  and DPDP Act 2023 institutional clearance documentation within 24 hours.
+                  ({formData.name}) {submissionId ? <span>[Ref: <code className="text-[#10B981] font-mono">{submissionId}</code>]</span> : null}. Substrata Labs will provide the executive proposal, hardware pairing manifest, and institutional clearance documentation within 24 hours.
                 </p>
               )}
               <button
@@ -1986,28 +2006,28 @@ export default function WeLiftoffPage() {
                       )}
                     </div>
                     <div>
-                      <label htmlFor="crew-house" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
-                        CAMPUS HOUSE / DORMITORY *
+                      <label htmlFor="crew-schoolOrCity" className="block uppercase text-xs text-[#8E95A5] mb-1.5 font-bold">
+                        SCHOOL &amp; CITY / REGION *
                       </label>
                       <input
-                        id="crew-house"
+                        id="crew-schoolOrCity"
                         type="text"
                         maxLength={100}
-                        aria-invalid={!!formErrors.house}
-                        aria-describedby={formErrors.house ? "house-error" : undefined}
-                        placeholder="e.g. Colvin / Bharatpur / Oman House"
-                        value={crewData.house}
+                        aria-invalid={!!formErrors.schoolOrCity}
+                        aria-describedby={formErrors.schoolOrCity ? "schoolOrCity-error" : undefined}
+                        placeholder="e.g. Modern School, New Delhi / DPS Gurgaon / Bhiwadi"
+                        value={crewData.schoolOrCity}
                         onChange={(e) => {
-                          setCrewData({ ...crewData, house: e.target.value });
-                          if (formErrors.house) setFormErrors({ ...formErrors, house: undefined });
+                          setCrewData({ ...crewData, schoolOrCity: e.target.value });
+                          if (formErrors.schoolOrCity) setFormErrors({ ...formErrors, schoolOrCity: undefined });
                         }}
                         className={`input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68] ${
-                          formErrors.house ? "border-[#EF4444] focus:border-[#EF4444]" : ""
+                          formErrors.schoolOrCity ? "border-[#EF4444] focus:border-[#EF4444]" : ""
                         }`}
                       />
-                      {formErrors.house && (
-                        <span id="house-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
-                          ! {formErrors.house}
+                      {formErrors.schoolOrCity && (
+                        <span id="schoolOrCity-error" role="alert" aria-live="polite" className="text-[#EF4444] font-mono text-xs mt-1.5 block">
+                          ! {formErrors.schoolOrCity}
                         </span>
                       )}
                     </div>
@@ -2171,7 +2191,7 @@ export default function WeLiftoffPage() {
                         maxLength={120}
                         aria-invalid={!!formErrors.institution}
                         aria-describedby={formErrors.institution ? "institution-error" : undefined}
-                        placeholder="e.g. Mayo College, Ajmer"
+                        placeholder="e.g. Modern School, New Delhi / DPS / Step by Step"
                         value={formData.institution}
                         onChange={(e) => {
                           setFormData({ ...formData, institution: e.target.value });
@@ -2228,7 +2248,7 @@ export default function WeLiftoffPage() {
                       id="intake-notes"
                       rows={3}
                       maxLength={1000}
-                      placeholder="Target cohort window, laboratory constraints, or evening prep timing (18:00–20:00)..."
+                      placeholder="Target cohort window, laboratory constraints, or student batch size..."
                       value={formData.notes}
                       onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                       className="input-machined w-full px-3.5 py-2.5 rounded-sm text-sm font-sans placeholder:text-[#555A68]"

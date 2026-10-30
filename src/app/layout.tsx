@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "WeLiftoff — Don't Just Learn to Code. Ship Like a Founder.",
     description:
-      "Turn messy local folders into deployed, production-ready software. An intensive 14-day engineering residency for builders going from 0 to 1. Inaugural cohort at Mayo College, Ajmer.",
+      "Turn messy local folders into deployed, production-ready software. An intensive engineering residency for builders going from 0 to 1. Online cohorts, regional intensives, and campus residencies.",
     url: "https://weliftoff.now",
     siteName: "WeLiftoff // Substrata Labs",
     locale: "en_IN",
