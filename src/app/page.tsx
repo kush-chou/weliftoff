@@ -222,27 +222,27 @@ interface DagTelemetry {
 
 const DAG_TELEMETRY: Record<DagMode, DagTelemetry> = {
   atomic: {
-    headRef: "HEAD -> main [SHA: f71a9e4]",
-    entropyBits: "0.02 bits [BOUNDED]",
-    rollbackBound: "0.0 ms [CLEAN WORKING TREE]",
+    headRef: "MAIN -> PRODUCTION [7/7 MILESTONES]",
+    entropyBits: "release-v1.0-signed.aab",
+    rollbackBound: "GOOGLE PLAY TRACK 1 [READY]",
     workingTreeStatus: "7/7 STATE CHECKPOINTS VERIFIED",
     springStiffness: 0.075,
     turbulence: 0,
     accentColor: "#10B981",
   },
   drift: {
-    headRef: "DETACHED [UNTRACKED AST MUTATIONS]",
-    entropyBits: "8.94 bits [UNBOUNDED DRIFT]",
-    rollbackBound: "NON-DETERMINISTIC // UNBOUNDED",
+    headRef: "DRIFT DETECTED [BUILD ASSERTION FAILED]",
+    entropyBits: "BUILD HALTED // UNTRACKED DRIFT",
+    rollbackBound: "RECOVERY REQUIRED",
     workingTreeStatus: "AST FRACTURE // SCHEMA COLLISION",
     springStiffness: 0.006,
     turbulence: 3.4,
     accentColor: "#EF4444",
   },
   reflog: {
-    headRef: "REFLOG -> HEAD@{0} [8e4f1a2]",
-    entropyBits: "0.00 bits [CONVERGED]",
-    rollbackBound: "11.4 ms [DETERMINISTIC RESET]",
+    headRef: "REFLOG RESTORE [11.4ms RECOVERY]",
+    entropyBits: "release-v1.0-signed.aab (RESTORED)",
+    rollbackBound: "GOOGLE PLAY TRACK 1 [RESTORED]",
     workingTreeStatus: "STATE RESTORED VIA GIT REFLOG",
     springStiffness: 0.12,
     turbulence: 0,
@@ -1041,64 +1041,64 @@ export default function WeLiftoffPage() {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
-                FOR BUILDERS GOING FROM 0 TO 1
+                14-DAY TECHNICAL ACCELERATOR
               </div>
 
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
-                Don&apos;t just learn to code.{" "}
+                Don&apos;t just tinker on localhost.{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
-                  Ship like a technical founder.
+                  Build &amp; ship an app to Google Play in 14 days.
                 </span>
               </h1>
 
               <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
-                Anyone can generate code today. The difference between a forgotten script and a real product is how you version, structure, and ship it. Master the engineering operating system used by fast-moving technical founders—from day-one repo to live Google Play software in 14 days.
+                Anyone can prompt a toy script in an afternoon. The difference between an abandoned project and a true founder credential is shipping native software that real users can download and install on physical glass. Master the production engineering OS used to structure, test, and publish native software to Google Play.
               </p>
             </div>
 
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
             <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2">
               <div className="flex items-center justify-between pb-1.5 hairline-b text-xs text-[#8E95A5] font-bold uppercase tracking-wider">
-                <span>SOVEREIGN FOUNDER STACK</span>
+                <span>FOUNDER SPECIFICATION</span>
                 <span className="text-[#10B981] flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
-                  VERIFIABLE ARTIFACTS
+                  SHIPPED ARTIFACTS
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">RUNTIME</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">TARGET RUNTIME</span>
                 <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Native Android (Physical Glass) + Web Edge
+                  Native Android · Compose (Physical Glass)
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">DOMAIN &amp; EDGE</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">APP STORE RELEASE</span>
                 <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
-                  Spaceship Live Domain + Vercel HTTPS &lt;30m
+                  Signed AAB &amp; Google Play Internal Track
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">DATA ENGINE</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">LOCAL PERSISTENCE</span>
                 <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Encrypted Room SQLite · Zero Egress
+                  Encrypted Room SQLite · Zero Server Egress
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">SOVEREIGN ID</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">CUSTOM DOMAIN</span>
                 <span className="font-semibold text-[#FF6A1F] text-right text-xs">
-                  Govt. of India Udyam MSME Sole Proprietorship
+                  Live Spaceship HTTPS Domain &lt; 30m
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">INCIDENT SLA</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">EMERGENCY ROLLBACK</span>
                 <span className="font-semibold text-[#10B981] text-right text-xs">
-                  &lt; 12ms Deterministic Rollback [reflog]
+                  &lt; 12ms Deterministic Recovery [reflog]
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">IP OWNERSHIP</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">IP &amp; REPO SOVEREIGNTY</span>
                 <span className="font-semibold text-[#10B981] text-right text-xs">
-                  100% Student-Owned Code, Keys &amp; Certificates
+                  100% Student-Owned Code, Keys &amp; Commits
                 </span>
               </div>
             </div>
@@ -1113,7 +1113,7 @@ export default function WeLiftoffPage() {
                 Apply for Founder Crew Seat [10 Crews] &rarr;
               </a>
               <span className="block text-center font-mono text-xs text-[#8E95A5] mt-2">
-                Independent Online Cohorts · Regional Intensives · Inbound Campus Pilots
+                14 Days · Build Real Software · Ship to Google Play
               </span>
             </div>
           </div>
@@ -1129,7 +1129,7 @@ export default function WeLiftoffPage() {
                     backgroundColor: telemetry.accentColor,
                   }}
                 />
-                CANVAS TELEMETRY // GIT DAG STATE CONVERGENCE SIMULATOR
+                SHIPPING PIPELINE // FROM EMPTY REPO TO GOOGLE PLAY (D01 → D14)
               </span>
 
               {/* Bounded Mechanical States */}
@@ -1151,7 +1151,7 @@ export default function WeLiftoffPage() {
                       dagMode === "atomic" ? "bg-[#0B0C0E]" : "bg-[#10B981]"
                     }`}
                   />
-                  Atomic Commit
+                  Production Path
                 </button>
                 <button
                   type="button"
@@ -1170,7 +1170,7 @@ export default function WeLiftoffPage() {
                       dagMode === "drift" ? "bg-[#0B0C0E]" : "bg-[#EF4444]"
                     }`}
                   />
-                  Unbounded Drift
+                  Simulate Bug
                 </button>
                 <button
                   type="button"
@@ -1189,7 +1189,7 @@ export default function WeLiftoffPage() {
                       dagMode === "reflog" ? "bg-[#0B0C0E]" : "bg-[#FF4F00]"
                     }`}
                   />
-                  Reflog Restore
+                  10s Rollback
                 </button>
               </div>
             </div>
@@ -1210,14 +1210,14 @@ export default function WeLiftoffPage() {
                 7 CANONICAL RELEASE MILESTONES (D01 &rarr; D14)
               </div>
               <div className="absolute bottom-3 left-4 pointer-events-none font-mono text-xs text-[#8E95A5] bg-[#0B0C0E]/75 backdrop-blur-sm px-2.5 py-1 rounded-sm border border-white/10">
-                INTERACTIVE CONVERGENCE: CLICK OR DRAG PARTICLES TO AUDIT RECOVERY
+                INTERACTIVE CONVERGENCE: CLICK OR DRAG NODES TO AUDIT RECOVERY
               </div>
             </div>
 
             {/* Telemetry Readout Console */}
             <div className="hairline-t px-4 sm:px-6 py-3 bg-[#111317]/95 backdrop-blur-sm font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-4">
               <span className="flex items-center gap-2">
-                <span className="text-[#8E95A5]">REF:</span>
+                <span className="text-[#8E95A5]">PIPELINE:</span>
                 <strong
                   style={{ color: telemetry.accentColor }}
                   className="font-bold bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10"
@@ -1226,13 +1226,13 @@ export default function WeLiftoffPage() {
                 </strong>
               </span>
               <span>
-                STATE ENTROPY:{" "}
+                ARTIFACT:{" "}
                 <strong className="text-[#F4F4F0] bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10 font-bold">
                   {telemetry.entropyBits}
                 </strong>
               </span>
               <span>
-                RECOVERY BOUND:{" "}
+                STATUS:{" "}
                 <strong className="text-[#10B981] bg-[#0B0C0E] px-2.5 py-1 rounded-sm border border-white/10 font-bold">
                   {telemetry.rollbackBound}
                 </strong>
@@ -1787,7 +1787,7 @@ export default function WeLiftoffPage() {
                     DIRECTOR DOSSIER // SUBSTRATA LABS
                   </span>
                   <span className="px-2 py-0.5 rounded-sm bg-white/5 border border-white/10 text-[#F4F4F0]">
-                    SYSTEMS ARCHITECT &amp; FOUNDER
+                    PROVEN SHIPPING CREDENTIAL
                   </span>
                 </div>
 
@@ -1797,16 +1797,12 @@ export default function WeLiftoffPage() {
                   </h3>
                   <p className="font-mono text-xs sm:text-sm text-[#10B981] mt-1 font-semibold flex items-center gap-1.5">
                     <CheckCircle2 className="w-4 h-4" />
-                    Founder, Substrata Labs · Creator of WeLiftoff
+                    Architect of Sol (On-Device AI on Google Play) · Founder, Substrata Labs
                   </p>
                 </div>
 
                 <blockquote className="font-serif italic text-lg sm:text-xl text-[#F4F4F0] leading-snug pl-4 border-l-2 border-[#FF4F00] bg-gradient-to-r from-[#FF4F00]/5 to-transparent py-3">
-                  &ldquo;The bottleneck for young builders is never raw curiosity—it
-                  is access to production engineering toolchains and proof of execution.
-                  WeLiftoff trains builders to command version control, local-first
-                  persistence, custom domains, and release pipelines so they ship
-                  durable software before graduating.&rdquo;
+                  &ldquo;Anyone can generate code in a local folder today. The real bottleneck is knowing how to structure, test, and package software so it doesn&apos;t break when real users touch it. WeLiftoff trains builders to command production toolchains—from git architecture to signed Google Play releases—so they graduate with non-falsifiable proof of execution.&rdquo;
                 </blockquote>
               </div>
 
@@ -1835,11 +1831,11 @@ export default function WeLiftoffPage() {
               10 CREWS · 20 SEATS · SHIP PRODUCTION SOFTWARE
             </div>
             <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-              Stop sitting on localhost. Ship your first product today.
+              Stop sitting on localhost. Build &amp; ship your app in 14 days.
             </h2>
             <p className="font-mono text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-              Reserve your two-person founder crew for the 14-day on-campus engineering residency.
-              Receive the executive prospectus, hardware pairing checklist, and parental assent documentation.
+              Reserve your two-person founder crew for the 14-day technical accelerator.
+              Build a real native Android app, configure local-first persistence, and launch on Google Play.
             </p>
 
             {/* Tuition Breakdown Card */}

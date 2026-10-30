@@ -3,13 +3,13 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://weliftoff.now"),
-  title: "WeLiftoff — Don't Just Learn to Code. Ship Like a Founder.",
+  title: "WeLiftoff — Build & Ship an App to Google Play in 14 Days",
   description:
-    "The 14-day engineering residency turning high school builders into technical founders. Stop tinkering in local folders. Master repo architecture, local-first persistence, and ship live software to Google Play.",
+    "The 14-day builder accelerator. Stop tinkering on localhost. Master production repo architecture, local-first persistence, and ship a real native app to Google Play.",
   openGraph: {
-    title: "WeLiftoff — Don't Just Learn to Code. Ship Like a Founder.",
+    title: "WeLiftoff — Build & Ship an App to Google Play in 14 Days",
     description:
-      "Turn messy local folders into deployed, production-ready software. An intensive engineering residency for builders going from 0 to 1. Online cohorts, regional intensives, and campus residencies.",
+      "Stop getting stuck on localhost. Build and ship a real native Android app to Google Play in 14 days with verifiable commit provenance and 100% student IP ownership.",
     url: "https://weliftoff.now",
     siteName: "WeLiftoff // Substrata Labs",
     locale: "en_IN",
