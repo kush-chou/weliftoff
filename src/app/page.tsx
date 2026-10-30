@@ -306,7 +306,7 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
   },
   {
     id: "custody",
-    code: "[INV.04 // SOVEREIGNTY]",
+    code: "[INV.04 // OWNERSHIP]",
     title: "Custodial IP Transfer at Age 18",
     metric: "100% STUDENT OWNERSHIP",
     summary:
@@ -928,22 +928,22 @@ export default function WeLiftoffPage() {
         <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
           <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
             <span className="w-2 h-2 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
-            WELIFTOFF // SOVEREIGN FOUNDER OS
+            WELIFTOFF // FOUNDER BOOTCAMP
           </span>
           <span className="hidden sm:inline text-white/10">|</span>
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
-            ONLINE COHORTS · REGIONAL INTENSIVES · CAMPUS RESIDENCIES
+            ONLINE COHORTS · OFFLINE WORKSHOPS &amp; BOOTCAMPS
           </span>
           <span className="hidden lg:inline text-white/10">|</span>
           <span className="hidden lg:inline text-[#8E95A5]">
-            14 DAYS // ZERO-TO-ONE PRODUCTION STACK
+            FROM EMPTY REPO TO GOOGLE PLAY
           </span>
         </div>
 
         <div className="flex items-center gap-4">
           <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
-            ADMISSIONS OPEN // 10 CREWS (20 SEATS)
+            ADMISSIONS OPEN // NOW ENROLLING
           </span>
           <button
             onClick={toggleAudio}
@@ -981,7 +981,7 @@ export default function WeLiftoffPage() {
               WELIFTOFF
             </span>
             <span className="font-mono text-xs uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
-              Substrata Labs Engineering Residency
+              Substrata Labs Founder Bootcamp
             </span>
           </div>
         </div>
@@ -999,7 +999,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1"
           >
-            Founder OS
+            Founder Bootcamp
           </a>
           <a
             href="#invariants"
@@ -1029,7 +1029,7 @@ export default function WeLiftoffPage() {
           onClick={() => audio.click()}
           className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
         >
-          Apply for Crew Seat <ArrowRight className="w-3.5 h-3.5" />
+          Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
         </a>
       </header>
 
@@ -1041,18 +1041,18 @@ export default function WeLiftoffPage() {
             <div className="space-y-4">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
-                14-DAY TECHNICAL ACCELERATOR
+                TECHNICAL ACCELERATOR // ZERO TO ONE
               </div>
 
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
-                Don&apos;t just tinker on localhost.{" "}
+                Don&apos;t just learn to code.{" "}
                 <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
-                  Build &amp; ship an app to Google Play in 14 days.
+                  Ship like a technical founder.
                 </span>
               </h1>
 
               <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
-                Anyone can prompt a toy script in an afternoon. The difference between an abandoned project and a true founder credential is shipping native software that real users can download and install on physical glass. Master the production engineering OS used to structure, test, and publish native software to Google Play.
+                Anyone can generate code in an afternoon. The difference between an abandoned side project and a real founder credential is shipping native software that real users can install on their devices. Master the production toolchain used to structure, test, and publish native apps to Google Play.
               </p>
             </div>
 
@@ -1096,7 +1096,7 @@ export default function WeLiftoffPage() {
                 </span>
               </div>
               <div className="flex justify-between items-center py-1 gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">IP &amp; REPO SOVEREIGNTY</span>
+                <span className="text-[#8E95A5] shrink-0 text-xs">IP &amp; REPO OWNERSHIP</span>
                 <span className="font-semibold text-[#10B981] text-right text-xs">
                   100% Student-Owned Code, Keys &amp; Commits
                 </span>
@@ -1110,10 +1110,10 @@ export default function WeLiftoffPage() {
                 onClick={() => audio.commit()}
                 className="btn-primary-tactile rounded-sm block w-full py-3.5 text-center font-mono text-xs sm:text-sm font-bold uppercase tracking-wider"
               >
-                Apply for Founder Crew Seat [10 Crews] &rarr;
+                Apply for Founder Seat &rarr;
               </a>
               <span className="block text-center font-mono text-xs text-[#8E95A5] mt-2">
-                14 Days · Build Real Software · Ship to Google Play
+                Build Real Software · Ship to Google Play
               </span>
             </div>
           </div>
@@ -1307,7 +1307,7 @@ export default function WeLiftoffPage() {
             <div className="p-4 sm:p-5 hairline-b bg-[#14171E] flex flex-wrap items-center justify-between gap-4 font-mono text-xs">
               <span className="text-[#F4F4F0] font-bold text-sm uppercase tracking-wider flex items-center gap-2">
                 <Workflow className="w-4 h-4 text-[#FF4F00]" />
-                THE OPERATING SYSTEM: HOBBYIST VS. TECHNICAL FOUNDER
+                THE FOUNDER STANDARD: HOBBYIST VS. TECHNICAL FOUNDER
               </span>
               <span className="text-xs text-[#8E95A5]">
                 DETERMINISTIC VERIFICATION INVARIANT
@@ -1392,7 +1392,7 @@ export default function WeLiftoffPage() {
               <div className="space-y-4">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                   <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                  PAIRING TOPOLOGY // 50/50 CREW SEATS
+                  PAIRING TOPOLOGY // TWO-PERSON CREWS
                 </div>
                 <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
                   Separation of Steering{" "}
@@ -1519,7 +1519,7 @@ export default function WeLiftoffPage() {
         </div>
       </section>
 
-      {/* Sovereign Legal & Architectural Invariants */}
+      {/* Statutory Legal & Architectural Invariants */}
       <section id="invariants" className="hairline-b bg-[#0B0C0E] min-h-[100dvh] flex flex-col justify-center py-10 lg:py-14">
         <div className="max-w-7xl mx-auto px-4 sm:px-8 w-full space-y-6">
           <div className="p-6 sm:p-8 hairline-b flex flex-wrap items-end justify-between gap-4 bg-gradient-to-r from-[#12151B] to-[#0B0C0E] rounded-sm border border-white/10">
@@ -1724,15 +1724,15 @@ export default function WeLiftoffPage() {
               <div className="space-y-3">
                 <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                   <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                  DECOUPLED &amp; SOVEREIGN DELIVERY FORMATS
+                  ONLINE COHORTS &amp; OFFLINE WORKSHOPS
                 </div>
                 <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
                   Zero Bureaucracy. Production Delivery.
                 </h2>
                 <p className="text-base text-[#8E95A5] leading-relaxed max-w-2xl">
                   Engineered to operate independently of school administration gatekeeping.
-                  Substrata Labs runs across weekend regional intensives (Delhi-NCR &amp; Bhiwadi),
-                  cross-campus online cohorts, and inbound campus residencies—with zero institutional IT overhead.
+                  Substrata Labs runs across high-density weekend workshops, online cohorts,
+                  and intensive on-campus bootcamps—with zero institutional IT overhead.
                 </p>
               </div>
 
@@ -1753,14 +1753,14 @@ export default function WeLiftoffPage() {
                     MULTI-FORMAT DELIVERY
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-                    Choose between high-density 1–2 day regional weekend masterclasses, 14-day online cohorts, or inbound on-campus residency tracks.
+                    Choose between high-density 2-day weekend workshops, online cohorts, or intensive on-campus bootcamps.
                   </p>
                 </div>
 
                 <div className="p-5 rounded-sm bg-[#0B0C0E] border border-white/10 space-y-2.5 shadow-sm">
                   <div className="text-[#10B981] font-bold flex items-center gap-2 text-xs sm:text-sm">
                     <ShieldCheck className="w-4 h-4 text-[#10B981]" />
-                    SOVEREIGN IP &amp; GOVT MSME
+                    100% IP OWNERSHIP &amp; GOVT MSME
                   </div>
                   <p className="font-sans text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
                     Founders graduate with an official Govt. of India Udyam MSME Sole Proprietorship, 100% intellectual property ownership, and private signing keys.
@@ -1828,34 +1828,33 @@ export default function WeLiftoffPage() {
           <div className="space-y-3">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
-              10 CREWS · 20 SEATS · SHIP PRODUCTION SOFTWARE
+              ADMISSIONS OPEN · SHIP REAL PRODUCTION SOFTWARE
             </div>
             <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-              Stop sitting on localhost. Build &amp; ship your app in 14 days.
+              Stop sitting on localhost. Build &amp; ship real software.
             </h2>
             <p className="font-mono text-xs sm:text-sm text-[#8E95A5] leading-relaxed">
-              Reserve your two-person founder crew for the 14-day technical accelerator.
-              Build a real native Android app, configure local-first persistence, and launch on Google Play.
+              Reserve your seat in the founder bootcamp. Build a real native Android app, configure local-first persistence, and launch on Google Play.
             </p>
 
             {/* Tuition Breakdown Card */}
             <div className="p-4 rounded-sm bg-[#0A0C0E] border border-white/10 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono text-xs">
               <div>
-                <span className="text-[#8E95A5] block text-xs uppercase">REGIONAL INTENSIVE</span>
-                <span className="text-[#F4F4F0] font-bold text-base">₹4,999</span>{" "}
-                <span className="text-[#8E95A5] block text-[11px] mt-0.5">1–2 Day Masterclass (NCR)</span>
+                <span className="text-[#8E95A5] block text-xs uppercase">WEEKEND WORKSHOP</span>
+                <span className="text-[#F4F4F0] font-bold text-base">₹14,999</span>{" "}
+                <span className="text-[#8E95A5] block text-[11px] mt-0.5">2-Day Hands-on Founder Sprint</span>
               </div>
               <div>
                 <span className="text-[#FF6A1F] block text-xs uppercase font-bold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 rounded-full bg-[#FF4F00]" />
-                  ONLINE COHORT
+                  ONLINE BOOTCAMP
                 </span>
-                <span className="text-[#10B981] font-bold text-base">₹24,900</span>{" "}
-                <span className="text-[#8E95A5] block text-[11px] mt-0.5">14-Day Cross-Campus Cohort</span>
+                <span className="text-[#10B981] font-bold text-base">₹55,000</span>{" "}
+                <span className="text-[#8E95A5] block text-[11px] mt-0.5">Early Rate · Catalog: ₹75,000</span>
               </div>
               <div>
-                <span className="text-[#8E95A5] block text-xs uppercase">CAMPUS RESIDENCY</span>
-                <span className="text-[#F4F4F0] font-bold text-base">₹49,000</span>{" "}
+                <span className="text-[#8E95A5] block text-xs uppercase">CAMPUS BOOTCAMP</span>
+                <span className="text-[#F4F4F0] font-bold text-base">₹95,000</span>{" "}
                 <span className="text-[#8E95A5] block text-[11px] mt-0.5">Inbound Institutional Track</span>
               </div>
             </div>
@@ -1877,7 +1876,7 @@ export default function WeLiftoffPage() {
               }`}
             >
               <Cpu className="w-4 h-4" />
-              <span>Apply for Founder Crew (Students)</span>
+              <span>Apply for Founder Seat (Students)</span>
             </button>
             <button
               type="button"
@@ -1900,10 +1899,10 @@ export default function WeLiftoffPage() {
           {/* Cohort Window Selector */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 font-mono text-xs">
             {[
-              "Winter 2026 Online Cohort (Cross-Campus)",
-              "NCR / Bhiwadi Regional Intensive",
-              "Spring 2027 Online Residency",
-              "Institutional Campus Inquiry",
+              "Winter 2026 Online Founder Bootcamp",
+              "Offline Weekend Workshop (Delhi-NCR)",
+              "Spring 2027 Online Founder Bootcamp",
+              "Institutional Campus Bootcamp Inquiry",
             ].map((slot) => (
               <button
                 key={slot}
