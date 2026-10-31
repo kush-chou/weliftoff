@@ -924,8 +924,8 @@ export default function WeLiftoffPage() {
   return (
     <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
       {/* Top Metadata & Operations Status Bar */}
-      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-xs text-[#8E95A5] flex flex-wrap items-center justify-between gap-3 relative z-50">
-        <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
+      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-xs text-[#8E95A5] flex items-center justify-between gap-3 relative z-50 whitespace-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
           <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
             <span className="w-2 h-2 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
             WELIFTOFF // FOUNDER BOOTCAMP
@@ -934,16 +934,16 @@ export default function WeLiftoffPage() {
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
             ONLINE COHORTS · OFFLINE WORKSHOPS · BOOTCAMPS
           </span>
-          <span className="hidden lg:inline text-white/10">|</span>
-          <span className="hidden lg:inline text-[#8E95A5]">
+          <span className="hidden xl:inline text-white/10">|</span>
+          <span className="hidden xl:inline text-[#8E95A5]">
             FROM EMPTY REPO TO GOOGLE PLAY
           </span>
         </div>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
           <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
-            ADMISSIONS OPEN // NOW ENROLLING
+            ADMISSIONS OPEN <span className="hidden sm:inline">// NOW ENROLLING</span>
           </span>
           <button
             onClick={toggleAudio}
