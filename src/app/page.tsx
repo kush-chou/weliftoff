@@ -973,24 +973,15 @@ export default function WeLiftoffPage() {
   return (
     <div className="min-h-screen bg-[#0B0C0E] text-[#F4F4F0] flex flex-col selection:bg-[#FF4F00] selection:text-[#0B0C0E]">
       {/* Top Metadata & Operations Status Bar */}
-      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-xs text-[#8E95A5] flex items-center justify-between gap-3 relative z-50 whitespace-nowrap overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
-        <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-          <span className="flex items-center gap-1.5 text-[#FF4F00] font-bold tracking-wider">
-            <span className="w-2 h-2 rounded-full bg-[#FF4F00] inline-block animate-pulse" />
-            WELIFTOFF // FOUNDER BOOTCAMP
-          </span>
-          <span className="hidden sm:inline text-white/10">|</span>
-          <span className="hidden sm:inline text-[#F4F4F0] font-medium">
+      <div className="hairline-b bg-[#0B0C0E] px-4 sm:px-8 py-2 font-mono text-xs text-[#8E95A5] flex items-center justify-between gap-3 relative z-50">
+        <div className="flex items-center gap-2 sm:gap-4 min-w-0">
+          <span className="text-[#F4F4F0] font-medium truncate text-xs">
             ONLINE COHORTS · OFFLINE WORKSHOPS · BOOTCAMPS
-          </span>
-          <span className="hidden xl:inline text-white/10">|</span>
-          <span className="hidden xl:inline text-[#8E95A5]">
-            FROM EMPTY REPO TO GOOGLE PLAY
           </span>
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4 shrink-0">
-          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs">
+          <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
             ADMISSIONS OPEN <span className="hidden sm:inline">// NOW ENROLLING</span>
           </span>
@@ -1002,7 +993,7 @@ export default function WeLiftoffPage() {
                 : "Enable Mechanical Keyswitch Audio"
             }
             aria-label="Toggle acoustic feedback"
-            className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-white/10 bg-[#14171E] hover:border-white/30 text-[#8E95A5] hover:text-[#F4F4F0] transition-all cursor-pointer text-xs"
+            className="flex items-center gap-1.5 px-2.5 py-1 rounded-sm border border-white/10 bg-[#14171E] hover:border-white/30 text-[#8E95A5] hover:text-[#F4F4F0] transition-all cursor-pointer text-xs shrink-0"
           >
             {audioEnabled ? (
               <>
@@ -1030,7 +1021,7 @@ export default function WeLiftoffPage() {
               WELIFTOFF
             </span>
             <span className="font-mono text-xs uppercase tracking-widest text-[#8E95A5] mt-0.5 block">
-              Substrata Labs Founder Bootcamp
+              Substrata Labs
             </span>
           </div>
         </div>
