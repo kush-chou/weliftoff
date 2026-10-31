@@ -1064,53 +1064,13 @@ export default function WeLiftoffPage() {
           </a>
         </nav>
 
-        <div className="flex items-center gap-3">
-          {/* Audience Perspective Lens Switcher */}
-          <div className="flex items-center p-0.5 bg-[#12141A] rounded-sm border border-white/10 font-mono text-xs">
-            <button
-              type="button"
-              onClick={() => {
-                audio.click();
-                setAudiencePerspective("builder");
-              }}
-              title="View technical founder specifications, stack details, and CLI verification"
-              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
-                audiencePerspective === "builder"
-                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-sm shadow-[#FF4F00]/20"
-                  : "text-[#8E95A5] hover:text-[#F4F4F0]"
-              }`}
-            >
-              <Terminal className="w-3 h-3" />
-              <span className="hidden sm:inline">Builder View</span>
-              <span className="sm:hidden">Builder</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => {
-                audio.click();
-                setAudiencePerspective("executive");
-              }}
-              title="View university admissions alignment (Common App / UCAS) and DPDP §9 statutory safeguarding"
-              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
-                audiencePerspective === "executive"
-                  ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-sm shadow-[#10B981]/20"
-                  : "text-[#8E95A5] hover:text-[#F4F4F0]"
-              }`}
-            >
-              <GraduationCap className="w-3 h-3" />
-              <span className="hidden sm:inline">Academic View</span>
-              <span className="sm:hidden">Academic</span>
-            </button>
-          </div>
-
-          <a
-            href="#contract"
-            onClick={() => audio.click()}
-            className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
-          >
-            Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
-          </a>
-        </div>
+        <a
+          href="#contract"
+          onClick={() => audio.click()}
+          className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+        >
+          Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
+        </a>
       </header>
 
       {/* Hero Viewport: Asymmetric 12-Column Split */}
@@ -1133,13 +1093,14 @@ export default function WeLiftoffPage() {
                       audio.click();
                       setAudiencePerspective("builder");
                     }}
-                    className={`px-2 py-0.5 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
                       audiencePerspective === "builder"
-                        ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
+                        ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-sm shadow-[#FF4F00]/20"
                         : "text-[#8E95A5] hover:text-[#F4F4F0]"
                     }`}
                   >
-                    Builder
+                    <Terminal className="w-3 h-3" />
+                    <span>Builder</span>
                   </button>
                   <button
                     type="button"
@@ -1147,13 +1108,14 @@ export default function WeLiftoffPage() {
                       audio.click();
                       setAudiencePerspective("executive");
                     }}
-                    className={`px-2 py-0.5 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                    className={`flex items-center gap-1 px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
                       audiencePerspective === "executive"
-                        ? "bg-[#10B981] text-[#0B0C0E] font-bold"
+                        ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-sm shadow-[#10B981]/20"
                         : "text-[#8E95A5] hover:text-[#F4F4F0]"
                     }`}
                   >
-                    Academic
+                    <GraduationCap className="w-3 h-3" />
+                    <span>Academic</span>
                   </button>
                 </div>
               </div>
