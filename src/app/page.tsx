@@ -1032,7 +1032,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            {audiencePerspective === "builder" ? "Ideation" : "Imagine"}
+            {audiencePerspective === "builder" ? "Ideate" : "Imagine"}
           </a>
           <a
             href="#pairing"
