@@ -932,7 +932,7 @@ export default function WeLiftoffPage() {
           </span>
           <span className="hidden sm:inline text-white/10">|</span>
           <span className="hidden sm:inline text-[#F4F4F0] font-medium">
-            ONLINE COHORTS · OFFLINE WORKSHOPS &amp; BOOTCAMPS
+            ONLINE COHORTS · OFFLINE WORKSHOPS · BOOTCAMPS
           </span>
           <span className="hidden lg:inline text-white/10">|</span>
           <span className="hidden lg:inline text-[#8E95A5]">
