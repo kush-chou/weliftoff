@@ -2185,7 +2185,7 @@ export default function WeLiftoffPage() {
                         maxLength={100}
                         aria-invalid={!!formErrors.studentName}
                         aria-describedby={formErrors.studentName ? "studentName-error" : undefined}
-                        placeholder="e.g. Kushagra Chouhan"
+                        placeholder="e.g. Kushagra Choudhary"
                         value={crewData.studentName}
                         onChange={(e) => {
                           setCrewData({ ...crewData, studentName: e.target.value });
