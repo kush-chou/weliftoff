@@ -1026,41 +1026,41 @@ export default function WeLiftoffPage() {
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center justify-center gap-4 lg:gap-6 xl:gap-7 font-mono text-xs uppercase tracking-wider text-[#8E95A5] whitespace-nowrap">
+        <nav className="hidden md:flex items-center justify-center gap-4 lg:gap-6 xl:gap-8 font-mono text-xs uppercase tracking-wider text-[#8E95A5] whitespace-nowrap">
           <a
             href="#anti-tutorial"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            AntiTutorial
+            {audiencePerspective === "builder" ? "Ideation" : "Imagine"}
           </a>
           <a
             href="#pairing"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            Founder Bootcamp
+            Build
           </a>
           <a
             href="#invariants"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            Invariants
+            Test
           </a>
           <a
             href="#syllabus"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            Milestones
+            Launch
           </a>
           <a
             href="#institutional"
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            Integration
+            {audiencePerspective === "builder" ? "Iterate" : "Loop"}
           </a>
         </nav>
 
