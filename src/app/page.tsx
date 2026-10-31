@@ -1032,7 +1032,7 @@ export default function WeLiftoffPage() {
             onClick={() => audio.click()}
             className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
-            The Anti-Tutorial
+            Anti Tutorial
           </a>
           <a
             href="#pairing"
@@ -1391,7 +1391,7 @@ export default function WeLiftoffPage() {
           <div className="max-w-3xl space-y-3">
             <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
               <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-              THE ANTI-TUTORIAL PITCH
+              ANTI TUTORIAL PITCH
             </div>
             <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
               Why 90% of side projects die in{" "}
