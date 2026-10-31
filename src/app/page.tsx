@@ -983,7 +983,7 @@ export default function WeLiftoffPage() {
         <div className="flex items-center gap-3 sm:gap-4 shrink-0">
           <span className="flex items-center gap-1.5 text-[#10B981] font-semibold text-xs whitespace-nowrap">
             <span className="w-2 h-2 rounded-full bg-[#10B981] inline-block led-indicator-emerald" />
-            ADMISSIONS OPEN <span className="hidden sm:inline">// NOW ENROLLING</span>
+            ADMISSIONS OPEN <span className="hidden sm:inline">// SEATS AVAILABLE</span>
           </span>
           <button
             onClick={toggleAudio}
