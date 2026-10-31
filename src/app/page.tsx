@@ -1011,8 +1011,8 @@ export default function WeLiftoffPage() {
       </div>
 
       {/* Main Architectural Navigation Header */}
-      <header className="hairline-b bg-[#0B0C0E]/90 backdrop-blur-xl px-4 sm:px-8 py-3 flex items-center justify-between sticky top-0 z-40">
-        <div className="flex items-center gap-3">
+      <header className="hairline-b bg-[#0B0C0E]/90 backdrop-blur-xl px-4 sm:px-8 py-3.5 flex items-center justify-between gap-6 lg:gap-10 sticky top-0 z-40">
+        <div className="flex items-center gap-3 shrink-0">
           <div className="w-9 h-9 rounded-sm bg-[#161922] border border-white/10 flex items-center justify-center text-lg select-none shadow-sm shadow-black/40">
             🚀
           </div>
@@ -1026,39 +1026,39 @@ export default function WeLiftoffPage() {
           </div>
         </div>
 
-        <nav className="hidden md:flex items-center gap-7 font-mono text-xs uppercase tracking-wider text-[#8E95A5]">
+        <nav className="hidden md:flex items-center justify-center gap-4 lg:gap-6 xl:gap-7 font-mono text-xs uppercase tracking-wider text-[#8E95A5] whitespace-nowrap">
           <a
             href="#anti-tutorial"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors py-1"
+            className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
             The Anti-Tutorial
           </a>
           <a
             href="#pairing"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors py-1"
+            className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
             Founder Bootcamp
           </a>
           <a
             href="#invariants"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors py-1"
+            className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
             Invariants
           </a>
           <a
             href="#syllabus"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors py-1"
+            className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
             Milestones
           </a>
           <a
             href="#institutional"
             onClick={() => audio.click()}
-            className="hover:text-[#FF4F00] transition-colors py-1"
+            className="hover:text-[#FF4F00] transition-colors py-1 whitespace-nowrap"
           >
             Integration
           </a>
@@ -1067,7 +1067,7 @@ export default function WeLiftoffPage() {
         <a
           href="#contract"
           onClick={() => audio.click()}
-          className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+          className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 shrink-0 whitespace-nowrap"
         >
           Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
         </a>
