@@ -15,6 +15,7 @@ import {
   AlertTriangle,
   XCircle,
   Workflow,
+  GraduationCap,
 } from "lucide-react";
 
 /* --- Ephemeral Acoustic Feedback Synthesizer (Native AudioContext < 80ms) --- */
@@ -320,6 +321,8 @@ const COMPLIANCE_REGISTRY: ComplianceRecord[] = [
   },
 ];
 
+type AudiencePerspective = "builder" | "executive";
+
 interface SyllabusNode {
   dayRange: string;
   code: string;
@@ -327,6 +330,10 @@ interface SyllabusNode {
   artifact: string;
   specification: string;
   verificationCmd: string;
+  executiveTitle?: string;
+  executiveArtifact?: string;
+  executiveSpecification?: string;
+  executiveVerification?: string;
 }
 
 const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
@@ -339,6 +346,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Structure a production repository that scales from day one. Provision a live custom domain via Spaceship with edge HTTPS in under 30 minutes, master atomic commit discipline, and pair physical test handsets over ADB.",
       verificationCmd: "spaceship domain status && git reflog -n 5 && adb devices",
+      executiveTitle: "Production Infrastructure & Live Enterprise Domain",
+      executiveArtifact: "Live HTTPS Custom Domain & Verified Dev Environment",
+      executiveSpecification:
+        "Establish enterprise engineering hygiene. Students independently provision an authentic custom domain with automated SSL encryption and configure local toolchains without school IT network burdens.",
+      executiveVerification: "Audit Criterion: Independent Domain Verification & Physical Glass Handshake",
     },
     {
       dayRange: "DAYS 03–04",
@@ -348,6 +360,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Draft rock-solid technical specifications using AI agent workflows under a strict token budget. Model screen states deterministically to guarantee zero runtime crashes.",
       verificationCmd: "git status && ./gradlew compileDebugKotlin --console=plain",
+      executiveTitle: "Computational Architecture & Formal Specification",
+      executiveArtifact: "Formal System Architecture Spec & Crash-Resilient State Model",
+      executiveSpecification:
+        "Instill rigorous computational thinking. Students draft formal engineering specifications under token constraints, modeling provably crash-free finite state machines before assembling user interfaces.",
+      executiveVerification: "Audit Criterion: Deterministic State Coverage & Zero Compilation Warnings",
     },
     {
       dayRange: "DAYS 05–06",
@@ -357,6 +374,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Architect local-first data storage that runs completely offline with zero network connectivity. Ensure user records never leave the physical handset under statutory DPDP Act bounds.",
       verificationCmd: "./gradlew testDebugUnitTest verifyZeroEgress",
+      executiveTitle: "Statutory Child Data Safeguarding (DPDP Act §9)",
+      executiveArtifact: "Local-First Encrypted Database · Zero Egress Architecture",
+      executiveSpecification:
+        "Enforce privacy-by-design ethics. All application data is stored in on-device encrypted SQLite databases with zero cloud egress, strictly complying with Section 9 of the DPDP Act 2023 for minor protection.",
+      executiveVerification: "Audit Criterion: Automated Zero-Egress Network Isolation Gate (DPDP §9 Compliant)",
     },
     {
       dayRange: "DAY 07",
@@ -366,6 +388,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Conduct peer code audits across cohort builders. Inspect 60 FPS UI rendering on physical glass using scrcpy and lock release scope for the shipping pipeline.",
       verificationCmd: "git ledger --last --agents-only",
+      executiveTitle: "Peer Code Review & Hardware Performance QA",
+      executiveArtifact: "Peer-Audited Release Branch & Verified 60 FPS Glass Metric",
+      executiveSpecification:
+        "Cultivate critical collaborative evaluation. Student crews cross-examine peer codebases, audit 60fps frame budgets on physical devices, and defend architectural invariants prior to release freeze.",
+      executiveVerification: "Audit Criterion: Multi-Party Codebase Signoff & Frame Budget Audit",
     },
   ],
   phase2: [
@@ -377,6 +404,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Implement native Material 3 design tokens and edge-to-edge window insets. Embed a tamper-proof in-app Colophon Screen displaying founder handles, commit SHA, and open-source license.",
       verificationCmd: "./gradlew assembleRelease && android layout",
+      executiveTitle: "Cryptographic Authorship & In-App Provenance",
+      executiveArtifact: "Signed Native Binary + Tamper-Proof Founder Colophon",
+      executiveSpecification:
+        "Implement industry design standards with edge-to-edge layout ergonomics. Embed an immutable digital signature identifying student co-founders, Git commit SHA, and licensing.",
+      executiveVerification: "Audit Criterion: Cryptographic Keystore Verification & Material 3 Insets",
     },
     {
       dayRange: "DAYS 10–11",
@@ -386,6 +418,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Author compliant Store listings with zero-data disclosures. Build signed Android App Bundles (AAB) and deploy directly to Google Play Store internal testing tracks.",
       verificationCmd: "./gradlew uploadReleasePrivateBundle",
+      executiveTitle: "Global App Store Distribution & Regulatory Compliance",
+      executiveArtifact: "Live Google Play Track 1 Installation Link + Store Listing",
+      executiveSpecification:
+        "Navigate the global distribution pipeline. Students author compliant Store listings, provide zero-data safety disclosures, and deploy releases directly onto Google Play tracks.",
+      executiveVerification: "Audit Criterion: Google Play Policy Compliance & Direct Device Sideload",
     },
     {
       dayRange: "DAYS 12–13",
@@ -395,6 +432,11 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Simulate production regressions and execute instantaneous rollbacks via git reflog. Verify release pipelines and test assertions remain resilient under incident pressure.",
       verificationCmd: "gh pr status && ls -lh docs/architecture.md",
+      executiveTitle: "Disaster Recovery & Algorithmic Resilience",
+      executiveArtifact: "Verified Incident Recovery Log & 10-Second State Rollback",
+      executiveSpecification:
+        "Simulate high-pressure production anomalies. Founders diagnose breaking regressions and execute sub-second deterministic rollbacks using distributed version control forensics.",
+      executiveVerification: "Audit Criterion: Recovery Time Objective < 15s via Version Control DAG",
     },
     {
       dayRange: "DAY 14",
@@ -404,12 +446,19 @@ const SYLLABUS_DAG: Record<PhaseKey, SyllabusNode[]> = {
       specification:
         "Live product defense before mentors, industry leaders, and peers. Attendees install the finished native app directly via QR codes and inspect the founder's live web URL, verifiable commit history, and Govt. of India Udyam MSME certificate.",
       verificationCmd: "sha256sum app-release-signed.apk && curl -I https://weliftoff.now",
+      executiveTitle: "Public Defense & Govt. MSME Enterprise Recognition",
+      executiveArtifact: "Auditorium Defense Dossier + Govt. MSME Enterprise Certificate",
+      executiveSpecification:
+        "Students orally defend their technical architecture before an auditorium panel of engineers and educators, graduating with an active Google Play app and an official Govt. of India Udyam MSME registration.",
+      executiveVerification: "Audit Criterion: Live QR App Installation & Ministry of MSME Recognition",
     },
   ],
 };
 
 export default function WeLiftoffPage() {
   const [audioEnabled, setAudioEnabled] = useState(true);
+  const [audiencePerspective, setAudiencePerspective] =
+    useState<AudiencePerspective>("builder");
   const [dagMode, setDagMode] = useState<DagMode>("atomic");
   const [activeInvariantId, setActiveInvariantId] =
     useState<InvariantKey>("foss");
@@ -1024,13 +1073,53 @@ export default function WeLiftoffPage() {
           </a>
         </nav>
 
-        <a
-          href="#contract"
-          onClick={() => audio.click()}
-          className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
-        >
-          Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
-        </a>
+        <div className="flex items-center gap-3">
+          {/* Audience Perspective Lens Switcher */}
+          <div className="flex items-center p-0.5 bg-[#12141A] rounded-sm border border-white/10 font-mono text-xs">
+            <button
+              type="button"
+              onClick={() => {
+                audio.click();
+                setAudiencePerspective("builder");
+              }}
+              title="View technical founder specifications, stack details, and CLI verification"
+              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                audiencePerspective === "builder"
+                  ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-sm shadow-[#FF4F00]/20"
+                  : "text-[#8E95A5] hover:text-[#F4F4F0]"
+              }`}
+            >
+              <Terminal className="w-3 h-3" />
+              <span className="hidden sm:inline">Builder View</span>
+              <span className="sm:hidden">Builder</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                audio.click();
+                setAudiencePerspective("executive");
+              }}
+              title="View university admissions alignment (Common App / UCAS) and DPDP §9 statutory safeguarding"
+              className={`flex items-center gap-1.5 px-2 sm:px-2.5 py-1 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                audiencePerspective === "executive"
+                  ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-sm shadow-[#10B981]/20"
+                  : "text-[#8E95A5] hover:text-[#F4F4F0]"
+              }`}
+            >
+              <GraduationCap className="w-3 h-3" />
+              <span className="hidden sm:inline">Academic View</span>
+              <span className="sm:hidden">Academic</span>
+            </button>
+          </div>
+
+          <a
+            href="#contract"
+            onClick={() => audio.click()}
+            className="btn-primary-tactile rounded-sm px-4 py-2 font-mono text-xs font-bold uppercase tracking-wider flex items-center gap-1.5"
+          >
+            Apply for Seat <ArrowRight className="w-3.5 h-3.5" />
+          </a>
+        </div>
       </header>
 
       {/* Hero Viewport: Asymmetric 12-Column Split */}
@@ -1039,68 +1128,164 @@ export default function WeLiftoffPage() {
           {/* Left 5 Columns: Architectural Thesis Pane */}
           <div className="lg:col-span-5 p-6 sm:p-8 lg:p-10 hairline-b lg:hairline-b-0 lg:hairline-r flex flex-col justify-between bg-[#0B0C0E]/70 backdrop-blur-sm space-y-6">
             <div className="space-y-4">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
-                TECHNICAL ACCELERATOR // ZERO TO ONE
+              <div className="flex items-center justify-between gap-2 flex-wrap">
+                <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-[#FF4F00]/10 border border-[#FF4F00]/25 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-[#FF4F00] led-indicator-amber" />
+                  {audiencePerspective === "builder"
+                    ? "TECHNICAL ACCELERATOR // ZERO TO ONE"
+                    : "INSTITUTIONAL ACCREDITATION // ADMISSIONS MOAT"}
+                </div>
+                <div className="flex items-center p-0.5 bg-[#12141A] rounded-sm border border-white/10 font-mono text-xs">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      audio.click();
+                      setAudiencePerspective("builder");
+                    }}
+                    className={`px-2 py-0.5 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                      audiencePerspective === "builder"
+                        ? "bg-[#FF4F00] text-[#0B0C0E] font-bold"
+                        : "text-[#8E95A5] hover:text-[#F4F4F0]"
+                    }`}
+                  >
+                    Builder
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      audio.click();
+                      setAudiencePerspective("executive");
+                    }}
+                    className={`px-2 py-0.5 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                      audiencePerspective === "executive"
+                        ? "bg-[#10B981] text-[#0B0C0E] font-bold"
+                        : "text-[#8E95A5] hover:text-[#F4F4F0]"
+                    }`}
+                  >
+                    Academic
+                  </button>
+                </div>
               </div>
 
               <h1 className="font-display text-fluid-hero font-bold text-[#F4F4F0] tracking-tight">
-                Don&apos;t just learn to code.{" "}
-                <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
-                  Ship like a technical founder.
-                </span>
+                {audiencePerspective === "builder" ? (
+                  <>
+                    Don&apos;t just learn to code.{" "}
+                    <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
+                      Ship like a technical founder.
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    Beyond superficial tutorials.{" "}
+                    <span className="font-serif italic font-normal text-[#FF4F00] block mt-1">
+                      Verified founder credentials for global admissions.
+                    </span>
+                  </>
+                )}
               </h1>
 
               <p className="text-sm sm:text-base text-[#8E95A5] leading-relaxed">
-                Anyone can generate code in an afternoon. The difference between an abandoned side project and a real founder credential is shipping native software that real users can install on their devices. Master the production toolchain used to structure, test, and publish native apps to Google Play.
+                {audiencePerspective === "builder"
+                  ? "Anyone can generate code in an afternoon. The difference between an abandoned side project and a real founder credential is shipping native software that real users can install on their devices. Master the production toolchain used to structure, test, and publish native apps to Google Play."
+                  : "Top university admissions boards (Common App, UCAS, Ivy League) discount toy web exercises and unverified certificates. WeLiftoff yields non-falsifiable proof of execution: a published Google Play app on physical glass, statutory minor data protection under Section 9 of the DPDP Act 2023, and an official Govt. of India Udyam MSME registration."}
               </p>
             </div>
 
             {/* Tabular Domain Bounds: Machined Specimen Plaque */}
             <div className="panel-machined rounded-sm p-4 font-mono text-xs space-y-2">
               <div className="flex items-center justify-between pb-1.5 hairline-b text-xs text-[#8E95A5] font-bold uppercase tracking-wider">
-                <span>FOUNDER SPECIFICATION</span>
+                <span>
+                  {audiencePerspective === "builder"
+                    ? "FOUNDER SPECIFICATION"
+                    : "INSTITUTIONAL & ACADEMIC AUDIT"}
+                </span>
                 <span className="text-[#10B981] flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-[#10B981] led-indicator-emerald" />
-                  SHIPPED ARTIFACTS
+                  {audiencePerspective === "builder"
+                    ? "SHIPPED ARTIFACTS"
+                    : "ACCREDITED OUTCOMES"}
                 </span>
               </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">TARGET RUNTIME</span>
-                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Native Android · Compose (Physical Glass)
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">APP STORE RELEASE</span>
-                <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
-                  Signed AAB &amp; Google Play Internal Track
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">LOCAL PERSISTENCE</span>
-                <span className="font-semibold text-[#F4F4F0] text-right text-xs">
-                  Encrypted Room SQLite · Zero Server Egress
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">CUSTOM DOMAIN</span>
-                <span className="font-semibold text-[#FF6A1F] text-right text-xs">
-                  Live Spaceship HTTPS Domain &lt; 30m
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 hairline-b gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">EMERGENCY ROLLBACK</span>
-                <span className="font-semibold text-[#10B981] text-right text-xs">
-                  &lt; 12ms Deterministic Recovery [reflog]
-                </span>
-              </div>
-              <div className="flex justify-between items-center py-1 gap-3">
-                <span className="text-[#8E95A5] shrink-0 text-xs">IP &amp; REPO OWNERSHIP</span>
-                <span className="font-semibold text-[#10B981] text-right text-xs">
-                  100% Student-Owned Code, Keys &amp; Commits
-                </span>
-              </div>
+              {audiencePerspective === "builder" ? (
+                <>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">TARGET RUNTIME</span>
+                    <span className="font-semibold text-[#F4F4F0] text-right text-xs">
+                      Native Android · Compose (Physical Glass)
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">APP STORE RELEASE</span>
+                    <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
+                      Signed AAB &amp; Google Play Internal Track
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">LOCAL PERSISTENCE</span>
+                    <span className="font-semibold text-[#F4F4F0] text-right text-xs">
+                      Encrypted Room SQLite · Zero Server Egress
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">CUSTOM DOMAIN</span>
+                    <span className="font-semibold text-[#FF6A1F] text-right text-xs">
+                      Live Spaceship HTTPS Domain &lt; 30m
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">EMERGENCY ROLLBACK</span>
+                    <span className="font-semibold text-[#10B981] text-right text-xs">
+                      &lt; 12ms Deterministic Recovery [reflog]
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">IP &amp; REPO OWNERSHIP</span>
+                    <span className="font-semibold text-[#10B981] text-right text-xs">
+                      100% Student-Owned Code, Keys &amp; Commits
+                    </span>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">ADMISSIONS PORTFOLIO</span>
+                    <span className="font-semibold text-[#F4F4F0] text-right text-xs">
+                      Tier-1 Common App &amp; UCAS Activity Evidence
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">STATUTORY SAFEGUARDING</span>
+                    <span className="font-semibold px-1.5 py-0.5 rounded-sm bg-[#10B981]/15 text-[#10B981] border border-[#10B981]/30 text-right text-xs">
+                      DPDP Act 2023 §9 · Zero Network Egress
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">LEGAL ENTITY</span>
+                    <span className="font-semibold text-[#F4F4F0] text-right text-xs">
+                      Govt. of India Udyam MSME Sole Proprietorship
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">PHYSICAL RIGOR</span>
+                    <span className="font-semibold text-[#FF6A1F] text-right text-xs">
+                      Tested on Physical Handsets · Zero School IT Burden
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 hairline-b gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">ALGORITHMIC RESILIENCE</span>
+                    <span className="font-semibold text-[#10B981] text-right text-xs">
+                      Incident Recovery Drills &amp; Peer Code Defense
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center py-1 gap-3">
+                    <span className="text-[#8E95A5] shrink-0 text-xs">IP ASSIGNMENT</span>
+                    <span className="font-semibold text-[#10B981] text-right text-xs">
+                      100% Student Custody at Age 18 (Irrevocable)
+                    </span>
+                  </div>
+                </>
+              )}
             </div>
 
             {/* Single Primary Interaction Contract */}
@@ -1110,10 +1295,14 @@ export default function WeLiftoffPage() {
                 onClick={() => audio.commit()}
                 className="btn-primary-tactile rounded-sm block w-full py-3.5 text-center font-mono text-xs sm:text-sm font-bold uppercase tracking-wider"
               >
-                Apply for Founder Seat &rarr;
+                {audiencePerspective === "builder"
+                  ? "Apply for Founder Seat →"
+                  : "Request Institutional & Cohort Prospectus →"}
               </a>
               <span className="block text-center font-mono text-xs text-[#8E95A5] mt-2">
-                Build Real Software · Ship to Google Play
+                {audiencePerspective === "builder"
+                  ? "Build Real Software · Ship to Google Play"
+                  : "Statutory Child Safeguarding · Verifiable Admissions Portfolio"}
               </span>
             </div>
           </div>
@@ -1636,43 +1825,84 @@ export default function WeLiftoffPage() {
             <div className="space-y-2">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-sm bg-white/5 border border-white/10 text-[#FF6A1F] font-mono text-xs font-bold uppercase tracking-wider">
                 <span className="w-2 h-2 rounded-full bg-[#FF4F00]" />
-                FOUNDER MILESTONES // RELEASE ROADMAP
+                {audiencePerspective === "builder"
+                  ? "FOUNDER MILESTONES // RELEASE ROADMAP"
+                  : "ACADEMIC & STATUTORY ROADMAP // ADMISSIONS ACCREDITATION"}
               </div>
               <h2 className="font-display text-fluid-h2 font-bold text-[#F4F4F0] tracking-tight">
-                From Empty Repo to Production Release on Google Play
+                {audiencePerspective === "builder"
+                  ? "From Empty Repo to Production Release on Google Play"
+                  : "14-Day Verified Engineering Curriculum & Child Safeguarding Milestones"}
               </h2>
             </div>
 
-            {/* 2 Bounded Phase Levers */}
-            <div className="flex items-center gap-2 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
-              <button
-                type="button"
-                onClick={() => {
-                  audio.click();
-                  setActivePhase("phase1");
-                }}
-                className={`px-4 py-2.5 rounded-sm uppercase cursor-pointer transition-all ${
-                  activePhase === "phase1"
-                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
-                    : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
-                }`}
-              >
-                Phase 1: Architecture &amp; Foundation
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  audio.click();
-                  setActivePhase("phase2");
-                }}
-                className={`px-4 py-2.5 rounded-sm uppercase cursor-pointer transition-all ${
-                  activePhase === "phase2"
-                    ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/30"
-                    : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
-                }`}
-              >
-                Phase 2: The Shipping Pipeline
-              </button>
+            {/* Bounded Perspective & Phase Controls */}
+            <div className="flex flex-wrap items-center gap-3">
+              {/* Perspective Lens Switcher */}
+              <div className="flex items-center p-0.5 bg-[#12141A] rounded-sm border border-white/10 font-mono text-xs">
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.click();
+                    setAudiencePerspective("builder");
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                    audiencePerspective === "builder"
+                      ? "bg-[#FF4F00] text-[#0B0C0E] font-bold shadow-md shadow-[#FF4F00]/20"
+                      : "text-[#8E95A5] hover:text-[#F4F4F0]"
+                  }`}
+                >
+                  <Terminal className="w-3.5 h-3.5" />
+                  <span>Builder Spec</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.click();
+                    setAudiencePerspective("executive");
+                  }}
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-sm uppercase tracking-wider transition-all cursor-pointer ${
+                    audiencePerspective === "executive"
+                      ? "bg-[#10B981] text-[#0B0C0E] font-bold shadow-md shadow-[#10B981]/20"
+                      : "text-[#8E95A5] hover:text-[#F4F4F0]"
+                  }`}
+                >
+                  <GraduationCap className="w-3.5 h-3.5" />
+                  <span>Academic Audit</span>
+                </button>
+              </div>
+
+              {/* 2 Bounded Phase Levers */}
+              <div className="flex items-center gap-1 font-mono text-xs p-1 rounded-sm bg-[#12141A] border border-white/10">
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.click();
+                    setActivePhase("phase1");
+                  }}
+                  className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
+                    activePhase === "phase1"
+                      ? "bg-white/15 text-[#F4F4F0] font-bold"
+                      : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+                  }`}
+                >
+                  Phase 1: Architecture
+                </button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    audio.click();
+                    setActivePhase("phase2");
+                  }}
+                  className={`px-4 py-2 rounded-sm uppercase cursor-pointer transition-all ${
+                    activePhase === "phase2"
+                      ? "bg-white/15 text-[#F4F4F0] font-bold"
+                      : "bg-transparent text-[#8E95A5] hover:text-[#F4F4F0]"
+                  }`}
+                >
+                  Phase 2: Shipping
+                </button>
+              </div>
             </div>
           </div>
 
@@ -1692,20 +1922,39 @@ export default function WeLiftoffPage() {
                     <span className="text-[#8E95A5]">{node.code}</span>
                   </div>
                   <h3 className="font-display text-xl font-bold text-[#F4F4F0] group-hover:text-[#FF6A1F] transition-colors">
-                    {node.title}
+                    {audiencePerspective === "executive" && node.executiveTitle
+                      ? node.executiveTitle
+                      : node.title}
                   </h3>
                   <p className="text-sm text-[#8E95A5] leading-relaxed">
-                    {node.specification}
+                    {audiencePerspective === "executive" && node.executiveSpecification
+                      ? node.executiveSpecification
+                      : node.specification}
                   </p>
                 </div>
 
                 <div className="space-y-2.5 pt-5 hairline-t font-mono text-xs">
                   <div className="text-[#8E95A5]">
-                    FOUNDER DELIVERABLE:{" "}
-                    <strong className="text-[#F4F4F0] block font-semibold mt-1 text-xs sm:text-sm">{node.artifact}</strong>
+                    {audiencePerspective === "builder" ? "FOUNDER DELIVERABLE:" : "ACADEMIC ARTIFACT:"}{" "}
+                    <strong className="text-[#F4F4F0] block font-semibold mt-1 text-xs sm:text-sm">
+                      {audiencePerspective === "executive" && node.executiveArtifact
+                        ? node.executiveArtifact
+                        : node.artifact}
+                    </strong>
                   </div>
-                  <div className="p-2.5 bg-[#12151C] rounded-sm border border-white/10 text-[#10B981] overflow-x-auto text-xs whitespace-nowrap" title={node.verificationCmd}>
-                    $ {node.verificationCmd}
+                  <div
+                    className={`p-2.5 bg-[#12151C] rounded-sm border border-white/10 overflow-x-auto text-xs whitespace-nowrap ${
+                      audiencePerspective === "builder" ? "text-[#10B981]" : "text-[#38BDF8]"
+                    }`}
+                    title={
+                      audiencePerspective === "executive" && node.executiveVerification
+                        ? node.executiveVerification
+                        : node.verificationCmd
+                    }
+                  >
+                    {audiencePerspective === "builder"
+                      ? `$ ${node.verificationCmd}`
+                      : `✓ ${node.executiveVerification}`}
                   </div>
                 </div>
               </div>
